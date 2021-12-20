@@ -6,8 +6,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="projet-7wonders-4" />
+        <module name="RMI-IHM" />
+        <module name="rmiservice" />
+        <module name="client" />
+        <module name="S-W_jeu-modele" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="clientjfx" target="11" />
+      <module name="jeu-modele" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
