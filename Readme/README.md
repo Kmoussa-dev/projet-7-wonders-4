@@ -36,4 +36,4 @@ db.cartes.insert({"nom" : "pierre", "couleur" : "gris", "valeur" : 4});
 
 ![img](structureProjet.png)
 
-![img](Modelisation_v1.png)
+![img](Modelisations/Modelisation_v1.png)

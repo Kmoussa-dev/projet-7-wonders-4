@@ -1,0 +1,129 @@
+// Collection des parties
+[
+    {
+        "_id":"Object(5464684684)",
+        "etatDuJeu":"PAUSE, TERMINE, EN_COURS",
+        "joueurs":
+        [
+            {
+                "pseudo":"Alice",
+                "plateau": "idPlateau", 
+                "cartesConstructCite": // liste des carte que le joueur "Alice" possede
+                [
+                    {"_id":"Object(5464684684)"},
+                    {"_id":"Object(5464684684)"},
+                    {"_id":"Object(5464684684)"},
+                    {"_id":"Object(54345)"},
+                    {"_id":"Object(5464653254684)"},
+                    {"_id":"Object(53743573574)"}
+                ],
+
+                "paquetDeCarteCirculant": // les cartes en main pendant le TOUR!!!!
+                [
+                    {"_id":"Object(54235432)"},
+                    {"_id":"Object(58678)"},
+                    {"_id":"Object(757786)"},
+                    {"_id":"Object(54235432)"},
+                    {"_id":"Object(58678)"},
+                    {"_id":"Object(757786)"},
+                    {"_id":"Object(54235432)"}
+                ],
+
+                "cartesConstructMerveille": // construction du pyramide
+                [
+                    {"_id":"Object(54235432)"},
+                    {"_id":"Object(58678)"},
+                    {"_id":"Object(757786)"}
+                ]
+            },
+
+            {
+                "pseudo":"Bob",
+                "plateau": "idPlateau1", 
+                "cartesConstructCite": // liste des carte que le joueur "Alice" possede
+                [
+                    {"_id":"Object(543453)"},
+                    {"_id":"Object(453453453)"},
+                    {"_id":"Object(453453453453)"},
+                    {"_id":"Object(54345)"},
+                    {"_id":"Object(5464653254684)"},
+                    {"_id":"Object(53743573574)"}
+                ],
+
+                "paquetDeCarteCirculant": // les cartes en main pendant le TOUR!!!!
+                [
+                    {"_id":"Object(54235432)"},
+                    {"_id":"Object(58678)"},
+                    {"_id":"Object(757786)"},
+                    {"_id":"Object(54235432)"},
+                    {"_id":"Object(58678)"},
+                    {"_id":"Object(757786)"},
+                    {"_id":"Object(54235432)"}
+                ],
+
+                "cartesConstructMerveille": // construction du pyramide
+                [
+                    {"_id":"Object(54235432)"},
+                    {"_id":"Object(58678)"},
+                    {"_id":"Object(757786)"}
+                ]
+            }
+        ]
+    }
+    
+
+],
+
+
+
+//Collection 
+
+
+// Collection de toutes les cartes du jeu
+[
+    {
+        "_id":"Object(5464684684)",
+        "effet":"Militiaire",
+        "age":1
+    },
+    {
+        "_id":"Object(468464684)",
+        "effet":"Scientifque",
+        "age":1
+    },
+    {
+        "_id":"Object(546446847846874)",
+        "effet":"Militiaire",
+        "age":2
+    },
+    {
+        "_id":"Object(8464554)",
+        "effet":"Militiaire",
+        "age":3
+    },
+    {
+        "_id":"Object(7676+7797/9/79/)",
+        "effet":"Militiaire",
+        "age":3
+    },
+    {
+        "_id":"Object(5848447687687)",
+        "effet":"Militiaire",
+        "age":3
+    },
+]
+
+
+
+
+
+
+//Collection  des plateaux
+[
+    {
+        "_id": "idPlateau",
+        "description": "bla bla"
+    },
+    {},
+    {},
+]
