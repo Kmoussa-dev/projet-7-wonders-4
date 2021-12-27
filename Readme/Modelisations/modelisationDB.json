@@ -2,13 +2,13 @@
 [
     {
         "_id":"Object(5464684684)",
-        "etatDuJeu":"PAUSE, TERMINE, EN_COURS",
+        "etatPartie":"PAUSE, TERMINE, EN_COURS",
         "joueurs":
         [
-            {
+            {//JOUEUR 1
                 "pseudo":"Alice",
                 "plateau": "idPlateau", 
-                "cartesConstructCite": // liste des carte que le joueur "Alice" possede
+                "cartesConstructionCite": // liste des carte que le joueur "Alice" possede
                 [
                     {"_id":"Object(5464684684)"},
                     {"_id":"Object(5464684684)"},
@@ -29,7 +29,7 @@
                     {"_id":"Object(54235432)"}
                 ],
 
-                "cartesConstructMerveille": // construction du pyramide
+                "cartesConstructionMerveille": // construction du pyramide
                 [
                     {"_id":"Object(54235432)"},
                     {"_id":"Object(58678)"},
@@ -37,10 +37,10 @@
                 ]
             },
 
-            {
+            {//JOUEUR 2
                 "pseudo":"Bob",
                 "plateau": "idPlateau1", 
-                "cartesConstructCite": // liste des carte que le joueur "Alice" possede
+                "cartesConstructionCite": // liste des carte que le joueur "Alice" possede
                 [
                     {"_id":"Object(543453)"},
                     {"_id":"Object(453453453)"},
@@ -61,7 +61,7 @@
                     {"_id":"Object(54235432)"}
                 ],
 
-                "cartesConstructMerveille": // construction du pyramide
+                "cartesConstructionMerveille": // construction du pyramide
                 [
                     {"_id":"Object(54235432)"},
                     {"_id":"Object(58678)"},

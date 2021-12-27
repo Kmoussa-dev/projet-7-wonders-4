@@ -36,7 +36,7 @@ public class Joueur {
     /**
      * 
      */
-    public List<Carte> o_Ocartes;
+    public List<Carte> cartes;
 
     /**
      * 
