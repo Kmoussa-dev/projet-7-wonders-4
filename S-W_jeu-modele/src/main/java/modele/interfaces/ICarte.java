@@ -1,15 +1,15 @@
 package modele.interfaces;
 
 public interface ICarte {
-    public String getNom();
+    String getNom();
 
-    public void setNom(String nom);
+    void setNom(String nom);
 
-    public String getCouleur();
+    String getCouleur();
 
-    public void setCouleur(String couleur) ;
+    void setCouleur(String couleur) ;
 
-    public double getValeur();
+    double getValeur();
 
-    public void setValeur(double valeur);
+    void setValeur(double valeur);
 }
