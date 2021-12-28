@@ -9,6 +9,12 @@ public class Carte implements ICarte {
 
     public Carte() {}
 
+    public Carte(String nom, String couleur, double valeur) {
+        this.nom = nom;
+        this.couleur = couleur;
+        this.valeur = valeur;
+    }
+
     public String getNom() {
         return nom;
     }
@@ -33,7 +39,6 @@ public class Carte implements ICarte {
         this.valeur = valeur;
     }
 
-    @Override
     public String toString() {
         return "Carte{" +
                 "nom='" + nom + '\'' +

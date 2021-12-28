@@ -29,4 +29,10 @@ public class Dao {
         MongoCollection<Carte> carteMongoCollection = db.getCollection("cartes",Carte.class);
         return carteMongoCollection.find(Filters.eq("nom",nom)).first();
     }
+
+    public static void updatePartie(String id){
+
+    }
+
+
 }

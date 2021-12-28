@@ -2,19 +2,23 @@ package modele;
 
 public class Joueur {
 
-    private String pseudo;
+    private String _id;
     private String mdp;
 
     //constructeur
     public Joueur() {}
 
-    //Getters et setters
-    public String getPseudo() {
-        return pseudo;
+    public Joueur(String _id, String mdp){
+        this._id = _id;
+        this.mdp = mdp;
     }
 
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getMdp() {
