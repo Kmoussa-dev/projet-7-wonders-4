@@ -88,6 +88,23 @@ public class PartieJoueur {
         this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
     }
 
+
+    public void updateCarteTemp(Partie partie){
+
+        try {
+            PartieJoueur partieJoueurCote = partie.getPartieJoueurs().get((partie.getPartieJoueurs().indexOf(this) + 1));
+            List<ICarte> cartesTemp = this.cartesCirculantes;
+            this.cartesCirculantes = partieJoueurCote.getCartesCirculantes();
+            partieJoueurCote.setCartesCirculantes(cartesTemp);
+            cartesTemp = null;
+            this.etatChoisi = EtatCarteChoisi.PAS_ENCORE_CHOISIE;
+        }
+        catch (Exception e)
+        {
+            this.etatChoisi = EtatCarteChoisi.PAS_ENCORE_CHOISIE;
+        }
+    }
+
     @Override
     public String toString() {
         return "PartieJoueur{" +

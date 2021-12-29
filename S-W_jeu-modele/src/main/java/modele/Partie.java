@@ -52,19 +52,21 @@ public class Partie {
         }
         return cpt == nbJoueursPartie;
     }
-    public void rotationCarte(){
-        if(this.authorisationCarteCirculant()){
-            List<ICarte> carteTemp = this.partieJoueurs.get(0).getCartesCirculantes();
 
-            for (int i = 0; i < this.partieJoueurs.size() -1; i++){
-                this.partieJoueurs.get(i).setCartesCirculantes(this.partieJoueurs.get(i+1).getCartesCirculantes());
-            }
-            this.partieJoueurs.get(this.partieJoueurs.size() -1).setCartesCirculantes(carteTemp);
-            for(PartieJoueur pj  : this.partieJoueurs){
-                pj.setEtatChoisi(EtatCarteChoisi.PAS_ENCORE_CHOISIE);
+    public void ajouterPartieJoueur(PartieJoueur partieJoueur){
+        this.partieJoueurs.add(partieJoueur);
+    }
+
+    public void supprimerPartieJoueur(PartieJoueur partieJoueur){
+        this.partieJoueurs.remove(partieJoueur);
+    }
+
+    public void notifierALaPartiJoueur(){
+        if(this.authorisationCarteCirculant()){
+            for (PartieJoueur partieJoueur : this.partieJoueurs){
+                partieJoueur.updateCarteTemp(this);
             }
         }
-
     }
 
     @Override

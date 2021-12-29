@@ -58,25 +58,25 @@ public class TestingFacade {
         partieJoueur1.deplacementCarteChoisidDeTempVersConstructCite("carte2");
         System.out.println(partieJoueur1.getJoueur() + " va faire une choix d'une carte " + partieJoueur1.getCartesConstructionCite().get(0));
         System.out.println(facadeSwOnline.partie.authorisationCarteCirculant());
-        facadeSwOnline.partie.rotationCarte();
+        facadeSwOnline.partie.notifierALaPartiJoueur();
         System.out.println("-----------------------------------------------------------");
 
         partieJoueur2.deplacementCarteChoisidDeTempVersConstructCite("carte12");
         System.out.println(partieJoueur2.getJoueur() + " va faire une choix d'une carte " + partieJoueur2.getCartesConstructionCite().get(0));
         System.out.println(facadeSwOnline.partie.authorisationCarteCirculant());
-        facadeSwOnline.partie.rotationCarte();
+        facadeSwOnline.partie.notifierALaPartiJoueur();
         System.out.println("-----------------------------------------------------------");
 
         partieJoueur3.deplacementCarteChoisidDeTempVersConstructCite("carte18");
         System.out.println(partieJoueur3.getJoueur() + " va faire une choix d'une carte " + partieJoueur3.getCartesConstructionCite().get(0));
         System.out.println(facadeSwOnline.partie.authorisationCarteCirculant());
-        facadeSwOnline.partie.rotationCarte();
+        facadeSwOnline.partie.notifierALaPartiJoueur();
         System.out.println("-----------------------------------------------------------");
 
         partieJoueur4.deplacementCarteChoisidDeTempVersConstructCite("carte27");
         System.out.println(partieJoueur4.getJoueur() + " va faire une choix d'une carte " + partieJoueur4.getCartesConstructionCite().get(0));
         System.out.println(facadeSwOnline.partie.authorisationCarteCirculant());
-        facadeSwOnline.partie.rotationCarte();
+        facadeSwOnline.partie.notifierALaPartiJoueur();
         System.out.println("-----------------------------------------------------------");
 
         System.out.println(facadeSwOnline.partie.getPartieJoueurs());
