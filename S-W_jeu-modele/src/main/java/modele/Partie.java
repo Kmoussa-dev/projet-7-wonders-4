@@ -1,20 +1,34 @@
 package modele;
 
-import modele.interfaces.ICarte;
+import facade.LesJeuCartes;
+import interfaces.ICarte;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Partie {
-
+    private  static  Partie partie = new Partie();
     private String _id;
     private String etatPartie;
+    private int niveauAge;
+    private int nbJoueur;
+
     private List <PartieJoueur> partieJoueurs ;
 
     public Partie(){
         this._id = "test";
+        this.niveauAge = 1;
         this.etatPartie = "debut";
+        this.nbJoueur = 0;
+
+
+        this.partieJoueurs = new ArrayList<>();
+    }
+
+    public static Partie creer(){
+        return partie;
     }
 
     public String get_id() {
@@ -41,20 +55,36 @@ public class Partie {
         this.partieJoueurs = partieJoueurs;
     }
 
-    public boolean authorisationCarteCirculant() {
-        int cpt = 0;
-        int nbJoueursPartie = this.partieJoueurs.size();
+    public PartieJoueur getPartieJoueurByPseudo(String pseudo){
+        return this.partieJoueurs.stream().filter(partieJoueur -> partieJoueur.getJoueur().equals(pseudo)).collect(Collectors.toList()).get(0);
+    }
 
-        for (PartieJoueur pj : this.partieJoueurs) {
-            if (pj.getEtatChoisi() == EtatCarteChoisi.DEJA_CHOISIE) {
-                cpt++;
+    public void deplacer(String pseudo, ICarte carte, List<ICarte> cartes){
+        for (PartieJoueur partieJoueur : this.partieJoueurs){
+            if(partieJoueur.getJoueur().equals(pseudo)){
+                partieJoueur.deplacementCarteChoisidDeTempVersConstructCite(cartes,carte);
             }
         }
-        return cpt == nbJoueursPartie;
+    }
+
+    public boolean authorisationCarteCirculant() {
+        int i = 0;
+        for (PartieJoueur pj  : this.partieJoueurs){
+            if(pj.getEtatChoisi().equals(EtatCarteChoisi.DEJA_CHOISIE)){
+                i ++;
+            }
+        }
+        System.out.println(i);
+        System.out.println( i + " " + this.nbJoueur);
+        System.out.println(i == this.nbJoueur);
+        return i != this.nbJoueur;
+
     }
 
     public void ajouterPartieJoueur(PartieJoueur partieJoueur){
         this.partieJoueurs.add(partieJoueur);
+        this.nbJoueur ++;
+
     }
 
     public void supprimerPartieJoueur(PartieJoueur partieJoueur){
@@ -62,11 +92,15 @@ public class Partie {
     }
 
     public void notifierALaPartiJoueur(){
-        if(this.authorisationCarteCirculant()){
-            for (PartieJoueur partieJoueur : this.partieJoueurs){
-                partieJoueur.updateCarteTemp(this);
-            }
-        }
+    for (PartieJoueur partieJoueur : this.partieJoueurs){
+        partieJoueur.updateCarteTemp(this);
+}
+
+
+    }
+
+    public boolean partieCommence(){
+        return this.partieJoueurs.size() == 4;
     }
 
     @Override
@@ -77,4 +111,5 @@ public class Partie {
                 ", partieJoueurs=" + partieJoueurs +
                 '}';
     }
-}
+} //this.cartesCirculantes.remove(choixCarte);
+ //this.cartesCirculantes.remove(choixCarte);

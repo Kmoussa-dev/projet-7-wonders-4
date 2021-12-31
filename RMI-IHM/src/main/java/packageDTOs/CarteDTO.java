@@ -1,8 +1,10 @@
 package packageDTOs;
 
+import interfaces.ICarte;
+
 import java.io.Serializable;
 
-public class CarteDTO implements Serializable {
+public class CarteDTO implements ICarte,  Serializable{
     private String nom;
     private String couleur;
     private double valeur;

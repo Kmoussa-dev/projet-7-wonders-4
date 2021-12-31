@@ -1,84 +1,98 @@
 package facade;
 
+import interfaces.ICarte;
 import modele.Carte;
+import modele.Partie;
 import modele.PartieJoueur;
-import modele.interfaces.ICarte;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestingFacade {
     public static void main(String[] args) {
-        List<ICarte> cartes = new ArrayList<>();
+        FacadeSwOnline facadeSwOnline = new FacadeSwOnline();
 
-        cartes.add(new Carte("carte1","rouge",5));
-        cartes.add(new Carte("carte2","rouge",4));
-        cartes.add(new Carte("carte3","rouge",3));
-        cartes.add(new Carte("carte4","rouge",5));
-        cartes.add(new Carte("carte5","rouge",5));
-        cartes.add(new Carte("carte6","rouge",8));
-        cartes.add(new Carte("carte7","rouge",5));
+        //facadeSwOnline.loadData();
+
+        facadeSwOnline.accederUnePartie("a","Egypte");
+        //facadeSwOnline.distribution("Alice");
+        System.out.println("-------------------------------------------");
+        System.out.println(facadeSwOnline.getLesCartesCirculants("a"));
+        facadeSwOnline.accederUnePartie("b","Egypte");
+        //facadeSwOnline.distribution("Bob");
+        System.out.println("-------------------------------------------");
+        System.out.println(facadeSwOnline.getLesCartesCirculants("a"));
+        System.out.println(facadeSwOnline.getLesCartesCirculants("b"));
+        facadeSwOnline.accederUnePartie("c","Egypte");
+        //facadeSwOnline.distribution("Charlie");
+        System.out.println("-------------------------------------------");
+        System.out.println(facadeSwOnline.getLesCartesCirculants("a"));
+        System.out.println(facadeSwOnline.getLesCartesCirculants("b"));
+        System.out.println(facadeSwOnline.getLesCartesCirculants("c"));
+        facadeSwOnline.accederUnePartie("d","Egypte");
+        facadeSwOnline.distribution("a");
+        facadeSwOnline.distribution("b");
+        facadeSwOnline.distribution("c");
+        facadeSwOnline.distribution("d");
+        System.out.println("-------------------------------------------");
+
+        for (PartieJoueur p : facadeSwOnline.getPartie().getPartieJoueurs())
+        {
+            System.out.println(p.getJoueur() +" " +  p.getCartesCirculantes());
+
+        }
+
+        System.out.println("-------------------------------------------");
+        System.out.println("-------------------------------------------");
 
 
-        cartes.add(new Carte("carte8","rouge",5));
-        cartes.add(new Carte("carte9","rouge",5));
-        cartes.add(new Carte("carte10","rouge",10));
-        cartes.add(new Carte("carte11","rouge",8));
-        cartes.add(new Carte("carte12","rouge",5));
-        cartes.add(new Carte("carte13","rouge",7));
-        cartes.add(new Carte("carte14","rouge",5));
 
-        cartes.add(new Carte("carte15","rouge",5));
-        cartes.add(new Carte("carte16","rouge",5));
-        cartes.add(new Carte("carte17","rouge",5));
-        cartes.add(new Carte("carte18","rouge",5));
-        cartes.add(new Carte("carte19","rouge",5));
-        cartes.add(new Carte("carte20","rouge",5));
-        cartes.add(new Carte("carte21","rouge",5));
-
-        cartes.add(new Carte("carte22","rouge",5));
-        cartes.add(new Carte("carte23","rouge",5));
-        cartes.add(new Carte("carte24","rouge",5));
-        cartes.add(new Carte("carte25","rouge",5));
-        cartes.add(new Carte("carte26","rouge",5));
-        cartes.add(new Carte("carte27","rouge",5));
-        cartes.add(new Carte("carte28","rouge",5));
-
-        FacadeSwOnline facadeSwOnline = FacadeSwOnline.cree();
-
-        facadeSwOnline.loadData();
-
-        PartieJoueur partieJoueur1 = facadeSwOnline.lesPartieJoueurs.get(0);
-        PartieJoueur partieJoueur2 = facadeSwOnline.lesPartieJoueurs.get(1);
-        PartieJoueur partieJoueur3 = facadeSwOnline.lesPartieJoueurs.get(2);
-        PartieJoueur partieJoueur4 = facadeSwOnline.lesPartieJoueurs.get(3);
-
-        System.out.println(facadeSwOnline.partie.getPartieJoueurs());
-
-        partieJoueur1.deplacementCarteChoisidDeTempVersConstructCite("carte2");
-        System.out.println(partieJoueur1.getJoueur() + " va faire une choix d'une carte " + partieJoueur1.getCartesConstructionCite().get(0));
-        System.out.println(facadeSwOnline.partie.authorisationCarteCirculant());
-        facadeSwOnline.partie.notifierALaPartiJoueur();
+        facadeSwOnline.deplacementCarte("a",new Carte("carte2","rouge",5),null);
+        System.out.println(facadeSwOnline.getPartie().getPartieJoueurByPseudo("a").getJoueur() + " va faire une choix d'une carte " + facadeSwOnline.getPartie().getPartieJoueurByPseudo("a").getCartesConstructionCite());
+        System.out.println(facadeSwOnline.getPartie().getPartieJoueurByPseudo("a").getCartesCirculantes());
+        System.out.println(facadeSwOnline.authorisationCirculer());
+        System.out.println("-----------------------------------------------------------");
+        facadeSwOnline.notification();
+        System.out.println("-----------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------");
+        facadeSwOnline.deplacementCarte("b",new Carte("carte13","rouge",7),null);
+        System.out.println(facadeSwOnline.getPartie().getPartieJoueurByPseudo("b").getJoueur() + " va faire une choix d'une carte " + facadeSwOnline.getPartie().getPartieJoueurByPseudo("b").getCartesConstructionCite());
+        System.out.println(facadeSwOnline.getPartie().getPartieJoueurByPseudo("b").getCartesCirculantes());
+        System.out.println(facadeSwOnline.authorisationCirculer());
+        System.out.println("-----------------------------------------------------------");
+        facadeSwOnline.notification();
+        System.out.println("-----------------------------------------------------------");
         System.out.println("-----------------------------------------------------------");
 
-        partieJoueur2.deplacementCarteChoisidDeTempVersConstructCite("carte12");
-        System.out.println(partieJoueur2.getJoueur() + " va faire une choix d'une carte " + partieJoueur2.getCartesConstructionCite().get(0));
-        System.out.println(facadeSwOnline.partie.authorisationCarteCirculant());
-        facadeSwOnline.partie.notifierALaPartiJoueur();
+        facadeSwOnline.deplacementCarte("c",new Carte("carte18","rouge",5),null);
+        System.out.println(facadeSwOnline.getPartie().getPartieJoueurByPseudo("c").getJoueur() + " va faire une choix d'une carte " + facadeSwOnline.getPartie().getPartieJoueurByPseudo("c").getCartesConstructionCite());
+        System.out.println(facadeSwOnline.getPartie().getPartieJoueurByPseudo("c").getCartesCirculantes());
+        System.out.println(facadeSwOnline.authorisationCirculer());
+        System.out.println("-----------------------------------------------------------");
+        facadeSwOnline.notification();
+        System.out.println("-----------------------------------------------------------");
         System.out.println("-----------------------------------------------------------");
 
-        partieJoueur3.deplacementCarteChoisidDeTempVersConstructCite("carte18");
-        System.out.println(partieJoueur3.getJoueur() + " va faire une choix d'une carte " + partieJoueur3.getCartesConstructionCite().get(0));
-        System.out.println(facadeSwOnline.partie.authorisationCarteCirculant());
-        facadeSwOnline.partie.notifierALaPartiJoueur();
+        facadeSwOnline.deplacementCarte("d",new Carte("carte26","rouge",5),null);
+        System.out.println(facadeSwOnline.getPartie().getPartieJoueurByPseudo("d").getJoueur() + " va faire une choix d'une carte " + facadeSwOnline.getPartie().getPartieJoueurByPseudo("d").getCartesConstructionCite());
+        System.out.println(facadeSwOnline.getPartie().getPartieJoueurByPseudo("d").getCartesCirculantes());
+        System.out.println(facadeSwOnline.authorisationCirculer());
+        facadeSwOnline.notification();
+        System.out.println("-----------------------------------------------------------");
+        System.out.println(facadeSwOnline.authorisationCirculer());
+        System.out.println("-----------------------------------------------------------");
         System.out.println("-----------------------------------------------------------");
 
-        partieJoueur4.deplacementCarteChoisidDeTempVersConstructCite("carte27");
-        System.out.println(partieJoueur4.getJoueur() + " va faire une choix d'une carte " + partieJoueur4.getCartesConstructionCite().get(0));
-        System.out.println(facadeSwOnline.partie.authorisationCarteCirculant());
-        facadeSwOnline.partie.notifierALaPartiJoueur();
-        System.out.println("-----------------------------------------------------------");
+        for (PartieJoueur p : facadeSwOnline.getPartie().getPartieJoueurs())
+        {
+            System.out.println(p.getJoueur() +" " +  p.getCartesCirculantes());
 
-        System.out.println(facadeSwOnline.partie.getPartieJoueurs());
+        }
+
+        System.out.println(facadeSwOnline.authorisationCirculer());
+
+
+
+
     }
 }

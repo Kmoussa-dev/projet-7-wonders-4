@@ -1,11 +1,10 @@
 package modele;
 
-import modele.interfaces.ICarte;
+import interfaces.ICarte;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PartieJoueur {
@@ -18,19 +17,19 @@ public class PartieJoueur {
     private List<ICarte> cartesConstructionCite;
     private List<ICarte> cartesConstructionMerveille;
     private EtatCarteChoisi etatChoisi;
+    private boolean consulterDernierJoueur;
 
     /*-------------------------------- Constructeur - getters - setters ----------------------------- */
 
     public PartieJoueur(String joueur, String plateau) {
         this.joueur = joueur;
         this.plateau = plateau;
+        this.consulterDernierJoueur = false;
         this.etatChoisi = EtatCarteChoisi.PAS_ENCORE_CHOISIE;
         this.cartesCirculantes = new ArrayList<>();
         this.cartesConstructionCite = new ArrayList<>();
         this.cartesConstructionMerveille = new ArrayList<>();
     }
-
-
 
     public String getJoueur() {
         return joueur;
@@ -40,12 +39,21 @@ public class PartieJoueur {
         this.joueur = joueur;
     }
 
+
     public String getPlateau() {
         return plateau;
     }
 
     public void setPlateau(String plateau) {
         this.plateau = plateau;
+    }
+
+    public boolean isConsulterDernierJoueur() {
+        return this.consulterDernierJoueur;
+    }
+
+    public void setConsulterDernierJoueur(boolean consulterDernierJoueur) {
+        this.consulterDernierJoueur = consulterDernierJoueur;
     }
 
     public List<ICarte> getCartesCirculantes() {
@@ -56,13 +64,15 @@ public class PartieJoueur {
         this.cartesCirculantes = cartesCirculantes;
     }
 
+
     public List<ICarte> getCartesConstructionCite() {
-        return cartesConstructionCite;
+        return this.cartesConstructionCite;
     }
 
     public void setCartesConstructionCite(List<ICarte> cartesConstructionCite) {
         this.cartesConstructionCite = cartesConstructionCite;
     }
+
 
     public List<ICarte> getCartesConstructionMerveille() {
         return cartesConstructionMerveille;
@@ -72,6 +82,7 @@ public class PartieJoueur {
         this.cartesConstructionMerveille = cartesConstructionMerveille;
     }
 
+
     public EtatCarteChoisi getEtatChoisi() {
         return etatChoisi;
     }
@@ -80,19 +91,60 @@ public class PartieJoueur {
         this.etatChoisi = etatChoisi;
     }
 
-    public void deplacementCarteChoisidDeTempVersConstructCite(String nomCarte){
-        List<ICarte> carte = this.cartesCirculantes.stream().filter(c -> c.getNom().equals(nomCarte)).collect(Collectors.toList());
 
-        this.cartesCirculantes.remove(carte.get(0));
-        this.cartesConstructionCite.add(carte.get(0));
-        this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+
+    public void ajouterCarteCirculant(ICarte carte){
+        if(this.cartesCirculantes.stream().filter(c -> c.getNom().equals(carte.getNom())).collect(Collectors.toList()).size() == 0)
+        {
+            this.cartesCirculantes.add(carte);
+        }
+
+    }
+
+    public void deplacementCarteChoisidDeTempVersConstructCite(List<ICarte> majCarteCirculant, ICarte choixCarte){
+        if(this.etatChoisi == EtatCarteChoisi.PAS_ENCORE_CHOISIE){
+            this.cartesConstructionCite.add(choixCarte);
+            this.cartesCirculantes = majCarteCirculant;
+            this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+        }
+        else {
+            throw new RuntimeException();
+        }
+
     }
 
 
     public void updateCarteTemp(Partie partie){
+        if(this.etatChoisi == EtatCarteChoisi.DEJA_CHOISIE){
+            try {
+                PartieJoueur partieJoueurCote = partie.getPartieJoueurs().get((partie.getPartieJoueurs().indexOf(this) + 1));
+                List<ICarte> cartesTemp = this.cartesCirculantes;
+                this.cartesCirculantes = partieJoueurCote.getCartesCirculantes();
+                partieJoueurCote.setCartesCirculantes(cartesTemp);
+                cartesTemp = null;
+                this.etatChoisi = EtatCarteChoisi.PAS_ENCORE_CHOISIE;
+            }
+            catch (Exception e)
+            {
+                this.etatChoisi = EtatCarteChoisi.PAS_ENCORE_CHOISIE;
+                e.printStackTrace();
+            }
+        }
 
+    }
+
+
+    public boolean passerLesCartes(){
+        return this.etatChoisi == EtatCarteChoisi.DEJA_CHOISIE;
+    }
+
+    private void rotationInverse(Partie partie){
+
+    }
+
+    private void rotation(Partie partie){
         try {
-            PartieJoueur partieJoueurCote = partie.getPartieJoueurs().get((partie.getPartieJoueurs().indexOf(this) + 1));
+            PartieJoueur partieJoueurCote = partie.getPartieJoueurs().get((partie.getPartieJoueurs().indexOf(this) - 1));
             List<ICarte> cartesTemp = this.cartesCirculantes;
             this.cartesCirculantes = partieJoueurCote.getCartesCirculantes();
             partieJoueurCote.setCartesCirculantes(cartesTemp);
@@ -101,6 +153,11 @@ public class PartieJoueur {
         }
         catch (Exception e)
         {
+            PartieJoueur partieJoueurCote = partie.getPartieJoueurs().get(partie.getPartieJoueurs().size() -1);
+            List<ICarte> cartesTemp = this.cartesCirculantes;
+            this.cartesCirculantes = partieJoueurCote.getCartesCirculantes();
+            partieJoueurCote.setCartesCirculantes(cartesTemp);
+            cartesTemp = null;
             this.etatChoisi = EtatCarteChoisi.PAS_ENCORE_CHOISIE;
         }
     }

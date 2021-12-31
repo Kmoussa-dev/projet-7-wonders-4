@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<?import javafx.scene.image.Image?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.client.vues.EnregistrementJoueur">
+   <children>
+      <ImageView fitHeight="90.0" fitWidth="289.0" layoutX="112.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+             <Image url="@image/7wLogo.png"/>
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

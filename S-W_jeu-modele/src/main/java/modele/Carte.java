@@ -1,6 +1,6 @@
 package modele;
 
-import modele.interfaces.ICarte;
+import interfaces.ICarte;
 
 public class Carte implements ICarte {
     private String nom;

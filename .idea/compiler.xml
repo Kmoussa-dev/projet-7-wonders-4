@@ -14,6 +14,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="clientjfx" target="11" />
+      <module name="demo" target="11" />
       <module name="jeu-modele" target="11" />
     </bytecodeTargetLevel>
   </component>

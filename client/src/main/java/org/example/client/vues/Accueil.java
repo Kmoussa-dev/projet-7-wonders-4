@@ -20,7 +20,7 @@ public class Accueil {
     private Stage stage;
     private Scene scene;
     private Controleur controleur;
-    private IFacadeProxy facade;
+
 
     public void setScene(Scene scene){
         this.scene = scene;
@@ -30,9 +30,9 @@ public class Accueil {
         this.stage = stage;
     }
 
-    public void setFacade(IFacadeProxy facade) {
-        this.facade = facade;
-    }
+    //public void setFacade(IFacadeProxy facade) {
+      ///  this.facade = facade;
+    //}
 
     public static Accueil creer(Stage stage){
 
@@ -41,7 +41,7 @@ public class Accueil {
 
             BorderPane borderPane = fxmlLoader.load();
             Accueil vue = fxmlLoader.getController();
-            vue.setFacade(new FacadeProxy());
+            //vue.setFacade(new FacadeProxy());
             vue.setStage(stage);
             vue.setScene(new Scene(borderPane,600,700));
             return vue;

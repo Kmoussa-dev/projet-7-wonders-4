@@ -17,7 +17,6 @@ public class Menu {
     private Stage stage;
     private Scene scene;
     private Controleur controleur;
-    private IFacadeProxy facade;
 
     @FXML
     Button jouer;
@@ -30,9 +29,6 @@ public class Menu {
         this.stage = stage;
     }
 
-    public void setFacade(IFacadeProxy facade) {
-        this.facade = facade;
-    }
 
     public static Menu creer(Stage stage){
 
@@ -41,7 +37,6 @@ public class Menu {
 
             BorderPane borderPane = fxmlLoader.load();
             Menu vue = fxmlLoader.getController();
-            vue.setFacade(new FacadeProxy());
             vue.setStage(stage);
             vue.setScene(new Scene(borderPane,600,700));
             return vue;
