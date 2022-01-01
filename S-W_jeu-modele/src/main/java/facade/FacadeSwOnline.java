@@ -29,7 +29,6 @@ public class FacadeSwOnline implements IFacadeSwOnline{
 
     public FacadeSwOnline(){
         this.partie = Partie.creer();
-
         this.cartes = LesJeuCartes.loadData();
     }
 

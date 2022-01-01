@@ -94,14 +94,14 @@ public class PartieJoueur {
 
 
     public void ajouterCarteCirculant(ICarte carte){
-        if(this.cartesCirculantes.stream().filter(c -> c.getNom().equals(carte.getNom())).collect(Collectors.toList()).size() == 0)
+        if(this.cartesCirculantes.stream().filter(c -> c.getNom().equals(carte.getNom())).count() == 0)
         {
             this.cartesCirculantes.add(carte);
         }
 
     }
 
-    public void deplacementCarteChoisidDeTempVersConstructCite(List<ICarte> majCarteCirculant, ICarte choixCarte){
+    public void deplacerLaCarteChoisi(List<ICarte> majCarteCirculant, ICarte choixCarte){
         if(this.etatChoisi == EtatCarteChoisi.PAS_ENCORE_CHOISIE){
             this.cartesConstructionCite.add(choixCarte);
             this.cartesCirculantes = majCarteCirculant;
@@ -128,6 +128,7 @@ public class PartieJoueur {
             {
                 this.etatChoisi = EtatCarteChoisi.PAS_ENCORE_CHOISIE;
                 e.printStackTrace();
+
             }
         }
 

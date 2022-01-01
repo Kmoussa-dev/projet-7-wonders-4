@@ -22,8 +22,6 @@ public class Partie {
         this.niveauAge = 1;
         this.etatPartie = "debut";
         this.nbJoueur = 0;
-
-
         this.partieJoueurs = new ArrayList<>();
     }
 
@@ -62,7 +60,7 @@ public class Partie {
     public void deplacer(String pseudo, ICarte carte, List<ICarte> cartes){
         for (PartieJoueur partieJoueur : this.partieJoueurs){
             if(partieJoueur.getJoueur().equals(pseudo)){
-                partieJoueur.deplacementCarteChoisidDeTempVersConstructCite(cartes,carte);
+                partieJoueur.deplacerLaCarteChoisi(cartes,carte);
             }
         }
     }
