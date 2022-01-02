@@ -49,7 +49,6 @@ public class CarteDTO implements ICarte,  Serializable{
         else {
             return false;
         }
-
     }
 
     @Override

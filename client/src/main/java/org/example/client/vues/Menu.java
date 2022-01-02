@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -20,6 +21,11 @@ public class Menu {
 
     @FXML
     Button jouer;
+
+    @FXML
+    ImageView img;
+
+
 
     public void setScene(Scene scene){
         this.scene = scene;

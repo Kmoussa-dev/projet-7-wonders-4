@@ -2,6 +2,7 @@ package modele;
 
 import facade.LesJeuCartes;
 import interfaces.ICarte;
+import packageDTOs.ModeDeplacement;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,10 +58,10 @@ public class Partie {
         return this.partieJoueurs.stream().filter(partieJoueur -> partieJoueur.getJoueur().equals(pseudo)).collect(Collectors.toList()).get(0);
     }
 
-    public void deplacer(String pseudo, ICarte carte, List<ICarte> cartes){
+    public void deplacer(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement){
         for (PartieJoueur partieJoueur : this.partieJoueurs){
             if(partieJoueur.getJoueur().equals(pseudo)){
-                partieJoueur.deplacerLaCarteChoisi(cartes,carte);
+                partieJoueur.deplacerLaCarteChoisi(cartes,carte,modeDeplacement);
             }
         }
     }
@@ -72,9 +73,9 @@ public class Partie {
                 i ++;
             }
         }
-        System.out.println(i);
-        System.out.println( i + " " + this.nbJoueur);
-        System.out.println(i == this.nbJoueur);
+        //System.out.println(i);
+        //System.out.println( i + " " + this.nbJoueur);
+        //System.out.println(i == this.nbJoueur);
         return i != this.nbJoueur;
 
     }

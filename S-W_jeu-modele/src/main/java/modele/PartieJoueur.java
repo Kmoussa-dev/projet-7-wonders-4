@@ -1,6 +1,7 @@
 package modele;
 
 import interfaces.ICarte;
+import packageDTOs.ModeDeplacement;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -101,11 +102,24 @@ public class PartieJoueur {
 
     }
 
-    public void deplacerLaCarteChoisi(List<ICarte> majCarteCirculant, ICarte choixCarte){
+    public void deplacerLaCarteChoisi(List<ICarte> majCarteCirculant, ICarte choixCarte, ModeDeplacement modeDeplacement){
         if(this.etatChoisi == EtatCarteChoisi.PAS_ENCORE_CHOISIE){
-            this.cartesConstructionCite.add(choixCarte);
-            this.cartesCirculantes = majCarteCirculant;
-            this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+            if(modeDeplacement == ModeDeplacement.CONSTRUCTION_CITE){
+                    this.cartesConstructionCite.add(choixCarte);
+                    this.cartesCirculantes = majCarteCirculant;
+                    this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+
+            }
+            else if(modeDeplacement == ModeDeplacement.CONSTRUCTION_MERVAILLE){
+                this.cartesConstructionMerveille.add(choixCarte);
+                this.cartesCirculantes = majCarteCirculant;
+                this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+            }
+            else {
+                this.cartesCirculantes = majCarteCirculant;
+                this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+            }
+
         }
         else {
             throw new RuntimeException();

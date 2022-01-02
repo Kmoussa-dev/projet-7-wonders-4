@@ -4,6 +4,7 @@ import dao.Dao;
 import interfaces.ICarte;
 import modele.*;
 import packageDTOs.CarteDTO;
+import packageDTOs.ModeDeplacement;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,8 +36,8 @@ public class FacadeSwOnline implements IFacadeSwOnline{
 
 
     @Override
-    public void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes) {
-      this.partie.deplacer(pseudo,carte,cartes);
+    public void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) {
+      this.partie.deplacer(pseudo,carte,cartes,modeDeplacement);
     }
 
     @Override
@@ -47,6 +48,11 @@ public class FacadeSwOnline implements IFacadeSwOnline{
     @Override
     public List<ICarte> getLesCartesConstructionCite(String pseudo) {
         return this.partie.getPartieJoueurByPseudo(pseudo).getCartesConstructionCite();
+    }
+
+    @Override
+    public List<ICarte> getLesCartesConstructionMerv(String pseudo){
+        return this.partie.getPartieJoueurByPseudo(pseudo).getCartesConstructionMerveille();
     }
 
     public boolean passerLesCarte(String pseudo){

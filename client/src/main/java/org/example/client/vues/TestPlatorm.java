@@ -17,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.example.client.controleur.Controleur;
 import packageDTOs.CarteDTO;
+import packageDTOs.ModeDeplacement;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,6 +43,9 @@ public class TestPlatorm {
     @FXML
     ListView carteContructCite;
 
+    @FXML
+    ListView carteContructMerv;
+
 
     public void setScene(Scene scene){
         this.scene = scene;
@@ -61,7 +65,7 @@ public class TestPlatorm {
             AnchorPane borderPane = fxmlLoader.load();
             TestPlatorm vue = fxmlLoader.getController();
             vue.setStage(stage);
-            vue.setScene(new Scene(borderPane,660,326));
+            vue.setScene(new Scene(borderPane,682,417));
             return vue;
         } catch (IOException e) {
             throw new RuntimeException("error");
@@ -113,11 +117,9 @@ public class TestPlatorm {
         List<ICarte> cartes = new ArrayList<>();
         CarteDTO nomCarteChoisi =  ((CarteDTO)carteTemp.getSelectionModel().getSelectedItem());
         carteTemp.getItems().remove(index);
-        for (Object o : carteTemp.getItems())
-        {
-            cartes.add(((CarteDTO)o));
-        }
-        controleur.deplacerCarte(pseudo.getText(),nomCarteChoisi, cartes);
+        carteTemp.getItems().forEach(o -> cartes.add(((CarteDTO)o)));
+
+        controleur.deplacerCarte(pseudo.getText(),nomCarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_CITE);
 
         Task<Boolean> deplacement = new Task<Boolean>() {
             @Override
@@ -138,7 +140,37 @@ public class TestPlatorm {
         carteContructCite.setItems(carteDTOS);
     }
 
+    public void chargerContsructionMerv(ObservableList<ICarte> carteDTOS) {
+        carteContructMerv.setItems(carteDTOS);
+    }
+
     public void refresh(ActionEvent actionEvent) {
         this.controleur.refrexh(pseudo.getText());
     }
+
+    public void constructionMerveille(ActionEvent actionEvent) {
+        int index = carteTemp.getSelectionModel().getSelectedIndex();
+        List<ICarte> cartes = new ArrayList<>();
+        CarteDTO CarteChoisi =  ((CarteDTO)carteTemp.getSelectionModel().getSelectedItem());
+        carteTemp.getItems().remove(index);
+        carteTemp.getItems().forEach(o -> cartes.add(((CarteDTO)o)));
+
+        controleur.deplacerCarte(pseudo.getText(),CarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_MERVAILLE);
+
+        Task<Boolean> deplacement = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                while (controleur.authorisationCirculer());
+                return true;
+            }
+        };
+        deplacement.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.notification(pseudo.getText()));
+        Thread thread = new Thread(deplacement);
+        thread.start();
+    }
+
+    public void defausserCarte(ActionEvent actionEvent) {
+    }
+
+
 }

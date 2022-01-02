@@ -45,8 +45,7 @@ public class TestingFacade {
         System.out.println("-------------------------------------------");
         System.out.println("-------------------------------------------");
 
-
-
+        /**
         facadeSwOnline.deplacementCarte("a",new Carte("carte2","rouge",5),null);
         System.out.println(facadeSwOnline.getPartie().getPartieJoueurByPseudo("a").getJoueur() + " va faire une choix d'une carte " + facadeSwOnline.getPartie().getPartieJoueurByPseudo("a").getCartesConstructionCite());
         System.out.println(facadeSwOnline.getPartie().getPartieJoueurByPseudo("a").getCartesCirculantes());
@@ -90,7 +89,7 @@ public class TestingFacade {
         }
 
         System.out.println(facadeSwOnline.authorisationCirculer());
-
+**/
 
 
 

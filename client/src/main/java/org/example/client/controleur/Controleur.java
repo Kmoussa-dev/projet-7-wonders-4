@@ -9,6 +9,7 @@ import org.example.client.modele.IFacadeProxy;
 import org.example.client.vues.Accueil;
 import org.example.client.vues.TestPlatorm;
 import packageDTOs.CarteDTO;
+import packageDTOs.ModeDeplacement;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -43,6 +44,12 @@ public class Controleur {
 
     }
 
+    public void loadCarteConstructionMerv(String pseudo){
+        ObservableList<ICarte> carteDTOS = FXCollections.observableArrayList(this.facade.getLesCartesConstructionMerv(pseudo));
+        this.testPlatorm.chargerContsructionMerv(carteDTOS);
+
+    }
+
     public void run(){
         this.testPlatorm.show();
     }
@@ -65,23 +72,26 @@ public class Controleur {
         return  this.facade.authorisationCirculer();
     }
 
-    public void notification(String pseudo){
+    public synchronized void notification(String pseudo){
         this.facade.notification();
-        this.testPlatorm.activerBuutonDeplacer();
         this.loadCarteTemp(pseudo);
         this.loadCarteConstruction(pseudo);
+        this.loadCarteConstructionMerv(pseudo);
     }
 
 
     public void refrexh(String pseudo){
         this.loadCarteTemp(pseudo);
         this.loadCarteConstruction(pseudo);
+        this.loadCarteConstructionMerv(pseudo);
     }
 
-    public void deplacerCarte(String pseudo, ICarte nomCarte, List<ICarte> cartes){
-        this.facade.deplacementCarte(pseudo,nomCarte, cartes);
+    public void deplacerCarte(String pseudo, ICarte nomCarte, List<ICarte> cartes, ModeDeplacement modeDeplacement){
+        this.facade.deplacementCarte(pseudo,nomCarte, cartes, modeDeplacement);
         this.loadCarteConstruction(pseudo);
         this.loadCarteTemp(pseudo);
+        this.loadCarteConstructionMerv(pseudo);
+
 
     }
 

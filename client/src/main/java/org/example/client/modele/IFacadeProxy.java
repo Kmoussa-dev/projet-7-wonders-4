@@ -2,6 +2,7 @@ package org.example.client.modele;
 
 import interfaces.ICarte;
 import packageDTOs.CarteDTO;
+import packageDTOs.ModeDeplacement;
 
 import java.rmi.RemoteException;
 import java.util.Collection;
@@ -15,11 +16,13 @@ public interface IFacadeProxy {
     void accederUnePartie(String pseudo, String plateau);
 
 
-    void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes);
+    void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement);
 
     Collection<CarteDTO> getLesCartesCirculants(String pseudo);
 
     Collection<CarteDTO> getLesCartesConstructionCite(String pseudo);
+
+    Collection<CarteDTO> getLesCartesConstructionMerv(String pseudo);
 
     void getState();
 

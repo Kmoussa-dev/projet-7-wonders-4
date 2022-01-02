@@ -6,6 +6,7 @@ import interfaces.ICarte;
 import interfaces.IProxySevenWonderOnline;
 import modele.Carte;
 import packageDTOs.CarteDTO;
+import packageDTOs.ModeDeplacement;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -47,8 +48,8 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
 
 
     @Override
-    public void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes) throws RemoteException {
-        this.facade.deplacementCarte(pseudo, carte, cartes);
+    public void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) throws RemoteException {
+        this.facade.deplacementCarte(pseudo, carte, cartes, modeDeplacement);
     }
 
     @Override
@@ -65,6 +66,12 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
         this.facade.getLesCartesConstructionCite(pseudo).forEach(c -> carteDTOCollection.add(new CarteDTO(c.getNom(), c.getCouleur(), c.getValeur())));
         return carteDTOCollection;
 
+    }
+
+    public Collection<CarteDTO> getLesCartesConstructionMerv(String pseudo) throws RemoteException{
+        Collection<CarteDTO> carteDTOCollection = new ArrayList<CarteDTO>();
+        this.facade.getLesCartesConstructionMerv(pseudo).forEach(c -> carteDTOCollection.add(new CarteDTO(c.getNom(), c.getCouleur(), c.getValeur())));
+        return carteDTOCollection;
     }
 
     @Override

@@ -4,6 +4,7 @@ import facade.IFacadeSwOnline;
 import interfaces.ICarte;
 import interfaces.IProxySevenWonderOnline;
 import packageDTOs.CarteDTO;
+import packageDTOs.ModeDeplacement;
 import service.access.RMIServeurConnexion;
 
 import java.rmi.NotBoundException;
@@ -64,9 +65,9 @@ public class FacadeProxy implements IFacadeProxy {
 
 
     @Override
-    public void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes){
+    public void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement){
         try {
-            this.jeuFacade.deplacementCarte(pseudo,carte, cartes);
+            this.jeuFacade.deplacementCarte(pseudo,carte, cartes, modeDeplacement);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -86,6 +87,16 @@ public class FacadeProxy implements IFacadeProxy {
     public Collection<CarteDTO> getLesCartesConstructionCite(String pseudo) {
         try {
             return this.jeuFacade.getLesCartesConstructionCite(pseudo);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Collection<CarteDTO> getLesCartesConstructionMerv(String pseudo) {
+        try {
+            return this.jeuFacade.getLesCartesConstructionMerv(pseudo);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

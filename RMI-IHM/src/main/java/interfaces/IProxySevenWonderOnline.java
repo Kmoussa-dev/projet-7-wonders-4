@@ -1,6 +1,7 @@
 package interfaces;
 
 import packageDTOs.CarteDTO;
+import packageDTOs.ModeDeplacement;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -14,11 +15,13 @@ public interface IProxySevenWonderOnline extends Remote {
     void accederUnePartie(String pseudo, String plateau) throws RemoteException;
 
 
-    void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes)throws RemoteException;
+    void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement)throws RemoteException;
 
     Collection<CarteDTO> getLesCartesCirculants(String pseudo)throws RemoteException;
 
     Collection<CarteDTO> getLesCartesConstructionCite(String pseudo)throws RemoteException;
+
+    Collection<CarteDTO> getLesCartesConstructionMerv(String pseudo) throws RemoteException;
 
     void getState()throws RemoteException;
 
