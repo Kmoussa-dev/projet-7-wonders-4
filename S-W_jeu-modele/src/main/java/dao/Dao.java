@@ -4,6 +4,7 @@ import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Updates;
+import exceptions.partiTermineException;
 import facade.LesJeuCartes;
 import interfaces.ICarte;
 import modele.Carte;
@@ -22,8 +23,6 @@ public class Dao {
     private static final MongoClient mongoClient = MongoClients.create("mongodb://172.17.0.2:27017");
     private static CodecRegistry pojoCodeRegistry = CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
     private static final MongoDatabase db = mongoClient.getDatabase("sevenwonders").withCodecRegistry(pojoCodeRegistry);
-
-    private List<ICarte> lesCarteAgeI = LesJeuCartes.loadData();
 
     public static Collection<Carte> getCartes(){
         MongoCollection<Carte> carteMongoCollection = db.getCollection("cartes", Carte.class);
@@ -51,17 +50,29 @@ public class Dao {
     public static void distributionCarteDebut(String id){
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Partie partie = partieMongoCollection.find(Filters.eq("_id",id)).first();
-        int i = 0;
-        for (PartieJoueur partieJoueur : partie.getPartieJoueurs()){
-            partieJoueur.setCartesCirculantes(LesJeuCartes.distributionAGE_I(i,partie.getPartieJoueurs().size()));
-            i++;
+        for(int i = 0; i < partie.getPartieJoueurs().size(); i++){
+            partie.getPartieJoueurs().get(i).setCartesCirculantes(LesJeuCartes.distributionAGE_I(i,partie.getPartieJoueurs().size()));
         }
+        partieMongoCollection.updateOne(Filters.eq("_id", id), Updates.combine(Updates.set("partieJoueurs", partie.getPartieJoueurs())));
     }
 
 
     public static Carte getCartesByName(String nom){
         MongoCollection<Carte> carteMongoCollection = db.getCollection("cartes",Carte.class);
         return carteMongoCollection.find(Filters.eq("nom",nom)).first();
+    }
+
+    public static  void notification(String id) throws partiTermineException {
+        MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
+        Partie partie = partieMongoCollection.find(Filters.eq("_id",id)).first();
+        partie.notifierALaPartiJoueur();
+        partieMongoCollection.updateOne(Filters.eq("_id", id), Updates.combine(Updates.set("partieJoueurs", partie.getPartieJoueurs())));
+    }
+
+    public static String getEtatPartie(String id){
+        MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
+        Partie partie = partieMongoCollection.find(Filters.eq("_id",id)).first();
+        return partie.getEtatPartie().toString();
     }
 
 

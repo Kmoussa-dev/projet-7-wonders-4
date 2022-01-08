@@ -13,7 +13,6 @@ public class Partie {
     private String _id;
     private EtatPartie etatPartie;
     private int nbJoueur;
-
     private List <PartieJoueur> partieJoueurs ;
 
     public Partie(){
@@ -54,6 +53,14 @@ public class Partie {
         this.partieJoueurs = partieJoueurs;
     }
 
+    public int getNbJoueur() {
+        return nbJoueur;
+    }
+
+    public void setNbJoueur(int nbJoueur) {
+        this.nbJoueur = nbJoueur;
+    }
+
     public PartieJoueur getPartieJoueurByPseudo(String pseudo){
         return this.partieJoueurs.stream().filter(partieJoueur -> partieJoueur.getJoueur().equals(pseudo)).collect(Collectors.toList()).get(0);
     }
@@ -73,9 +80,6 @@ public class Partie {
                 i ++;
             }
         }
-        //System.out.println(i);
-        //System.out.println( i + " " + this.nbJoueur);
-        //System.out.println(i == this.nbJoueur);
         return i != this.nbJoueur;
 
     }
@@ -93,9 +97,9 @@ public class Partie {
     }
 
     public void notifierALaPartiJoueur() throws partiTermineException {
-        /**if( 0 == this.partieJoueurs.stream().filter(pj-> pj.getCartesCirculantes().size() != 0 && pj.getAge() == 3).count()){
-            throw new partiTermineException();
-        }**/
+        if(this.nbJoueur  == (this.partieJoueurs.stream().filter(pj-> pj.getCartesCirculantes().size() == 0 && pj.getAge() == 3).count())){
+            this.etatPartie = EtatPartie.TERMINE;
+        }
     for (PartieJoueur partieJoueur : this.partieJoueurs){
         partieJoueur.updateCarteTemp(this);
 }

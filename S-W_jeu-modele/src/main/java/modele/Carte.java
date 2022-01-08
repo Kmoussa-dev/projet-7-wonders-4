@@ -8,18 +8,8 @@ public class Carte implements ICarte {
     private String nom;
     private String couleur;
     private double valeur;
-
-    @Override
-    public Effectif getEffectif() {
-        return effectif;
-    }
-
-    @Override
-    public void setEffectif(Effectif effectif) {
-        this.effectif = effectif;
-    }
-
     private Effectif effectif;
+
 
     public Carte() {}
 
@@ -52,6 +42,16 @@ public class Carte implements ICarte {
 
     public void setValeur(double valeur) {
         this.valeur = valeur;
+    }
+
+    @Override
+    public Effectif getEffectif() {
+        return effectif;
+    }
+
+    @Override
+    public void setEffectif(Effectif effectif) {
+        this.effectif = effectif;
     }
 
     @Override

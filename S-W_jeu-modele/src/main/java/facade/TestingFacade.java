@@ -7,6 +7,7 @@ import com.mongodb.client.model.Updates;
 import dao.Dao;
 import interfaces.ICarte;
 import modele.Carte;
+import modele.EtatPartie;
 import modele.Partie;
 import modele.PartieJoueur;
 import org.bson.Document;
@@ -23,8 +24,6 @@ import static com.mongodb.client.model.Projections.include;
 
 public class TestingFacade {
     public static void main(String[] args) {
-        System.out.println(LesJeuCartes.distributionAGE_II(0,3));
-        System.out.println(LesJeuCartes.distributionAGE_II(1,3));
-        System.out.println(LesJeuCartes.distributionAGE_II(2,3));
+        System.out.println((EtatPartie.DEBUT.toString() == "DEBUT"));
     }
 }

@@ -105,7 +105,7 @@ public class PartieJoueur {
     }
 
     public void deplacerLaCarteChoisi(List<ICarte> majCarteCirculant, ICarte choixCarte, ModeDeplacement modeDeplacement, Partie partie){
-        PartieJoueur partieJoueurGauche = null;
+        /*PartieJoueur partieJoueurGauche = null;
         PartieJoueur partieJoueurDroite = null;
         try {
             partieJoueurGauche = partie.getPartieJoueurs().get((partie.getPartieJoueurs().indexOf(this) - 1));
@@ -119,11 +119,11 @@ public class PartieJoueur {
         }
         catch (Exception e){
             partieJoueurGauche = partie.getPartieJoueurs().get(partie.getPartieJoueurs().size() -1 );
-        }
+        }*/
 
         if(this.etatChoisi == EtatCarteChoisi.PAS_ENCORE_CHOISIE){
+            if(majCarteCirculant.size() == 1){majCarteCirculant.clear();}
             if(modeDeplacement == ModeDeplacement.CONSTRUCTION_CITE){
-                //les contraintes
                     this.cartesConstructionCite.add(choixCarte);
                     this.cartesCirculantes = majCarteCirculant;
                     this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
