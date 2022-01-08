@@ -35,5 +35,7 @@ public interface IFacadeProxy {
 
     boolean passerCarte(String pseudo);
 
+    void setNouvellePartie(String text, String ticket, int effectif);
+
 
 }

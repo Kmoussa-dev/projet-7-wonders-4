@@ -1,5 +1,6 @@
 package proxy;
 
+import exceptions.partiTermineException;
 import facade.FacadeSwOnline;
 import facade.IFacadeSwOnline;
 import interfaces.ICarte;
@@ -75,7 +76,7 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
     }
 
     @Override
-    public void getState() throws RemoteException {
+    public void getState() throws RemoteException, partiTermineException {
         this.facade.getState();
     }
 
@@ -95,11 +96,14 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
     }
 
     @Override
-    public synchronized void notification() throws RemoteException {
+    public void notification() throws RemoteException, partiTermineException {
         this.facade.notification();
     }
 
-
+    @Override
+    public void setNouvellePartie(String text, String ticket, int effectif) throws RemoteException{
+        this.facade.setNouvellePartie(text, ticket, effectif);
+    }
 
 
 }

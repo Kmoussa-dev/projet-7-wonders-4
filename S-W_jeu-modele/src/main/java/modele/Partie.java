@@ -1,29 +1,29 @@
 package modele;
 
-import facade.LesJeuCartes;
+import exceptions.partiTermineException;
 import interfaces.ICarte;
 import packageDTOs.ModeDeplacement;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Partie {
     private  static  Partie partie = new Partie();
     private String _id;
-    private String etatPartie;
-    private int niveauAge;
+    private EtatPartie etatPartie;
     private int nbJoueur;
 
     private List <PartieJoueur> partieJoueurs ;
 
     public Partie(){
-        this._id = "test";
-        this.niveauAge = 1;
-        this.etatPartie = "debut";
-        this.nbJoueur = 0;
         this.partieJoueurs = new ArrayList<>();
+    }
+
+
+    public Partie(String _id, int nbJoueur){
+        super();
+        this.etatPartie = EtatPartie.DEBUT;
     }
 
     public static Partie creer(){
@@ -38,11 +38,11 @@ public class Partie {
         this._id = _id;
     }
 
-    public String getEtatPartie() {
+    public EtatPartie getEtatPartie() {
         return etatPartie;
     }
 
-    public void setEtatPartie(String etatPartie) {
+    public void setEtatPartie(EtatPartie etatPartie) {
         this.etatPartie = etatPartie;
     }
 
@@ -61,7 +61,7 @@ public class Partie {
     public void deplacer(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement){
         for (PartieJoueur partieJoueur : this.partieJoueurs){
             if(partieJoueur.getJoueur().equals(pseudo)){
-                partieJoueur.deplacerLaCarteChoisi(cartes,carte,modeDeplacement);
+                partieJoueur.deplacerLaCarteChoisi(cartes,carte,modeDeplacement, this);
             }
         }
     }
@@ -86,11 +86,16 @@ public class Partie {
 
     }
 
+
+
     public void supprimerPartieJoueur(PartieJoueur partieJoueur){
         this.partieJoueurs.remove(partieJoueur);
     }
 
-    public void notifierALaPartiJoueur(){
+    public void notifierALaPartiJoueur() throws partiTermineException {
+        /**if( 0 == this.partieJoueurs.stream().filter(pj-> pj.getCartesCirculantes().size() != 0 && pj.getAge() == 3).count()){
+            throw new partiTermineException();
+        }**/
     for (PartieJoueur partieJoueur : this.partieJoueurs){
         partieJoueur.updateCarteTemp(this);
 }

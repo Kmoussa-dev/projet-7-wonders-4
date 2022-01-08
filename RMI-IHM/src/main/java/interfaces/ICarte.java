@@ -1,16 +1,22 @@
 package interfaces;
 
+import packageDTOs.Effectif;
+
 public interface ICarte {
 
-       String getNom();
+   String getNom();
 
-        void setNom(String nom);
+   void setNom(String nom);
 
-        String getCouleur();
+   String getCouleur();
 
-        void setCouleur(String couleur) ;
+   void setCouleur(String couleur) ;
 
-        double getValeur();
+   double getValeur();
 
-        void setValeur(double valeur);
+   void setValeur(double valeur);
+
+   Effectif getEffectif();
+
+   void setEffectif(Effectif effectif);
 }

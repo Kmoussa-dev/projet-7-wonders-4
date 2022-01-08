@@ -1,18 +1,33 @@
 package modele;
 
 import interfaces.ICarte;
+import packageDTOs.Effectif;
 
 public class Carte implements ICarte {
+
     private String nom;
     private String couleur;
     private double valeur;
 
+    @Override
+    public Effectif getEffectif() {
+        return effectif;
+    }
+
+    @Override
+    public void setEffectif(Effectif effectif) {
+        this.effectif = effectif;
+    }
+
+    private Effectif effectif;
+
     public Carte() {}
 
-    public Carte(String nom, String couleur, double valeur) {
+    public Carte(String nom, String couleur, double valeur, Effectif effectif) {
         this.nom = nom;
         this.couleur = couleur;
         this.valeur = valeur;
+        this.effectif = effectif;
     }
 
     public String getNom() {
@@ -39,11 +54,13 @@ public class Carte implements ICarte {
         this.valeur = valeur;
     }
 
+    @Override
     public String toString() {
         return "Carte{" +
                 "nom='" + nom + '\'' +
                 ", couleur='" + couleur + '\'' +
                 ", valeur=" + valeur +
+                ", effectif=" + effectif +
                 '}';
     }
 }

@@ -1,10 +1,12 @@
 package facade;
 
 import dao.Dao;
+import exceptions.partiTermineException;
 import interfaces.ICarte;
 import modele.*;
 import packageDTOs.CarteDTO;
 import packageDTOs.ModeDeplacement;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,9 +30,11 @@ public class FacadeSwOnline implements IFacadeSwOnline{
 
     private Partie partie;
 
+    private Partie partie1;
+
     public FacadeSwOnline(){
         this.partie = Partie.creer();
-        this.cartes = LesJeuCartes.loadData();
+        //this.cartes = LesJeuCartes.loadData();
     }
 
 
@@ -61,34 +65,15 @@ public class FacadeSwOnline implements IFacadeSwOnline{
 
 
     @Override
-    public void getState() {
+    public void getState() throws partiTermineException {
         this.partie.notifierALaPartiJoueur();
     }
 
     @Override
     public void distribution(String pseudo) {
-
-        if(this.partie.getPartieJoueurs().size() == 4) {
-            switch (pseudo){
-                case "a":
-                    this.partie.getPartieJoueurByPseudo(pseudo).setCartesCirculantes(this.cartes.subList(0,7));
-                    break;
-                case "b":
-                    this.partie.getPartieJoueurByPseudo(pseudo).setCartesCirculantes(this.cartes.subList(7,14));
-                    break;
-                case "c":
-                    this.partie.getPartieJoueurByPseudo(pseudo).setCartesCirculantes(this.cartes.subList(14,21));
-                    break;
-                case "d":
-                    this.partie.getPartieJoueurByPseudo(pseudo).setCartesCirculantes(this.cartes.subList(21,28));
-                    break;
-            }
-
-
-
-
+        for (int i = 0; i < this.partie.getPartieJoueurs().size(); i ++){
+            this.partie.getPartieJoueurs().get(i).setCartesCirculantes(LesJeuCartes.distributionAGE_I(i,this.partie.getPartieJoueurs().size()));
         }
-
     }
 
     @Override
@@ -119,7 +104,7 @@ public class FacadeSwOnline implements IFacadeSwOnline{
     }
 
     @Override
-    public void notification(){
+    public void notification() throws partiTermineException {
         this.partie.notifierALaPartiJoueur();
     }
 
@@ -128,7 +113,12 @@ public class FacadeSwOnline implements IFacadeSwOnline{
         return this.partie.getPartieJoueurByPseudo(pseudo);
     }
 
-    public Partie getPartie() {
-        return partie;
+    /*public void setPartieById(String id) {
+        this.partie = Dao.getPartieById(id);
+    }*/
+
+    @Override
+    public void setNouvellePartie(String text, String ticket, int effectif) {
+        Dao.CreerUnePartie(text,ticket,effectif);
     }
 }

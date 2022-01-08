@@ -8,12 +8,15 @@ public class CarteDTO implements ICarte,  Serializable{
     private String nom;
     private String couleur;
     private double valeur;
+    private Effectif effectif;
 
     public CarteDTO(String nom, String couleur, double valeur) {
         this.nom = nom;
         this.couleur = couleur;
         this.valeur = valeur;
+        this.effectif = Effectif.TROIS_PLUS;
     }
+
 
     public String getNom() {
         return nom;
@@ -37,6 +40,16 @@ public class CarteDTO implements ICarte,  Serializable{
 
     public void setValeur(double valeur) {
         this.valeur = valeur;
+    }
+
+    @Override
+    public Effectif getEffectif() {
+        return this.effectif;
+    }
+
+    @Override
+    public void setEffectif(Effectif effectif) {
+        this.effectif = effectif;
     }
 
 

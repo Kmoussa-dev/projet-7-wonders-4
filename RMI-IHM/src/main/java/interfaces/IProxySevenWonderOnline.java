@@ -1,5 +1,6 @@
 package interfaces;
 
+import exceptions.partiTermineException;
 import packageDTOs.CarteDTO;
 import packageDTOs.ModeDeplacement;
 
@@ -23,7 +24,7 @@ public interface IProxySevenWonderOnline extends Remote {
 
     Collection<CarteDTO> getLesCartesConstructionMerv(String pseudo) throws RemoteException;
 
-    void getState()throws RemoteException;
+    void getState() throws RemoteException, partiTermineException;
 
     void distribution(String pseudo)throws RemoteException;
 
@@ -31,10 +32,10 @@ public interface IProxySevenWonderOnline extends Remote {
 
     Boolean authorisationCirculer()throws RemoteException;
 
-    void notification()throws RemoteException;
+    void notification() throws RemoteException, partiTermineException;
 
     boolean passerCarte(String pseudo) throws RemoteException;
 
 
-
+    void setNouvellePartie(String text, String ticket, int effectif) throws RemoteException;
 }

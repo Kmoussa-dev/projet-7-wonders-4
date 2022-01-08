@@ -3,6 +3,7 @@ package org.example.client.controleur;
 import interfaces.ICarte;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.client.modele.FacadeProxy;
 import org.example.client.modele.IFacadeProxy;
@@ -11,7 +12,6 @@ import org.example.client.vues.TestPlatorm;
 import packageDTOs.CarteDTO;
 import packageDTOs.ModeDeplacement;
 
-import java.rmi.RemoteException;
 import java.util.List;
 
 public class Controleur {
@@ -29,7 +29,7 @@ public class Controleur {
 
     public void loadData(){
         ObservableList<CarteDTO> carteDTOS = FXCollections.observableArrayList(this.facade.getCartes());
-        this.accueil.charger(carteDTOS);
+        //this.accueil.charger(carteDTOS);
     }
 
     public void loadCarteTemp(String pseudo){
@@ -54,7 +54,7 @@ public class Controleur {
         this.testPlatorm.show();
     }
 
-    public void accederAuJeu(String text) {
+    public void accederAuJeu(String text, String code) {
         this.facade.accederUnePartie(text,"blalbla");
         this.testPlatorm.loadCardAge1();
     }
@@ -72,7 +72,7 @@ public class Controleur {
         return  this.facade.authorisationCirculer();
     }
 
-    public synchronized void notification(String pseudo){
+    public void notification(String pseudo){
         this.facade.notification();
         this.loadCarteTemp(pseudo);
         this.loadCarteConstruction(pseudo);
@@ -97,5 +97,10 @@ public class Controleur {
 
     public boolean passerCarte(String pseudo){
         return this.facade.passerCarte(pseudo);
+    }
+
+
+    public void setNouvellePartie(String pseudo, String ticket, int effectif) {
+        this.facade.setNouvellePartie(pseudo, ticket, effectif);
     }
 }

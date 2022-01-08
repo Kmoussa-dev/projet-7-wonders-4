@@ -3,4 +3,5 @@ module RMI.IHM {
     exports packageDTOs;
     exports interfaces;
     exports service.access;
+    exports exceptions;
 }

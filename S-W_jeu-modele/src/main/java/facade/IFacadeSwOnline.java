@@ -1,5 +1,6 @@
 package facade;
 
+import exceptions.partiTermineException;
 import interfaces.ICarte;
 import modele.Carte;
 import modele.PartieJoueur;
@@ -24,7 +25,7 @@ public interface IFacadeSwOnline {
 
     List<ICarte> getLesCartesConstructionMerv(String pseudo);
 
-    void getState();
+    void getState() throws partiTermineException;
 
     void distribution(String pseudo);
 
@@ -32,12 +33,11 @@ public interface IFacadeSwOnline {
 
     Boolean authorisationCirculer();
 
-    void notification();
+    void notification() throws partiTermineException;
 
     PartieJoueur getPartieJoueurByPseudo(String pseudo);
     public boolean passerLesCarte(String pseudo);
 
 
-
-
+    void setNouvellePartie(String text, String ticket, int effectif);
 }

@@ -1,5 +1,6 @@
 package org.example.client.modele;
 
+import exceptions.partiTermineException;
 import facade.IFacadeSwOnline;
 import interfaces.ICarte;
 import interfaces.IProxySevenWonderOnline;
@@ -109,6 +110,8 @@ public class FacadeProxy implements IFacadeProxy {
             this.jeuFacade.getState();
         } catch (RemoteException e) {
             e.printStackTrace();
+        } catch (partiTermineException e) {
+            e.printStackTrace();
         }
     }
 
@@ -145,7 +148,7 @@ public class FacadeProxy implements IFacadeProxy {
     public void notification() {
         try {
             this.jeuFacade.notification();
-        } catch (RemoteException e) {
+        } catch (RemoteException | partiTermineException e) {
             e.printStackTrace();
         }
     }
@@ -160,5 +163,12 @@ public class FacadeProxy implements IFacadeProxy {
         return false;
     }
 
+    public void setNouvellePartie(String text, String ticket, int effectif){
+        try {
+            this.jeuFacade.setNouvellePartie(text, ticket, effectif);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

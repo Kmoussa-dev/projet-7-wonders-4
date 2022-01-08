@@ -88,7 +88,7 @@ public class TestPlatorm {
 
 
     public void accederJeu(ActionEvent actionEvent) {
-        this.controleur.accederAuJeu(pseudo.getText());
+        this.controleur.accederAuJeu(pseudo.getText(),"");
         accer.setDisable(true);
     }
 
