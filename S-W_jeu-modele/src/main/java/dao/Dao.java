@@ -30,6 +30,7 @@ public class Dao {
         Collection<Carte> carteCollection = new ArrayList<>();
         carteMongoCollection.find().forEach(c->carteCollection.add(c));
         return carteCollection;
+
     }
 
     public static void ajouterJeueurALaPartie(String id, String pseudo){
