@@ -24,6 +24,6 @@ import static com.mongodb.client.model.Projections.include;
 
 public class TestingFacade {
     public static void main(String[] args) {
-        System.out.println((EtatPartie.DEBUT.toString() == "DEBUT"));
+        System.out.println(Dao.getCartesByName("militaire"));
     }
 }

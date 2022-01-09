@@ -1,5 +1,7 @@
 package facade;
 
+import exceptions.CarteDejaException;
+import exceptions.CarteInexistantException;
 import exceptions.partiTermineException;
 import interfaces.ICarte;
 import modele.Carte;
@@ -17,7 +19,7 @@ public interface IFacadeSwOnline {
 
     void accederUnePartie(String pseudo, String plateau);
 
-    void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement);
+    void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException;
 
     List<ICarte> getLesCartesCirculants(String pseudo);
 
@@ -25,19 +27,14 @@ public interface IFacadeSwOnline {
 
     List<ICarte> getLesCartesConstructionMerv(String pseudo);
 
-    void getState() throws partiTermineException;
 
     void distribution(String pseudo);
 
-    Boolean partieCommence();
+    boolean partieCommence();
 
-    Boolean authorisationCirculer();
+    boolean authorisationCirculer();
 
     void notification() throws partiTermineException;
-
-    PartieJoueur getPartieJoueurByPseudo(String pseudo);
-    public boolean passerLesCarte(String pseudo);
-
 
     void setNouvellePartie(String text, String ticket, int effectif);
 }

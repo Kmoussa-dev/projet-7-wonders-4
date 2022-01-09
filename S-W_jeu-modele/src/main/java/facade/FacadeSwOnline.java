@@ -1,16 +1,15 @@
 package facade;
 
 import dao.Dao;
-import exceptions.partiTermineException;
+import exceptions.CarteDejaException;
+import exceptions.CarteInexistantException;
 import interfaces.ICarte;
 import modele.*;
-import packageDTOs.CarteDTO;
 import packageDTOs.ModeDeplacement;
 
 
-import java.util.ArrayList;
+
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class FacadeSwOnline implements IFacadeSwOnline{
@@ -24,13 +23,11 @@ public class FacadeSwOnline implements IFacadeSwOnline{
         return facadeSwOnline;
     }
 
-    List<ICarte> cartes;
+
 
 
 
     private Partie partie;
-
-    private Partie partie1;
 
     public FacadeSwOnline(){
         this.partie = Partie.creer();
@@ -40,7 +37,7 @@ public class FacadeSwOnline implements IFacadeSwOnline{
 
 
     @Override
-    public void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) {
+    public void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException {
       this.partie.deplacer(pseudo,carte,cartes,modeDeplacement);
     }
 
@@ -59,16 +56,6 @@ public class FacadeSwOnline implements IFacadeSwOnline{
         return this.partie.getPartieJoueurByPseudo(pseudo).getCartesConstructionMerveille();
     }
 
-    public boolean passerLesCarte(String pseudo){
-        return this.partie.getPartieJoueurByPseudo(pseudo).passerLesCartes();
-    }
-
-
-    @Override
-    public void getState() throws partiTermineException {
-        this.partie.notifierALaPartiJoueur();
-    }
-
     @Override
     public void distribution(String pseudo) {
         for (int i = 0; i < this.partie.getPartieJoueurs().size(); i ++){
@@ -77,7 +64,7 @@ public class FacadeSwOnline implements IFacadeSwOnline{
     }
 
     @Override
-    public Boolean partieCommence() {
+    public boolean partieCommence() {
         return this.partie.partieCommence();
     }
 
@@ -99,23 +86,16 @@ public class FacadeSwOnline implements IFacadeSwOnline{
     }
 
     @Override
-    public Boolean authorisationCirculer(){
+    public boolean authorisationCirculer(){
         return this.partie.authorisationCarteCirculant();
     }
 
     @Override
-    public void notification() throws partiTermineException {
+    public void notification() {
         this.partie.notifierALaPartiJoueur();
     }
 
-    @Override
-    public PartieJoueur getPartieJoueurByPseudo(String pseudo) {
-        return this.partie.getPartieJoueurByPseudo(pseudo);
-    }
 
-    /*public void setPartieById(String id) {
-        this.partie = Dao.getPartieById(id);
-    }*/
 
     @Override
     public void setNouvellePartie(String text, String ticket, int effectif) {

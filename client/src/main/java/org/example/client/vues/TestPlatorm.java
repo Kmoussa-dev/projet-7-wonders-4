@@ -112,7 +112,7 @@ public class TestPlatorm {
     }
 
     public void choixUneCarte(ActionEvent actionEvent) {
-        //deplaceCarte.setDisable(true);
+        //if(controleur.getEtatParti() != "TERMINE" && controleur.getEtatParti() != "SUSPENDU"){}
         int index = carteTemp.getSelectionModel().getSelectedIndex();
         List<ICarte> cartes = new ArrayList<>();
         CarteDTO nomCarteChoisi =  ((CarteDTO)carteTemp.getSelectionModel().getSelectedItem());

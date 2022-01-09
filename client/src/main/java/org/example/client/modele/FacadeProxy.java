@@ -1,5 +1,7 @@
 package org.example.client.modele;
 
+import exceptions.CarteDejaException;
+import exceptions.CarteInexistantException;
 import exceptions.partiTermineException;
 import facade.IFacadeSwOnline;
 import interfaces.ICarte;
@@ -66,7 +68,7 @@ public class FacadeProxy implements IFacadeProxy {
 
 
     @Override
-    public void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement){
+    public void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException {
         try {
             this.jeuFacade.deplacementCarte(pseudo,carte, cartes, modeDeplacement);
         } catch (RemoteException e) {
@@ -104,16 +106,7 @@ public class FacadeProxy implements IFacadeProxy {
         return null;
     }
 
-    @Override
-    public void getState() {
-        try {
-            this.jeuFacade.getState();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (partiTermineException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     @Override
     public void distribution(String pseudo) {
@@ -153,15 +146,7 @@ public class FacadeProxy implements IFacadeProxy {
         }
     }
 
-    public  boolean passerCarte(String pseudo){
-        try {
-            return this.jeuFacade.passerCarte(pseudo);
-        }
-        catch (RemoteException e){
-            e.printStackTrace();
-        }
-        return false;
-    }
+
 
     public void setNouvellePartie(String text, String ticket, int effectif){
         try {

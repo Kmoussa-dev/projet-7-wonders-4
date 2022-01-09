@@ -1,5 +1,7 @@
 package org.example.client.modele;
 
+import exceptions.CarteDejaException;
+import exceptions.CarteInexistantException;
 import interfaces.ICarte;
 import packageDTOs.CarteDTO;
 import packageDTOs.ModeDeplacement;
@@ -16,7 +18,7 @@ public interface IFacadeProxy {
     void accederUnePartie(String pseudo, String plateau);
 
 
-    void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement);
+    void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException;
 
     Collection<CarteDTO> getLesCartesCirculants(String pseudo);
 
@@ -24,16 +26,14 @@ public interface IFacadeProxy {
 
     Collection<CarteDTO> getLesCartesConstructionMerv(String pseudo);
 
-    void getState();
-
     void distribution(String pseudo);
-    public Boolean partieCommence();
+
+    Boolean partieCommence();
 
     Boolean authorisationCirculer();
 
     void notification();
 
-    boolean passerCarte(String pseudo);
 
     void setNouvellePartie(String text, String ticket, int effectif);
 

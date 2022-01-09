@@ -54,6 +54,18 @@ public class Carte implements ICarte {
         this.effectif = effectif;
     }
 
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof ICarte)
+        {
+            return this.nom.equals(((ICarte) obj).getNom());
+        }
+        else {
+            return false;
+        }
+    }
+
     @Override
     public String toString() {
         return "Carte{" +

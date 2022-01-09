@@ -1,5 +1,7 @@
 package modele;
 
+import exceptions.CarteDejaException;
+import exceptions.CarteInexistantException;
 import exceptions.partiTermineException;
 import interfaces.ICarte;
 import packageDTOs.ModeDeplacement;
@@ -17,12 +19,13 @@ public class Partie {
 
     public Partie(){
         this.partieJoueurs = new ArrayList<>();
+        this.etatPartie = EtatPartie.DEBUT;
     }
 
 
     public Partie(String _id, int nbJoueur){
         super();
-        this.etatPartie = EtatPartie.DEBUT;
+
     }
 
     public static Partie creer(){
@@ -54,7 +57,7 @@ public class Partie {
     }
 
     public int getNbJoueur() {
-        return nbJoueur;
+        return this.nbJoueur;
     }
 
     public void setNbJoueur(int nbJoueur) {
@@ -65,11 +68,14 @@ public class Partie {
         return this.partieJoueurs.stream().filter(partieJoueur -> partieJoueur.getJoueur().equals(pseudo)).collect(Collectors.toList()).get(0);
     }
 
-    public void deplacer(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement){
+    public void deplacer(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException {
         for (PartieJoueur partieJoueur : this.partieJoueurs){
             if(partieJoueur.getJoueur().equals(pseudo)){
                 partieJoueur.deplacerLaCarteChoisi(cartes,carte,modeDeplacement, this);
             }
+        }
+        if(this.etatPartie.equals(EtatPartie.DEBUT)){
+            this.etatPartie = EtatPartie.EN_COURS;
         }
     }
 
@@ -80,29 +86,28 @@ public class Partie {
                 i ++;
             }
         }
-        return i != this.nbJoueur;
+        return i != this.partieJoueurs.size();
 
     }
 
     public void ajouterPartieJoueur(PartieJoueur partieJoueur){
         this.partieJoueurs.add(partieJoueur);
-        this.nbJoueur ++;
 
     }
 
 
-
-    public void supprimerPartieJoueur(PartieJoueur partieJoueur){
-        this.partieJoueurs.remove(partieJoueur);
-    }
-
-    public void notifierALaPartiJoueur() throws partiTermineException {
-        if(this.nbJoueur  == (this.partieJoueurs.stream().filter(pj-> pj.getCartesCirculantes().size() == 0 && pj.getAge() == 3).count())){
+    public void notifierALaPartiJoueur() {
+        if(this.partieJoueurs.size()  == (this.partieJoueurs.stream().filter(pj-> pj.getCartesCirculantes().size() == 0 && pj.getAge() == 3).count())){
             this.etatPartie = EtatPartie.TERMINE;
         }
-    for (PartieJoueur partieJoueur : this.partieJoueurs){
-        partieJoueur.updateCarteTemp(this);
-}
+        for (PartieJoueur partieJoueur : this.partieJoueurs){
+            partieJoueur.updateCarteTemp(this);
+        }
+        System.out.println("---------------------------------------------------------------");
+        partieJoueurs.forEach(System.out::println);
+        System.out.println("---------------------------------------------------------------");
+        System.out.println(this);
+        System.out.println("---------------------------------------------------------------");
 
 
     }

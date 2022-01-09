@@ -1,8 +1,12 @@
 package org.example.client.controleur;
 
+import exceptions.CarteDejaException;
+import exceptions.CarteInexistantException;
 import interfaces.ICarte;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.client.modele.FacadeProxy;
@@ -87,18 +91,23 @@ public class Controleur {
     }
 
     public void deplacerCarte(String pseudo, ICarte nomCarte, List<ICarte> cartes, ModeDeplacement modeDeplacement){
-        this.facade.deplacementCarte(pseudo,nomCarte, cartes, modeDeplacement);
+        try {
+            this.facade.deplacementCarte(pseudo,nomCarte, cartes, modeDeplacement);
+        } catch (CarteInexistantException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Cette carte n'existe pas dans le seuveur. Veuillez cliquer le bouton actualiser", ButtonType.OK);
+            alert.setTitle("Carte inexistant");
+            alert.showAndWait();
+        } catch (CarteDejaException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Vous savez déjà choisi une carte, attendez pour le prochain tour.", ButtonType.OK);
+            alert.setTitle("Carte déjà choisi");
+            alert.showAndWait();
+        }
         this.loadCarteConstruction(pseudo);
         this.loadCarteTemp(pseudo);
         this.loadCarteConstructionMerv(pseudo);
 
 
     }
-
-    public boolean passerCarte(String pseudo){
-        return this.facade.passerCarte(pseudo);
-    }
-
 
     public void setNouvellePartie(String pseudo, String ticket, int effectif) {
         this.facade.setNouvellePartie(pseudo, ticket, effectif);

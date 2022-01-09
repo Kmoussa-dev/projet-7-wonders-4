@@ -120,13 +120,13 @@ public class LesJeuCartes {
         cartes.add(new Carte("carteIII_20","rouge",5,Effectif.TROIS_PLUS));
         cartes.add(new Carte("carteIII_21","rouge",5,Effectif.TROIS_PLUS));
 
-        cartes.add(new Carte("carteII_22","rouge",5,Effectif.QUATRE_PLUS));
-        cartes.add(new Carte("carteII_23","rouge",5,Effectif.QUATRE_PLUS));
-        cartes.add(new Carte("carteII_24","rouge",5,Effectif.QUATRE_PLUS));
-        cartes.add(new Carte("carteII_25","rouge",5,Effectif.QUATRE_PLUS));
-        cartes.add(new Carte("carteII_26","rouge",5,Effectif.QUATRE_PLUS));
-        cartes.add(new Carte("carteII_27","rouge",5,Effectif.QUATRE_PLUS));
-        cartes.add(new Carte("carteII_28","rouge",5,Effectif.QUATRE_PLUS));
+        cartes.add(new Carte("carteIII_22","rouge",5,Effectif.QUATRE_PLUS));
+        cartes.add(new Carte("carteIII_23","rouge",5,Effectif.QUATRE_PLUS));
+        cartes.add(new Carte("carteIII_24","rouge",5,Effectif.QUATRE_PLUS));
+        cartes.add(new Carte("carteIII_25","rouge",5,Effectif.QUATRE_PLUS));
+        cartes.add(new Carte("carteIII_26","rouge",5,Effectif.QUATRE_PLUS));
+        cartes.add(new Carte("carteIII_27","rouge",5,Effectif.QUATRE_PLUS));
+        cartes.add(new Carte("carteIII_28","rouge",5,Effectif.QUATRE_PLUS));
         //Collections.shuffle(cartes);
         return cartes;
     }

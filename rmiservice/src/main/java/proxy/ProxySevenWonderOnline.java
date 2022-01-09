@@ -1,5 +1,7 @@
 package proxy;
 
+import exceptions.CarteDejaException;
+import exceptions.CarteInexistantException;
 import exceptions.partiTermineException;
 import facade.FacadeSwOnline;
 import facade.IFacadeSwOnline;
@@ -42,14 +44,12 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
         this.facade.accederUnePartie(pseudo, plateau);
     }
 
-    public boolean passerCarte(String pseudo) throws RemoteException{
-        return  this.facade.passerLesCarte(pseudo);
-    }
+
 
 
 
     @Override
-    public void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) throws RemoteException {
+    public void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) throws RemoteException, CarteInexistantException, CarteDejaException {
         this.facade.deplacementCarte(pseudo, carte, cartes, modeDeplacement);
     }
 
@@ -75,10 +75,7 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
         return carteDTOCollection;
     }
 
-    @Override
-    public void getState() throws RemoteException, partiTermineException {
-        this.facade.getState();
-    }
+
 
     @Override
     public void distribution(String pseudo) throws RemoteException {
@@ -96,7 +93,7 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
     }
 
     @Override
-    public void notification() throws RemoteException, partiTermineException {
+    public synchronized void notification() throws RemoteException, partiTermineException {
         this.facade.notification();
     }
 

@@ -1,5 +1,6 @@
 package modele;
 
+import exceptions.*;
 import facade.LesJeuCartes;
 import interfaces.ICarte;
 import packageDTOs.ModeDeplacement;
@@ -104,7 +105,9 @@ public class PartieJoueur {
 
     }
 
-    public void deplacerLaCarteChoisi(List<ICarte> majCarteCirculant, ICarte choixCarte, ModeDeplacement modeDeplacement, Partie partie){
+
+
+    public void deplacerLaCarteChoisi(List<ICarte> majCarteCirculant, ICarte choixCarte, ModeDeplacement modeDeplacement, Partie partie) throws CarteInexistantException, CarteDejaException {
         /*PartieJoueur partieJoueurGauche = null;
         PartieJoueur partieJoueurDroite = null;
         try {
@@ -120,28 +123,33 @@ public class PartieJoueur {
         catch (Exception e){
             partieJoueurGauche = partie.getPartieJoueurs().get(partie.getPartieJoueurs().size() -1 );
         }*/
-
+        //if(!(partie.getEtatPartie().equals(EtatPartie.TERMINE) && partie.getEtatPartie().equals(EtatPartie.SUSPENDU)))
         if(this.etatChoisi == EtatCarteChoisi.PAS_ENCORE_CHOISIE){
             if(majCarteCirculant.size() == 1){majCarteCirculant.clear();}
-            if(modeDeplacement == ModeDeplacement.CONSTRUCTION_CITE){
+            if(this.cartesCirculantes.contains(choixCarte)){
+                if(modeDeplacement == ModeDeplacement.CONSTRUCTION_CITE){
                     this.cartesConstructionCite.add(choixCarte);
                     this.cartesCirculantes = majCarteCirculant;
                     this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
-            }
-            else if(modeDeplacement == ModeDeplacement.CONSTRUCTION_MERVAILLE){
-                this.cartesConstructionMerveille.add(choixCarte);
-                this.cartesCirculantes = majCarteCirculant;
-                this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+                }
+                else if(modeDeplacement == ModeDeplacement.CONSTRUCTION_MERVAILLE){
+                    this.cartesConstructionMerveille.add(choixCarte);
+                    this.cartesCirculantes = majCarteCirculant;
+                    this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+                }
+                else {
+
+                    this.cartesCirculantes = majCarteCirculant;
+                    this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+                }
             }
             else {
-
-                this.cartesCirculantes = majCarteCirculant;
-                this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+                throw new CarteInexistantException();
             }
-
         }
-        else {
-            throw new RuntimeException();
+        else
+        {
+            throw new CarteDejaException();
         }
 
     }
@@ -151,21 +159,14 @@ public class PartieJoueur {
 
         if(this.etatChoisi == EtatCarteChoisi.DEJA_CHOISIE){
             if(this.cartesCirculantes.size() > 0){
-                try {
-                    PartieJoueur partieJoueurCote = partie.getPartieJoueurs().get((partie.getPartieJoueurs().indexOf(this) + 1));
-                    List<ICarte> cartesTemp = this.cartesCirculantes;
-                    this.cartesCirculantes = partieJoueurCote.getCartesCirculantes();
-                    partieJoueurCote.setCartesCirculantes(cartesTemp);
-                    cartesTemp = null;
-                    this.etatChoisi = EtatCarteChoisi.PAS_ENCORE_CHOISIE;
+                if(this.age == 2){
+                    this.rotationInverse(partie);
                 }
-                catch (Exception e)
-                {
-                    this.etatChoisi = EtatCarteChoisi.PAS_ENCORE_CHOISIE;
-                    e.printStackTrace();
-
+                else {
+                    this.rotation(partie);
                 }
             }
+
             else {
                 this.age ++;
                 switch (this.age){
@@ -184,17 +185,11 @@ public class PartieJoueur {
     }
 
 
-    public boolean passerLesCartes(){
-        return this.etatChoisi == EtatCarteChoisi.DEJA_CHOISIE;
-    }
+
 
     private void rotationInverse(Partie partie){
-
-    }
-
-    private void rotation(Partie partie){
         try {
-            PartieJoueur partieJoueurCote = partie.getPartieJoueurs().get((partie.getPartieJoueurs().indexOf(this) - 1));
+            PartieJoueur partieJoueurCote = partie.getPartieJoueurs().get((partie.getPartieJoueurs().indexOf(this) + 1));
             List<ICarte> cartesTemp = this.cartesCirculantes;
             this.cartesCirculantes = partieJoueurCote.getCartesCirculantes();
             partieJoueurCote.setCartesCirculantes(cartesTemp);
@@ -203,12 +198,28 @@ public class PartieJoueur {
         }
         catch (Exception e)
         {
-            PartieJoueur partieJoueurCote = partie.getPartieJoueurs().get(partie.getPartieJoueurs().size() -1);
+            this.etatChoisi = EtatCarteChoisi.PAS_ENCORE_CHOISIE;
+            e.printStackTrace();
+
+        }
+
+    }
+
+    private void rotation(Partie partie){
+        if((partie.getPartieJoueurs().size() - 1) == (partie.getPartieJoueurs().indexOf(this)))
+        {
+            this.etatChoisi = EtatCarteChoisi.PAS_ENCORE_CHOISIE;
+        }
+        else
+        {
+            PartieJoueur partieJoueurCote = partie.getPartieJoueurs().get((partie.getPartieJoueurs().size() - 1));
             List<ICarte> cartesTemp = this.cartesCirculantes;
             this.cartesCirculantes = partieJoueurCote.getCartesCirculantes();
             partieJoueurCote.setCartesCirculantes(cartesTemp);
-            cartesTemp = null;
-            this.etatChoisi = EtatCarteChoisi.PAS_ENCORE_CHOISIE;
+            //if(!this.cartesCirculantes.containsAll(cartesTemp)){
+                this.etatChoisi = EtatCarteChoisi.PAS_ENCORE_CHOISIE;
+            //}
+
         }
     }
 
@@ -221,6 +232,7 @@ public class PartieJoueur {
                 ", cartesConstructionCite=" + cartesConstructionCite +
                 ", cartesConstructionMerveille=" + cartesConstructionMerveille +
                 ", etatChoisi=" + etatChoisi +
+                ", age=" + age +
                 '}';
     }
 }
