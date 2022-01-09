@@ -8,6 +8,7 @@ import packageDTOs.ModeDeplacement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Partie {
@@ -73,9 +74,6 @@ public class Partie {
             if(partieJoueur.getJoueur().equals(pseudo)){
                 partieJoueur.deplacerLaCarteChoisi(cartes,carte,modeDeplacement, this);
             }
-        }
-        if(this.etatPartie.equals(EtatPartie.DEBUT)){
-            this.etatPartie = EtatPartie.EN_COURS;
         }
     }
 

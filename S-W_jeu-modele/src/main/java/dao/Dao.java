@@ -97,10 +97,7 @@ public class Dao {
         }
         else if(Objects.isNull(partie.getPartieJoueurByPseudo(pseudo))) {
             throw new PseudoInexistantExecption();
-        }
-        else {
-            partie.getPartieJoueurByPseudo(pseudo);
-        }
+        }else {}
 
     }
 

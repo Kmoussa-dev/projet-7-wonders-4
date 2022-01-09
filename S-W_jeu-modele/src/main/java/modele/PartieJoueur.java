@@ -8,6 +8,7 @@ import packageDTOs.ModeDeplacement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PartieJoueur {
@@ -131,16 +132,25 @@ public class PartieJoueur {
                     this.cartesConstructionCite.add(choixCarte);
                     this.cartesCirculantes = majCarteCirculant;
                     this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+                    if(partie.getEtatPartie().equals(EtatPartie.DEBUT)){
+                        partie.setEtatPartie(EtatPartie.EN_COURS);
+                    }
                 }
                 else if(modeDeplacement == ModeDeplacement.CONSTRUCTION_MERVAILLE){
                     this.cartesConstructionMerveille.add(choixCarte);
                     this.cartesCirculantes = majCarteCirculant;
                     this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+                    if(partie.getEtatPartie().equals(EtatPartie.DEBUT)){
+                        partie.setEtatPartie(EtatPartie.EN_COURS);
+                    }
                 }
                 else {
 
                     this.cartesCirculantes = majCarteCirculant;
                     this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+                    if(partie.getEtatPartie().equals(EtatPartie.DEBUT)){
+                        partie.setEtatPartie(EtatPartie.EN_COURS);
+                    }
                 }
             }
             else {
