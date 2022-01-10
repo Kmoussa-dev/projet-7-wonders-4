@@ -4,4 +4,5 @@ module RMI.IHM {
     exports interfaces;
     exports service.access;
     exports exceptions;
+    exports effet;
 }

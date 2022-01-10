@@ -1,23 +1,34 @@
 package modele;
 
 import interfaces.ICarte;
+import interfaces.IEffet;
 import packageDTOs.Effectif;
 
+import java.util.List;
+
 public class Carte implements ICarte {
-
+    private String _id;
     private String nom;
-    private String couleur;
-    private double valeur;
     private Effectif effectif;
+    private List<IEffet> lesCouts;
+    private List<IEffet> lesRessources;
 
 
-    public Carte() {}
-
-    public Carte(String nom, String couleur, double valeur, Effectif effectif) {
+    public Carte(String _id, String nom,Effectif effectif, List<IEffet> lesRessources, List<IEffet> lesCouts) {
+        this._id = _id;
         this.nom = nom;
-        this.couleur = couleur;
-        this.valeur = valeur;
         this.effectif = effectif;
+        this.lesCouts = lesCouts;
+        this.lesRessources = lesRessources;
+
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getNom() {
@@ -28,38 +39,34 @@ public class Carte implements ICarte {
         this.nom = nom;
     }
 
-    public String getCouleur() {
-        return couleur;
-    }
-
-    public void setCouleur(String couleur) {
-        this.couleur = couleur;
-    }
-
-    public double getValeur() {
-        return valeur;
-    }
-
-    public void setValeur(double valeur) {
-        this.valeur = valeur;
-    }
-
-    @Override
     public Effectif getEffectif() {
         return effectif;
     }
 
-    @Override
     public void setEffectif(Effectif effectif) {
         this.effectif = effectif;
     }
 
+    public List<IEffet> getLesCouts() {
+        return lesCouts;
+    }
+
+    public void setLesCouts(List<IEffet> lesCouts) {
+        this.lesCouts = lesCouts;
+    }
+
+    public List<IEffet> getLesRessources() {
+        return lesRessources;
+    }
+
+    public void setLesRessources(List<IEffet> lesRessources) {
+        this.lesRessources = lesRessources;
+    }
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof ICarte)
-        {
-            return this.nom.equals(((ICarte) obj).getNom());
+        if(obj instanceof ICarte){
+            return  this._id.equals(((ICarte)obj).get_id());
         }
         else {
             return false;
@@ -69,10 +76,11 @@ public class Carte implements ICarte {
     @Override
     public String toString() {
         return "Carte{" +
-                "nom='" + nom + '\'' +
-                ", couleur='" + couleur + '\'' +
-                ", valeur=" + valeur +
+                "_id='" + _id + '\'' +
+                ", nom='" + nom + '\'' +
                 ", effectif=" + effectif +
+                ", lesCouts=" + lesCouts +
+                ", lesRessources=" + lesRessources +
                 '}';
     }
 }

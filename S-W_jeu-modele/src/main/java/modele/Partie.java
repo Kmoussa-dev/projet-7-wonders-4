@@ -95,9 +95,9 @@ public class Partie {
 
 
     public void notifierALaPartiJoueur() {
-        if(this.partieJoueurs.size()  == (this.partieJoueurs.stream().filter(pj-> pj.getCartesCirculantes().size() == 0 && pj.getAge() == 3).count())){
+        /*if(this.partieJoueurs.size()  == (this.partieJoueurs.stream().filter(pj-> pj.getCartesCirculantes().size() == 0 && pj.getAge() == 3).count())){
             this.etatPartie = EtatPartie.TERMINE;
-        }
+        }*/
         for (PartieJoueur partieJoueur : this.partieJoueurs){
             partieJoueur.updateCarteTemp(this);
         }
