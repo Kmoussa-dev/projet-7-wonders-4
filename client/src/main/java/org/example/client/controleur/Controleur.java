@@ -94,11 +94,11 @@ public class Controleur {
         try {
             this.facade.deplacementCarte(pseudo,nomCarte, cartes, modeDeplacement);
         } catch (CarteInexistantException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Cette carte n'existe pas dans le seuveur. Veuillez cliquer le bouton actualiser", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Cette carte n'existe pas dans le seuveur."+"\n"+"Veuillez cliquer le bouton actualiser", ButtonType.OK);
             alert.setTitle("Carte inexistant");
             alert.showAndWait();
         } catch (CarteDejaException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Vous savez déjà choisi une carte, attendez pour le prochain tour.", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Vous savez déjà choisi une carte,"+"\n"+"attendez pour le prochain tour.", ButtonType.OK);
             alert.setTitle("Carte déjà choisi");
             alert.showAndWait();
         }

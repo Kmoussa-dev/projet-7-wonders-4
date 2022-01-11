@@ -8,10 +8,14 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -65,7 +69,7 @@ public class TestPlatorm {
             AnchorPane borderPane = fxmlLoader.load();
             TestPlatorm vue = fxmlLoader.getController();
             vue.setStage(stage);
-            vue.setScene(new Scene(borderPane,682,417));
+            vue.setScene(new Scene(borderPane,750,530));
             return vue;
         } catch (IOException e) {
             throw new RuntimeException("error");
@@ -109,6 +113,8 @@ public class TestPlatorm {
 
     public void charger(ObservableList<ICarte> carteDTOS) {
         carteTemp.setItems(carteDTOS);
+        carteTemp.setOrientation(Orientation.HORIZONTAL); //afficher horizontalement la liste des cartes circulantes
+        visuelCartes(); //appel à la fonction qui affiche les images des cartes
     }
 
     public void choixUneCarte(ActionEvent actionEvent) {
@@ -172,5 +178,63 @@ public class TestPlatorm {
     public void defausserCarte(ActionEvent actionEvent) {
     }
 
+    //DESIGN
+
+    /**
+     * Méthode qui affiche l'image des cartes circulantes via imageView
+     */
+    public void visuelCartes() {
+
+        carteTemp.setCellFactory(param -> {
+            return new ListCell<CarteDTO>() {
+                private ImageView imageView = new ImageView();
+
+                @Override
+                protected void updateItem(CarteDTO carte, boolean vide) {
+                    super.updateItem(carte, vide);
+                    if (vide) {
+                        setText(null);
+                        imageView.setImage(null);
+                        setGraphic(null);
+                    } else {
+                        //String nomCarte =  ((ICarte)carteTemp.getSelectionModel().getSelectedItem()).getNom();
+                        imageView.setFitHeight(130); //hauteur image
+                        imageView.setFitWidth(90); //largeur image
+                        imageView.setImage(new Image(getClass().getResourceAsStream("/org/example/client/vues/image/cartesID/" + carte.get_id() + ".png")));
+                        setGraphic(imageView);
+                    }
+                }
+            };
+        });
+    }
+
+
+    /**
+     * Méthode qui affiche l'image des cartes de construction de la Cité
+     */
+    public void visuelCarteConstructionCiteV1() {
+
+        carteContructCite.setCellFactory(param -> {
+            return new ListCell<CarteDTO>() {
+                private ImageView imageViewCite = new ImageView();
+
+                @Override
+                protected void updateItem(CarteDTO carte, boolean vide) {
+                    super.updateItem(carte, vide);
+                    if (vide) {
+                        setText(null);
+                        imageViewCite.setImage(null);
+                        setGraphic(null);
+                    } else {
+                        //String nomCarte =  ((ICarte)carteTemp.getSelectionModel().getSelectedItem()).getNom();
+                        imageViewCite.setFitHeight(100);
+                        imageViewCite.setFitWidth(50);
+                        imageViewCite.setImage(new Image(getClass().getResourceAsStream("/org/example/client/vues/image/cartesID/"+ carte.get_id() + ".png")));
+                        setGraphic(imageViewCite);
+                    }
+                }
+            };
+        });
+    }
 
 }
