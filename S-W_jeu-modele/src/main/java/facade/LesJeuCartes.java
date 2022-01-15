@@ -4,26 +4,22 @@ import effet.Commerce;
 import effet.Direction;
 import effet.Effet;
 import interfaces.ICarte;
-import modele.Carte;
+import packageDTOs.Carte;
 import packageDTOs.Effectif;
 import packageDTOs.TypeEffet;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class LesJeuCartes {
-    public static final List<ICarte> lesCarteAgeI4 = loadData();
-    public static final List<ICarte> lesCarteAgeI3 = loadData().stream().filter(carte -> carte.getEffectif().equals(Effectif.TROIS_PLUS)).collect(Collectors.toList());
+    public static final List<Carte> lesCarteAgeI4 = loadData();
 
-    public static final List<ICarte> lesCarteAgeII4 = loadDataII();
-    public static final List<ICarte> lesCarteAgeII3 = loadDataII().stream().filter(carte -> carte.getEffectif().equals(Effectif.TROIS_PLUS)).collect(Collectors.toList());
+    public static final List<Carte> lesCarteAgeII4 = loadDataII();
 
-    public static final List<ICarte> lesCarteAgeIII4 = loadDataIII();
-    public static final List<ICarte> lesCarteAgeIII3 = loadDataIII().stream().filter(carte -> carte.getEffectif().equals(Effectif.TROIS_PLUS)).collect(Collectors.toList());
+    public static final List<Carte> lesCarteAgeIII4 = loadDataIII();
 
-    public static List<ICarte> loadData(){
-        List<ICarte> cartes = new ArrayList<>();
+    public static List<Carte> loadData(){
+        List<Carte> cartes = new ArrayList<>();
         //CARTES 3+
         cartes.add(new Carte("carte1","caserne",Effectif.TROIS_PLUS,List.of(new Effet(TypeEffet.BOUCLIER,1)),List.of(new Effet(TypeEffet.MINERAI,1))));
         cartes.add(new Carte("carte2","presse",Effectif.TROIS_PLUS,List.of(new Effet(TypeEffet.PAPIER,1)),List.of()));
@@ -61,8 +57,8 @@ public class LesJeuCartes {
         return cartes;
     }
 
-    public static List<ICarte> loadDataII(){
-        List<ICarte> cartes = new ArrayList<>();
+    public static List<Carte> loadDataII(){
+        List<Carte> cartes = new ArrayList<>();
         //CARTES 3+
         // MP
         cartes.add(new Carte("carteII_1","fonderie", Effectif.TROIS_PLUS,List.of(new Effet(TypeEffet.MINERAI,2)),List.of(new Effet(TypeEffet.PIECE,1))));
@@ -128,8 +124,8 @@ public class LesJeuCartes {
         return cartes;
     }
 
-    public static List<ICarte> loadDataIII(){
-        List<ICarte> cartes = new ArrayList<>();
+    public static List<Carte> loadDataIII(){
+        List<Carte> cartes = new ArrayList<>();
 
         //CARTES 3+
         //COMMERCIALES
@@ -216,95 +212,55 @@ public class LesJeuCartes {
         return cartes;
     }
 
-    public static List<ICarte> distributionAGE_I(int index, int nbJoueur) {
-        if (nbJoueur == 4) {
-            switch (index) {
-                case 0:
-                    return lesCarteAgeI4.subList(0, 7);
-                case 1:
-                    return lesCarteAgeI4.subList(7, 14);
-                case 2:
-                    return lesCarteAgeI4.subList(14, 21);
-                case 3:
-                    return lesCarteAgeI4.subList(21, 28);
-                default:
-                    return null;
-            }
-        } else {
-            switch (index) {
-                case 0:
-                    return lesCarteAgeI3.subList(0, 7);
-                case 1:
-                    return lesCarteAgeI3.subList(7, 14);
-                case 2:
-                    return lesCarteAgeI3.subList(14, 21);
-                default:
-                    return null;
-            }
+    public static List<Carte> distributionAGE_I(int index) {
 
+        switch (index) {
+            case 0:
+                return lesCarteAgeI4.subList(0, 7);
+            case 1:
+                return lesCarteAgeI4.subList(7, 14);
+            case 2:
+                return lesCarteAgeI4.subList(14, 21);
+            case 3:
+                return lesCarteAgeI4.subList(21, 28);
+            default:
+                return null;
+        }
+
+
+    }
+
+    public static List<Carte> distributionAGE_II(int index) {
+
+        switch (index) {
+            case 0:
+                return lesCarteAgeII4.subList(0, 7);
+            case 1:
+                return lesCarteAgeII4.subList(7, 14);
+            case 2:
+                return lesCarteAgeII4.subList(14, 21);
+            case 3:
+                return lesCarteAgeII4.subList(21, 28);
+            default:
+                return null;
+        }
+    }
+
+    public static List<Carte> distributionAGE_III(int index) {
+        switch (index) {
+            case 0:
+                return lesCarteAgeIII4.subList(0, 7);
+            case 1:
+                return lesCarteAgeIII4.subList(7, 14);
+            case 2:
+                return lesCarteAgeIII4.subList(14, 21);
+            case 3:
+                return lesCarteAgeIII4.subList(21, 28);
+            default:
+                return null;
         }
 
     }
 
-    public static List<ICarte> distributionAGE_II(int index, int nbJoueur) {
-        if (nbJoueur == 4) {
-            switch (index) {
-                case 0:
-                    return lesCarteAgeII4.subList(0, 7);
-                case 1:
-                    return lesCarteAgeII4.subList(7, 14);
-                case 2:
-                    return lesCarteAgeII4.subList(14, 21);
-                case 3:
-                    return lesCarteAgeII4.subList(21, 28);
-                default:
-                    return null;
-            }
-        } else {
-            switch (index) {
-                case 0:
-                    return lesCarteAgeII3.subList(0, 7);
-                case 1:
-                    return lesCarteAgeII3.subList(7, 14);
-                case 2:
-                    return lesCarteAgeII3.subList(14, 21);
-                default:
-                    return null;
-            }
 
-        }
-
-    }
-
-    public static List<ICarte> distributionAGE_III(int index, int nbJoueur) {
-        if (nbJoueur == 4) {
-            switch (index) {
-                case 0:
-                    return lesCarteAgeIII4.subList(0, 7);
-                case 1:
-                    return lesCarteAgeIII4.subList(7, 14);
-                case 2:
-                    return lesCarteAgeIII4.subList(14, 21);
-                case 3:
-                    return lesCarteAgeIII4.subList(21, 28);
-                default:
-                    return null;
-            }
-        }
-        else {
-
-            switch (index) {
-                case 0:
-                    return lesCarteAgeIII3.subList(0, 7);
-                case 1:
-                    return lesCarteAgeIII3.subList(7, 14);
-                case 2:
-                    return lesCarteAgeIII3.subList(14, 21);
-                default:
-                    return null;
-            }
-
-        }
-
-    }
 }

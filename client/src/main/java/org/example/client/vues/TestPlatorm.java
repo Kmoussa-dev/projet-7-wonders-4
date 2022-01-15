@@ -10,17 +10,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.example.client.controleur.Controleur;
-import packageDTOs.CarteDTO;
+import org.example.client.modele.DonnesStatic;
+import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
 
 import java.io.IOException;
@@ -50,6 +48,9 @@ public class TestPlatorm {
     @FXML
     ListView carteContructMerv;
 
+    @FXML
+    Label token;
+
 
     public void setScene(Scene scene){
         this.scene = scene;
@@ -59,6 +60,9 @@ public class TestPlatorm {
         this.stage = stage;
     }
 
+    public void setToken(String token){
+        this.token.setText(token);
+    }
 
 
     public static TestPlatorm creer(Stage stage){
@@ -92,8 +96,8 @@ public class TestPlatorm {
 
 
     public void accederJeu(ActionEvent actionEvent) {
-        this.controleur.accederAuJeu(pseudo.getText(),"");
-        accer.setDisable(true);
+        //this.controleur.accederAuJeu(pseudo.getText(),"");
+        //accer.setDisable(true);
     }
 
     public void loadCardAge1() {
@@ -101,17 +105,17 @@ public class TestPlatorm {
         Task<Boolean> attenteDistributionCarte = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
-                while (!controleur.partieCommence());
+                while (!controleur.partieCommence(DonnesStatic.ticket));
                 return true;
             }
         };
-        attenteDistributionCarte.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.distributionCarte(pseudo.getText()));
+        attenteDistributionCarte.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.distributionCarte(DonnesStatic.ticket, DonnesStatic.pseudo));
         Thread thread = new Thread(attenteDistributionCarte);
         thread.start();
-        //TODO
+
     }
 
-    public void charger(ObservableList<ICarte> carteDTOS) {
+    public void charger(ObservableList<Carte> carteDTOS) {
         carteTemp.setItems(carteDTOS);
         carteTemp.setOrientation(Orientation.HORIZONTAL); //afficher horizontalement la liste des cartes circulantes
         visuelCartes(); //appel à la fonction qui affiche les images des cartes
@@ -120,21 +124,21 @@ public class TestPlatorm {
     public void choixUneCarte(ActionEvent actionEvent) {
         //if(controleur.getEtatParti() != "TERMINE" && controleur.getEtatParti() != "SUSPENDU"){}
         int index = carteTemp.getSelectionModel().getSelectedIndex();
-        List<ICarte> cartes = new ArrayList<>();
-        CarteDTO nomCarteChoisi =  ((CarteDTO)carteTemp.getSelectionModel().getSelectedItem());
+        List<Carte> cartes = new ArrayList<>();
+        Carte nomCarteChoisi =  ((Carte)carteTemp.getSelectionModel().getSelectedItem());
         carteTemp.getItems().remove(index);
-        carteTemp.getItems().forEach(o -> cartes.add(((CarteDTO)o)));
+        carteTemp.getItems().forEach(o -> cartes.add(((Carte)o)));
 
-        controleur.deplacerCarte(pseudo.getText(),nomCarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_CITE);
+        controleur.deplacerCarte(DonnesStatic.pseudo,nomCarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_CITE);
 
         Task<Boolean> deplacement = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
-                while (controleur.authorisationCirculer());
+                while (controleur.authorisationCirculer(DonnesStatic.ticket));
                 return true;
             }
         };
-        deplacement.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.notification(pseudo.getText()));
+        deplacement.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.notification(DonnesStatic.ticket, DonnesStatic.pseudo));
         Thread thread = new Thread(deplacement);
         thread.start();
 
@@ -142,35 +146,35 @@ public class TestPlatorm {
 
     }
 
-    public void chargerContsructionCite(ObservableList<ICarte> carteDTOS) {
+    public void chargerContsructionCite(ObservableList<Carte> carteDTOS) {
         carteContructCite.setItems(carteDTOS);
     }
 
-    public void chargerContsructionMerv(ObservableList<ICarte> carteDTOS) {
+    public void chargerContsructionMerv(ObservableList<Carte> carteDTOS) {
         carteContructMerv.setItems(carteDTOS);
     }
 
     public void refresh(ActionEvent actionEvent) {
-        this.controleur.refrexh(pseudo.getText());
+        this.controleur.refrexh(DonnesStatic.ticket,DonnesStatic.pseudo);
     }
 
     public void constructionMerveille(ActionEvent actionEvent) {
         int index = carteTemp.getSelectionModel().getSelectedIndex();
-        List<ICarte> cartes = new ArrayList<>();
-        CarteDTO CarteChoisi =  ((CarteDTO)carteTemp.getSelectionModel().getSelectedItem());
+        List<Carte> cartes = new ArrayList<>();
+        Carte CarteChoisi =  ((Carte)carteTemp.getSelectionModel().getSelectedItem());
         carteTemp.getItems().remove(index);
-        carteTemp.getItems().forEach(o -> cartes.add(((CarteDTO)o)));
+        carteTemp.getItems().forEach(o -> cartes.add(((Carte)o)));
 
         controleur.deplacerCarte(pseudo.getText(),CarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_MERVAILLE);
 
         Task<Boolean> deplacement = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
-                while (controleur.authorisationCirculer());
+                while (controleur.authorisationCirculer(DonnesStatic.ticket));
                 return true;
             }
         };
-        deplacement.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.notification(pseudo.getText()));
+        deplacement.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.notification(DonnesStatic.ticket, DonnesStatic.pseudo));
         Thread thread = new Thread(deplacement);
         thread.start();
     }
@@ -186,11 +190,11 @@ public class TestPlatorm {
     public void visuelCartes() {
 
         carteTemp.setCellFactory(param -> {
-            return new ListCell<CarteDTO>() {
+            return new ListCell<Carte>() {
                 private ImageView imageView = new ImageView();
 
                 @Override
-                protected void updateItem(CarteDTO carte, boolean vide) {
+                protected void updateItem(Carte carte, boolean vide) {
                     super.updateItem(carte, vide);
                     if (vide) {
                         setText(null);
@@ -200,7 +204,8 @@ public class TestPlatorm {
                         //String nomCarte =  ((ICarte)carteTemp.getSelectionModel().getSelectedItem()).getNom();
                         imageView.setFitHeight(130); //hauteur image
                         imageView.setFitWidth(90); //largeur image
-                        imageView.setImage(new Image(getClass().getResourceAsStream("/org/example/client/vues/image/cartesID/" + carte.get_id() + ".png")));
+                        System.out.println(carte.getId());
+                        imageView.setImage(new Image(getClass().getResourceAsStream("/org/example/client/vues/image/cartesID/" + carte.getId() + ".png")));
                         setGraphic(imageView);
                     }
                 }
@@ -215,11 +220,11 @@ public class TestPlatorm {
     public void visuelCarteConstructionCiteV1() {
 
         carteContructCite.setCellFactory(param -> {
-            return new ListCell<CarteDTO>() {
+            return new ListCell<Carte>() {
                 private ImageView imageViewCite = new ImageView();
 
                 @Override
-                protected void updateItem(CarteDTO carte, boolean vide) {
+                protected void updateItem(Carte carte, boolean vide) {
                     super.updateItem(carte, vide);
                     if (vide) {
                         setText(null);
@@ -229,7 +234,7 @@ public class TestPlatorm {
                         //String nomCarte =  ((ICarte)carteTemp.getSelectionModel().getSelectedItem()).getNom();
                         imageViewCite.setFitHeight(100);
                         imageViewCite.setFitWidth(50);
-                        imageViewCite.setImage(new Image(getClass().getResourceAsStream("/org/example/client/vues/image/cartesID/"+ carte.get_id() + ".png")));
+                        imageViewCite.setImage(new Image(getClass().getResourceAsStream("/org/example/client/vues/image/cartesID/"+ carte.getId() + ".png")));
                         setGraphic(imageViewCite);
                     }
                 }
@@ -237,4 +242,27 @@ public class TestPlatorm {
         });
     }
 
+    public void quitterPartie(ActionEvent actionEvent) {
+        if(!this.controleur.quitterPartie(DonnesStatic.ticket,DonnesStatic.pseudo)){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Vous n'avez pas droit de faire quitter cette partie", ButtonType.OK);
+            alert.setTitle("Accès refusée");
+            alert.showAndWait();
+        }
+    }
+
+    public void suspendreJeu(ActionEvent actionEvent) {
+        if(!this.controleur.suspendreJeu(DonnesStatic.ticket,DonnesStatic.pseudo)){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Vous n'avez pas droit de faire quitter cette partie", ButtonType.OK);
+            alert.setTitle("Accès refusée");
+            alert.showAndWait();
+        }
+    }
+
+    public void reprendreJeu(ActionEvent actionEvent) {
+        if(!this.controleur.reprendreJeu(DonnesStatic.ticket,DonnesStatic.pseudo)){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Vous n'avez pas droit de faire quitter cette partie", ButtonType.OK);
+            alert.setTitle("Accès refusée");
+            alert.showAndWait();
+        }
+    }
 }

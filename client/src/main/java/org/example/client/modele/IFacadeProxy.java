@@ -1,41 +1,54 @@
 package org.example.client.modele;
 
-import exceptions.CarteDejaException;
-import exceptions.CarteInexistantException;
+import com.mongodb.DuplicateKeyException;
+import exceptions.*;
 import interfaces.ICarte;
-import packageDTOs.CarteDTO;
+import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
+import packageDTOs.PartieDTO;
 
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.List;
 
 public interface IFacadeProxy {
-    Collection<CarteDTO> getCartes();
+    Collection<Carte> getCartes();
 
-    CarteDTO getCarte(String nom);
+    Carte getCarte(String nom);
 
-    void accederUnePartie(String pseudo, String plateau);
+    void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, partiePleinExecption;
 
+    void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieSuspenduOuTermine;
 
-    void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException;
+    Collection<Carte> getLesCartesCirculants(String idPartie, String pseudo);
 
-    Collection<CarteDTO> getLesCartesCirculants(String pseudo);
+    Collection<Carte> getLesCartesConstructionCite(String idPartie, String pseudo);
 
-    Collection<CarteDTO> getLesCartesConstructionCite(String pseudo);
+    Collection<Carte> getLesCartesConstructionMerv(String idPartie, String pseudo);
 
-    Collection<CarteDTO> getLesCartesConstructionMerv(String pseudo);
+    void distribution(String idPartie);
 
-    void distribution(String pseudo);
+    Boolean partieCommence(String idPartie);
 
-    Boolean partieCommence();
+    Boolean authorisationCirculer(String idPartie);
 
-    Boolean authorisationCirculer();
+    void notification(String idPartie);
 
-    void notification();
+    void setNouvellePartie(String pseudo, String ticket) throws partiePleinExecption;
 
+    void inscription(String pseudo, String mdp);
 
-    void setNouvellePartie(String text, String ticket, int effectif);
+    boolean connexion(String pseudo, String mdp);
+
+    boolean reAccederAuJeu(String idPartie, String pseudo);
+
+    Collection<PartieDTO> getLesPartiesSuspendu();
+
+    boolean suspendreLaPartie(String idPartie, String pseudo);
+
+    boolean quitter(String idPartie, String pseudo);
+
+    boolean reprendreUnePartie(String idPartie, String pseudo);
 
 
 }

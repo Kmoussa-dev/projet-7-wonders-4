@@ -5,11 +5,12 @@ import packageDTOs.TypeEffet;
 
 import java.io.Serializable;
 
-public class Effet implements IEffet, Serializable {
-
+public class Effet implements Serializable {
     private TypeEffet effect;
 
     private int valeur;
+
+    public Effet(){}
 
     public Effet(TypeEffet effect, int valeur) {
         this.effect = effect;

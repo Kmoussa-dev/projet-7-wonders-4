@@ -1,22 +1,28 @@
 package packageDTOs;
 
+import effet.Effet;
 import interfaces.ICarte;
 import interfaces.IEffet;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class CarteDTO implements ICarte,  Serializable{
-    private String _id;
+public class Carte implements Serializable {
+    private String id;
     private String nom;
     private Effectif effectif;
-    private List<IEffet> lesCouts;
+    private List<Effet> lesCouts;
 
-    private List<IEffet> lesRessources;
+    private List<Effet> lesRessources;
 
+    public Carte(){
+        this.lesCouts = new ArrayList<>();
+        this.lesRessources = new ArrayList<>();
+    }
 
-    public CarteDTO(String _id, String nom, Effectif effectif, List<IEffet> lesRessources, List<IEffet> lesCouts) {
-        this._id = _id;
+    public Carte(String _id, String nom, Effectif effectif, List<Effet> lesRessources, List<Effet> lesCouts) {
+        this.id = _id;
         this.nom = nom;
         this.effectif = effectif;
         this.lesCouts = lesCouts;
@@ -24,12 +30,13 @@ public class CarteDTO implements ICarte,  Serializable{
 
     }
 
-    public String get_id() {
-        return _id;
+
+    public String getId() {
+        return id;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNom() {
@@ -48,38 +55,36 @@ public class CarteDTO implements ICarte,  Serializable{
         this.effectif = effectif;
     }
 
-    public List<IEffet> getLesCouts() {
+    public List<Effet> getLesCouts() {
         return lesCouts;
     }
 
-    public void setLesCouts(List<IEffet> lesCouts) {
+    public void setLesCouts(List<Effet> lesCouts) {
         this.lesCouts = lesCouts;
     }
 
-    public List<IEffet> getLesRessources() {
+    public List<Effet> getLesRessources() {
         return lesRessources;
     }
 
-    public void setLesRessources(List<IEffet> lesRessources) {
+    public void setLesRessources(List<Effet> lesRessources) {
         this.lesRessources = lesRessources;
     }
-
 
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof ICarte){
-            return this._id.equals(((ICarte)obj).get_id());
+            return  this.id.equals(((ICarte)obj).get_id());
         }
         else {
             return false;
         }
-
     }
 
     @Override
     public String toString() {
-        return "CarteDTO{" +
-                "_id='" + _id + '\'' +
+        return "Carte{" +
+                "_id='" + id + '\'' +
                 ", nom='" + nom + '\'' +
                 ", effectif=" + effectif +
                 ", lesCouts=" + lesCouts +

@@ -1,5 +1,8 @@
 package org.example.client.vues;
 
+import exceptions.partieDejaTermineException;
+import exceptions.partieInexistantException;
+import exceptions.partiePleinExecption;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +12,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.bson.types.ObjectId;
 import org.example.client.controleur.Controleur;
+import org.example.client.modele.DonnesStatic;
+import packageDTOs.PartieDTO;
 
 import java.io.IOException;
 import java.util.Date;
@@ -26,19 +31,13 @@ public class Accueil {
     Button btnCreer;
 
     @FXML
-    TextField pseudo;
+    Label token;
 
     @FXML
     TextField ticket;
 
     @FXML
-    RadioButton deuxJoueurs;
-
-    @FXML
-    RadioButton troisJoueurs;
-
-
-
+    ListView lesPartiesSuspendus;
 
 
     public static Accueil creer(Stage stage){
@@ -75,31 +74,45 @@ public class Accueil {
     }
 
     public void rejoindrePartie(ActionEvent actionEvent) {
-        this.controleur.accederAuJeu(pseudo.getText(), ticket.getText());
+        try {
+
+            this.controleur.accederAuJeu(ticket.getText(),DonnesStatic.pseudo);
+            this.controleur.goToPlateForm();
+        }  catch (partieDejaTermineException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "La partie est déjà terminé", ButtonType.OK);
+            alert.setTitle("Remplie");
+            alert.showAndWait();
+        } catch (partiePleinExecption e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "La partie est pleine", ButtonType.OK);
+            alert.setTitle("Remplie");
+            alert.showAndWait();
+        } catch (partieInexistantException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Le code de la partie est incorrect", ButtonType.OK);
+            alert.setTitle("Remplie");
+            alert.showAndWait();
+        }
     }
 
     public void creerPartie(ActionEvent actionEvent) {
-       if(deuxJoueurs.isSelected()){
-           ObjectId objectId = new ObjectId(new Date());
-           this.controleur.setNouvellePartie(pseudo.getText(), objectId.toString(), 2);
-           Alert alert = new Alert(Alert.AlertType.INFORMATION, "Envoyer ce ticket d'invitation: " + objectId, ButtonType.OK);
-           alert.setTitle("Invitation");
-           alert.showAndWait();
-       }
-       else if(troisJoueurs.isSelected()){
-           ObjectId objectId = new ObjectId(new Date());
-           this.controleur.setNouvellePartie(pseudo.getText(), objectId.toString(), 3);
-           Alert alert = new Alert(Alert.AlertType.INFORMATION, "Envoyer ce ticket d'invitation: " + objectId, ButtonType.OK);
-           alert.setTitle("Invitation");
-           alert.showAndWait();
-       }
-       else{
+        ObjectId objectId = new ObjectId(new Date());
+        DonnesStatic.ticket = objectId.toHexString();
+        try {
+            this.controleur.setNouvellePartie(DonnesStatic.pseudo, DonnesStatic.ticket);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Envoyer ce code d'invitation: " + objectId.toHexString(), ButtonType.OK);
+            alert.setTitle("Invitation");
+            alert.showAndWait();
+            this.controleur.goToPlateForm();
+        } catch (partiePleinExecption e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "La partie est plein", ButtonType.OK);
+            alert.setTitle("Remplie");
+            alert.showAndWait();
+        }
 
-       }
 
     }
 
-    public void getNbJoueursInvitation(ActionEvent actionEvent) {
-
+    public void reprendreUnePartie(ActionEvent actionEvent) {
+        DonnesStatic.ticket = ((PartieDTO)lesPartiesSuspendus.getSelectionModel().getSelectedItem()).getId();
+        this.controleur.reAccederAuJeu(DonnesStatic.pseudo, DonnesStatic.ticket);
     }
 }

@@ -7,12 +7,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="522.0" prefWidth="747.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.client.vues.TestPlatorm">
+<AnchorPane prefHeight="522.0" prefWidth="747.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.client.vues.TestPlatorm">
    <children>
       <ListView fx:id="carteTemp" layoutX="20.0" layoutY="117.0" prefHeight="138.0" prefWidth="708.0" />
       <ListView fx:id="carteContructCite" layoutX="20.0" layoutY="285.0" prefHeight="131.0" prefWidth="708.0" />
-      <TextField fx:id="pseudo" layoutX="251.0" layoutY="71.0" prefHeight="26.0" prefWidth="160.0" />
-      <Button fx:id="accer" layoutX="417.0" layoutY="71.0" mnemonicParsing="false" onAction="#accederJeu" prefHeight="26.0" prefWidth="76.0" style="-fx-background-radius: 5; -fx-background-color: grey;" text="Entrer" textFill="WHITE">
+      <TextField fx:id="pseudo" layoutX="156.0" layoutY="82.0" prefHeight="26.0" prefWidth="94.0" />
+      <Button fx:id="accer" layoutX="256.0" layoutY="82.0" mnemonicParsing="false" onAction="#accederJeu" prefHeight="26.0" prefWidth="76.0" style="-fx-background-radius: 5; -fx-background-color: grey;" text="Entrer" textFill="WHITE">
          <font>
             <Font name="DejaVu Sans Bold" size="13.0" />
          </font></Button>
@@ -61,5 +61,10 @@
             <Font name="DejaVu Sans Bold Oblique" size="13.0" />
          </font>
       </Label>
+      <Label layoutX="20.0" layoutY="63.0" text="Code de la partie:" />
+      <Label fx:id="token" layoutX="139.0" layoutY="63.0" text="code" />
+      <Button layoutX="651.0" layoutY="69.0" mnemonicParsing="false" onAction="#quitterPartie" text="Quitter" />
+      <Button layoutX="580.0" layoutY="69.0" mnemonicParsing="false" onAction="#suspendreJeu" text="Pause" />
+      <Button layoutX="477.0" layoutY="69.0" mnemonicParsing="false" onAction="#reprendreJeu" text="Reprendre" />
    </children>
 </AnchorPane>

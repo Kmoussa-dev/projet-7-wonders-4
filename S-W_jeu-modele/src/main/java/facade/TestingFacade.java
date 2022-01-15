@@ -1,29 +1,17 @@
 package facade;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Updates;
 import dao.Dao;
-import interfaces.ICarte;
-import modele.Carte;
-import modele.EtatPartie;
-import modele.Partie;
-import modele.PartieJoueur;
-import org.bson.Document;
-import org.bson.types.ObjectId;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Projections.include;
 
 public class TestingFacade {
     public static void main(String[] args) {
-        System.out.println(Dao.getCartesByName("militaire"));
+        //Dao.CreerUnePartie("mass","choier");
+        //System.out.println(Dao.connexion("bonjour","54345345436"));
+
+        System.out.println(Dao.getPartie("61e218c355d3af0d45c8407b"));
+        //System.out.println(new ObjectId("61e1cffa22202127355d58b0"));
+        //System.out.println(new ObjectId(new Date()).toHexString());
     }
 }

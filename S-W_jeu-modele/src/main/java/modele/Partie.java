@@ -2,8 +2,12 @@ package modele;
 
 import exceptions.CarteDejaException;
 import exceptions.CarteInexistantException;
-import exceptions.partiTermineException;
+import exceptions.PartieSuspenduOuTermine;
+import exceptions.partiePleinExecption;
 import interfaces.ICarte;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+
+import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
 
 import java.util.ArrayList;
@@ -12,33 +16,35 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Partie {
-    private  static  Partie partie = new Partie();
-    private String _id;
+    //private  static  Partie partie = new Partie();
+    @BsonProperty("_id")
+    private String id;
     private EtatPartie etatPartie;
-    private int nbJoueur;
     private List <PartieJoueur> partieJoueurs ;
 
     public Partie(){
         this.partieJoueurs = new ArrayList<>();
+    }
+
+
+    public Partie(String id){
+        this.id = id;
+        this.partieJoueurs = new ArrayList<>();
         this.etatPartie = EtatPartie.DEBUT;
-    }
-
-
-    public Partie(String _id, int nbJoueur){
-        super();
 
     }
 
-    public static Partie creer(){
-        return partie;
+    //public static Partie creer(){
+      //  return partie;
+    //}
+
+
+    public String getId() {
+        return id;
     }
 
-    public String get_id() {
-        return _id;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public EtatPartie getEtatPartie() {
@@ -57,19 +63,14 @@ public class Partie {
         this.partieJoueurs = partieJoueurs;
     }
 
-    public int getNbJoueur() {
-        return this.nbJoueur;
-    }
 
-    public void setNbJoueur(int nbJoueur) {
-        this.nbJoueur = nbJoueur;
-    }
+
 
     public PartieJoueur getPartieJoueurByPseudo(String pseudo){
         return this.partieJoueurs.stream().filter(partieJoueur -> partieJoueur.getJoueur().equals(pseudo)).collect(Collectors.toList()).get(0);
     }
 
-    public void deplacer(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException {
+    public void deplacer(String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieSuspenduOuTermine {
         for (PartieJoueur partieJoueur : this.partieJoueurs){
             if(partieJoueur.getJoueur().equals(pseudo)){
                 partieJoueur.deplacerLaCarteChoisi(cartes,carte,modeDeplacement, this);
@@ -84,28 +85,27 @@ public class Partie {
                 i ++;
             }
         }
+        System.out.println(i == this.partieJoueurs.size());
         return i != this.partieJoueurs.size();
 
     }
 
-    public void ajouterPartieJoueur(PartieJoueur partieJoueur){
-        this.partieJoueurs.add(partieJoueur);
+    public void ajouterPartieJoueur(PartieJoueur partieJoueur) throws partiePleinExecption {
+        if(this.partieJoueurs.size() < 4){
+            this.partieJoueurs.add(partieJoueur);
+        }
+
 
     }
 
 
     public void notifierALaPartiJoueur() {
-        /*if(this.partieJoueurs.size()  == (this.partieJoueurs.stream().filter(pj-> pj.getCartesCirculantes().size() == 0 && pj.getAge() == 3).count())){
+        if(this.partieJoueurs.size()  == (this.partieJoueurs.stream().filter(pj-> pj.getCartesCirculantes().size() == 0 && pj.getAge() == 3).count())){
             this.etatPartie = EtatPartie.TERMINE;
-        }*/
+        }
         for (PartieJoueur partieJoueur : this.partieJoueurs){
             partieJoueur.updateCarteTemp(this);
         }
-        System.out.println("---------------------------------------------------------------");
-        partieJoueurs.forEach(System.out::println);
-        System.out.println("---------------------------------------------------------------");
-        System.out.println(this);
-        System.out.println("---------------------------------------------------------------");
 
 
     }
@@ -117,10 +117,9 @@ public class Partie {
     @Override
     public String toString() {
         return "Partie{" +
-                "_id='" + _id + '\'' +
+                "_id='" + id + '\'' +
                 ", etatPartie='" + etatPartie + '\'' +
                 ", partieJoueurs=" + partieJoueurs +
                 '}';
     }
-} //this.cartesCirculantes.remove(choixCarte);
- //this.cartesCirculantes.remove(choixCarte);
+}

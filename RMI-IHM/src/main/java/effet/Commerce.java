@@ -2,6 +2,7 @@ package effet;
 
 import packageDTOs.TypeEffet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Commerce extends  Effet {
@@ -9,6 +10,12 @@ public class Commerce extends  Effet {
     private List<TypeEffet> lesEffetJoueursCote;
 
     private List<Direction> lesDirections;
+
+    public Commerce(){
+        super();
+        this.lesEffetJoueursCote = new ArrayList<>();
+        this.lesDirections = new ArrayList<>();
+    }
 
     public Commerce(TypeEffet effect, int valeur, List<TypeEffet> lesEffetJoueursCote, List<Direction> lesDirections) {
         super(effect, valeur);

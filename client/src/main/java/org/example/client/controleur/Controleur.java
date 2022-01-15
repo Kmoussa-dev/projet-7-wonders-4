@@ -1,19 +1,22 @@
 package org.example.client.controleur;
 
-import exceptions.CarteDejaException;
-import exceptions.CarteInexistantException;
+import com.mongodb.DuplicateKeyException;
+import exceptions.*;
 import interfaces.ICarte;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.example.client.modele.DonnesStatic;
 import org.example.client.modele.FacadeProxy;
 import org.example.client.modele.IFacadeProxy;
 import org.example.client.vues.Accueil;
+import org.example.client.vues.Authentification;
 import org.example.client.vues.TestPlatorm;
-import packageDTOs.CarteDTO;
+import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
 
 import java.util.List;
@@ -22,6 +25,7 @@ public class Controleur {
     private IFacadeProxy facade;
     private Accueil accueil;
     private TestPlatorm testPlatorm;
+    public Authentification authentification;
 
     public Controleur(Stage stage){
         this.facade = FacadeProxy.cree();
@@ -29,69 +33,72 @@ public class Controleur {
         this.accueil.initialiserControleur(this);
         this.testPlatorm = TestPlatorm.creer(stage);
         this.testPlatorm.initialiserControleur(this);
+        this.authentification = Authentification.creer(stage);
+        this.authentification.initialiserControleur(this);
     }
 
     public void loadData(){
-        ObservableList<CarteDTO> carteDTOS = FXCollections.observableArrayList(this.facade.getCartes());
+        //ObservableList<Carte> carteDTOS = FXCollections.observableArrayList(this.facade.getCartes());
         //this.accueil.charger(carteDTOS);
     }
 
-    public void loadCarteTemp(String pseudo){
-        ObservableList<ICarte> carteDTOS = FXCollections.observableArrayList(this.facade.getLesCartesCirculants(pseudo));
+    public void loadCarteTemp(String idPartie, String pseudo){
+        System.out.println(this.facade.getLesCartesCirculants(idPartie,pseudo));
+        ObservableList<Carte> carteDTOS = FXCollections.observableArrayList(this.facade.getLesCartesCirculants(idPartie,pseudo));
         this.testPlatorm.charger(carteDTOS);
 
     }
 
-    public void loadCarteConstruction(String pseudo){
-        ObservableList<ICarte> carteDTOS = FXCollections.observableArrayList(this.facade.getLesCartesConstructionCite(pseudo));
+    public void loadCarteConstruction(String idPartie, String pseudo){
+        ObservableList<Carte> carteDTOS = FXCollections.observableArrayList(this.facade.getLesCartesConstructionCite(idPartie,pseudo));
         this.testPlatorm.chargerContsructionCite(carteDTOS);
 
     }
 
-    public void loadCarteConstructionMerv(String pseudo){
-        ObservableList<ICarte> carteDTOS = FXCollections.observableArrayList(this.facade.getLesCartesConstructionMerv(pseudo));
+    public void loadCarteConstructionMerv(String idPartie, String pseudo){
+        ObservableList<Carte> carteDTOS = FXCollections.observableArrayList(this.facade.getLesCartesConstructionMerv(idPartie,pseudo));
         this.testPlatorm.chargerContsructionMerv(carteDTOS);
 
     }
 
     public void run(){
-        this.testPlatorm.show();
+        this.authentification.show();
     }
 
-    public void accederAuJeu(String text, String code) {
-        this.facade.accederUnePartie(text,"blalbla");
-        this.testPlatorm.loadCardAge1();
+    public void accederAuJeu(String idPartie, String pseudo) throws partieDejaTermineException, partiePleinExecption, partieInexistantException {
+        this.facade.accederUnePartie(idPartie,pseudo);
+        DonnesStatic.ticket = idPartie;
     }
 
-    public Boolean partieCommence(){
-        return this.facade.partieCommence();
+    public Boolean partieCommence(String idPartie){
+        return this.facade.partieCommence(idPartie);
     }
 
-    public void distributionCarte(String pseudo){
-        this.facade.distribution(pseudo);
-        this.loadCarteTemp(pseudo);
+    public void distributionCarte(String idPartie, String pseudo){
+        this.facade.distribution(idPartie);
+        this.loadCarteTemp(idPartie,pseudo);
     }
 
-    public Boolean authorisationCirculer(){
-        return  this.facade.authorisationCirculer();
+    public Boolean authorisationCirculer(String idPartie){
+        return this.facade.authorisationCirculer(idPartie);
     }
 
-    public void notification(String pseudo){
-        this.facade.notification();
-        this.loadCarteTemp(pseudo);
-        this.loadCarteConstruction(pseudo);
-        this.loadCarteConstructionMerv(pseudo);
+    public void notification(String idPartie, String pseudo){
+        this.facade.notification(idPartie);
+        this.loadCarteTemp(idPartie, pseudo);
+        this.loadCarteConstruction(idPartie, pseudo);
+        this.loadCarteConstructionMerv(idPartie, pseudo);
     }
 
 
-    public void refrexh(String pseudo){
-        this.loadCarteTemp(pseudo);
-        this.loadCarteConstruction(pseudo);
-        this.loadCarteConstructionMerv(pseudo);
+    public void refrexh(String idPartie, String pseudo){
+        this.loadCarteTemp(idPartie, pseudo);
+        this.loadCarteConstruction(idPartie, pseudo);
+        this.loadCarteConstructionMerv(idPartie, pseudo);
     }
 
-    public void deplacerCarte(String pseudo, ICarte nomCarte, List<ICarte> cartes, ModeDeplacement modeDeplacement){
-        try {
+    public void deplacerCarte(String pseudo, Carte nomCarte, List<Carte> cartes, ModeDeplacement modeDeplacement){
+        /*try {
             this.facade.deplacementCarte(pseudo,nomCarte, cartes, modeDeplacement);
         } catch (CarteInexistantException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Cette carte n'existe pas dans le seuveur."+"\n"+"Veuillez cliquer le bouton actualiser", ButtonType.OK);
@@ -105,11 +112,56 @@ public class Controleur {
         this.loadCarteConstruction(pseudo);
         this.loadCarteTemp(pseudo);
         this.loadCarteConstructionMerv(pseudo);
-
+         */
 
     }
 
-    public void setNouvellePartie(String pseudo, String ticket, int effectif) {
-        this.facade.setNouvellePartie(pseudo, ticket, effectif);
+    public void setNouvellePartie(String pseudo, String ticket) throws partiePleinExecption {
+        this.facade.setNouvellePartie(pseudo, ticket);
+
     }
+
+    public void inscription(String pseudo, String mdp) throws DuplicateKeyException {
+       this.facade.inscription(pseudo,mdp);
+    }
+
+    public boolean connexion(String pseudo, String mdp){
+        return this.facade.connexion(pseudo,mdp);
+    }
+
+    public void goToAcceuil(){
+        this.accueil.show();
+    }
+
+    public void goToPlateForm() {
+        this.testPlatorm.show();
+        this.testPlatorm.setToken(DonnesStatic.ticket);
+        this.testPlatorm.loadCardAge1();
+    }
+
+    public void reAccederAuJeu(String idPartie, String pseudo){
+       if(this.facade.reAccederAuJeu(idPartie, pseudo)){
+           this.goToPlateForm();
+           this.loadCarteTemp(idPartie, pseudo);
+           this.loadCarteConstruction(idPartie, pseudo);
+           this.loadCarteConstructionMerv(idPartie, pseudo);
+
+       }
+
+    }
+
+    public boolean quitterPartie(String idPartie, String pseudo) {
+        return this.facade.quitter(idPartie,pseudo);
+    }
+
+    public boolean suspendreJeu(String idPartie, String pseudo) {
+        return this.facade.suspendreLaPartie(idPartie,pseudo);
+    }
+
+    public boolean reprendreJeu(String idPartie, String pseudo) {
+        return this.facade.reprendreUnePartie(idPartie,pseudo);
+    }
+
+
+
 }

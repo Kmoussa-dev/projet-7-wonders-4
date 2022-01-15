@@ -1,11 +1,9 @@
 package facade;
 
-import exceptions.CarteDejaException;
-import exceptions.CarteInexistantException;
-import exceptions.partiTermineException;
+import exceptions.*;
 import interfaces.ICarte;
-import modele.Carte;
-import modele.PartieJoueur;
+import modele.Partie;
+import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
 
 import java.util.Collection;
@@ -13,28 +11,43 @@ import java.util.List;
 
 public interface IFacadeSwOnline {
 
+
+
+    void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieSuspenduOuTermine;
+
+    List<Carte> getLesCartesCirculants(String idPartie, String pseudo);
+
+    List<Carte> getLesCartesConstructionCite(String idPartie, String pseudo);
+
+    List<Carte> getLesCartesConstructionMerv(String idPartie, String pseudo);
+
+    void distribution(String idPartie);
+
+    boolean partieCommence(String idPartie);
+
     Collection<Carte> getCartes();
 
     Carte getCarte(String nom);
 
-    void accederUnePartie(String pseudo, String plateau);
+    void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, partiePleinExecption;
 
-    void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException;
+    boolean authorisationCirculer(String idPartie);
 
-    List<ICarte> getLesCartesCirculants(String pseudo);
+    void notification(String idPartie);
 
-    List<ICarte> getLesCartesConstructionCite(String pseudo);
+    void setNouvellePartie(String pseudo, String ticket)throws partiePleinExecption;
 
-    List<ICarte> getLesCartesConstructionMerv(String pseudo);
+    void inscription(String pseudo, String mdp);
 
+    boolean connexion(String pseudo, String mdp);
 
-    void distribution(String pseudo);
+    boolean reAccederAuJeu(String idPartie, String pseudo);
 
-    boolean partieCommence();
+    Collection<Partie> getLesPartiesSuspendu();
 
-    boolean authorisationCirculer();
+    boolean suspendreLaPartie(String idPartie,String pseudo);
 
-    void notification() throws partiTermineException;
+    boolean quitter(String idPartie, String pseudo);
 
-    void setNouvellePartie(String text, String ticket, int effectif);
+    boolean reprendreUnePartie(String idPartie, String pseudo);
 }

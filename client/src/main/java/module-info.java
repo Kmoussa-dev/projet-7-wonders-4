@@ -12,6 +12,7 @@ module org.example.client {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires org.mongodb.bson;
+    requires org.mongodb.driver.core;
 
     opens org.example.client.vues to javafx.fxml;
     exports org.example.client.executeclient;

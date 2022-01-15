@@ -1,10 +1,10 @@
 package interfaces;
 
-import exceptions.CarteDejaException;
-import exceptions.CarteInexistantException;
-import exceptions.partiTermineException;
-import packageDTOs.CarteDTO;
+import com.mongodb.DuplicateKeyException;
+import exceptions.*;
+import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
+import packageDTOs.PartieDTO;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -12,27 +12,41 @@ import java.util.Collection;
 import java.util.List;
 
 public interface IProxySevenWonderOnline extends Remote {
-    Collection<CarteDTO> getCartes() throws RemoteException;
-    CarteDTO getCarte(String nom) throws RemoteException;
-
-    void accederUnePartie(String pseudo, String plateau) throws RemoteException;
+    Collection<Carte> getCartes() throws RemoteException;
+    Carte getCarte(String nom) throws RemoteException;
 
 
-    void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) throws RemoteException, CarteInexistantException, CarteDejaException;
+    void accederUnePartie(String idPartie, String pseudo) throws RemoteException, partieDejaTermineException, partieInexistantException, partiePleinExecption;
 
-    Collection<CarteDTO> getLesCartesCirculants(String pseudo)throws RemoteException;
+    void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws RemoteException, CarteInexistantException, CarteDejaException, PartieSuspenduOuTermine;
 
-    Collection<CarteDTO> getLesCartesConstructionCite(String pseudo)throws RemoteException;
+    Collection<Carte> getLesCartesCirculants(String idPartie, String pseudo)throws RemoteException;
 
-    Collection<CarteDTO> getLesCartesConstructionMerv(String pseudo) throws RemoteException;
+    Collection<Carte> getLesCartesConstructionCite(String idPartie, String pseudo)throws RemoteException;
 
-    void distribution(String pseudo)throws RemoteException;
+    Collection<Carte> getLesCartesConstructionMerv(String idPartie, String pseudo) throws RemoteException;
 
-    Boolean partieCommence() throws RemoteException;
+    void distribution(String idPartie)throws RemoteException;
 
-    Boolean authorisationCirculer()throws RemoteException;
+    Boolean partieCommence(String idPartie) throws RemoteException;
 
-    void notification() throws RemoteException, partiTermineException;
+    Boolean authorisationCirculer(String idPartie)throws RemoteException;
 
-    void setNouvellePartie(String text, String ticket, int effectif) throws RemoteException;
+    void notification(String idPartie) throws RemoteException;
+
+    void setNouvellePartie(String pseudo, String ticket) throws RemoteException, partiePleinExecption;
+
+    void inscription(String pseudo, String mdp) throws RemoteException;
+
+    boolean connexion(String pseudo, String mdp)throws RemoteException;
+
+    boolean reAccederAuJeu(String idPartie, String pseudo)throws RemoteException;
+
+    Collection<PartieDTO> getLesPartiesSuspendu()throws RemoteException;
+
+    boolean suspendreLaPartie(String idPartie, String pseudo)throws RemoteException;
+
+    boolean quitter(String idPartie, String pseudo)throws RemoteException;
+
+    boolean reprendreUnePartie(String idPartie, String pseudo)throws RemoteException;
 }

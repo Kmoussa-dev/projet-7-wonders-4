@@ -1,13 +1,13 @@
 package org.example.client.modele;
 
-import exceptions.CarteDejaException;
-import exceptions.CarteInexistantException;
-import exceptions.partiTermineException;
+import com.mongodb.DuplicateKeyException;
+import exceptions.*;
 import facade.IFacadeSwOnline;
 import interfaces.ICarte;
 import interfaces.IProxySevenWonderOnline;
-import packageDTOs.CarteDTO;
+import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
+import packageDTOs.PartieDTO;
 import service.access.RMIServeurConnexion;
 
 import java.rmi.NotBoundException;
@@ -37,7 +37,7 @@ public class FacadeProxy implements IFacadeProxy {
     }
 
     @Override
-    public Collection<CarteDTO> getCartes() {
+    public Collection<Carte> getCartes() {
         try {
             return this.jeuFacade.getCartes();
         } catch (RemoteException e) {
@@ -47,7 +47,7 @@ public class FacadeProxy implements IFacadeProxy {
     }
 
     @Override
-    public CarteDTO getCarte(String nom) {
+    public Carte getCarte(String nom) {
         try {
             return this.jeuFacade.getCarte(nom);
         } catch (RemoteException e) {
@@ -57,9 +57,9 @@ public class FacadeProxy implements IFacadeProxy {
     }
 
     @Override
-    public void accederUnePartie(String pseudo, String plateau) {
+    public void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, partiePleinExecption {
         try {
-            this.jeuFacade.accederUnePartie(pseudo,plateau);
+            this.jeuFacade.accederUnePartie(idPartie,pseudo);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -68,28 +68,18 @@ public class FacadeProxy implements IFacadeProxy {
 
 
     @Override
-    public void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException {
+    public void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieSuspenduOuTermine {
         try {
-            this.jeuFacade.deplacementCarte(pseudo,carte, cartes, modeDeplacement);
+            this.jeuFacade.deplacementCarte(idPartie, pseudo,carte, cartes, modeDeplacement);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public Collection<CarteDTO> getLesCartesCirculants(String pseudo) {
+    public Collection<Carte> getLesCartesCirculants(String idPartie, String pseudo) {
         try {
-            return this.jeuFacade.getLesCartesCirculants(pseudo);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public Collection<CarteDTO> getLesCartesConstructionCite(String pseudo) {
-        try {
-            return this.jeuFacade.getLesCartesConstructionCite(pseudo);
+            return this.jeuFacade.getLesCartesCirculants(idPartie, pseudo);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -97,9 +87,19 @@ public class FacadeProxy implements IFacadeProxy {
     }
 
     @Override
-    public Collection<CarteDTO> getLesCartesConstructionMerv(String pseudo) {
+    public Collection<Carte> getLesCartesConstructionCite(String idPartie, String pseudo) {
         try {
-            return this.jeuFacade.getLesCartesConstructionMerv(pseudo);
+            return this.jeuFacade.getLesCartesConstructionCite(idPartie, pseudo);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Collection<Carte> getLesCartesConstructionMerv(String idPartie, String pseudo) {
+        try {
+            return this.jeuFacade.getLesCartesConstructionMerv(idPartie, pseudo);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -109,18 +109,18 @@ public class FacadeProxy implements IFacadeProxy {
 
 
     @Override
-    public void distribution(String pseudo) {
+    public void distribution(String idPartie) {
         try {
-            this.jeuFacade.distribution(pseudo);
+            this.jeuFacade.distribution(idPartie);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public Boolean partieCommence() {
+    public Boolean partieCommence(String idPartie) {
         try {
-            return this.jeuFacade.partieCommence();
+            return this.jeuFacade.partieCommence(idPartie);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -128,9 +128,9 @@ public class FacadeProxy implements IFacadeProxy {
     }
 
     @Override
-    public Boolean authorisationCirculer() {
+    public Boolean authorisationCirculer(String idPartie) {
         try {
-            return this.jeuFacade.authorisationCirculer();
+            return this.jeuFacade.authorisationCirculer(idPartie);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -138,22 +138,91 @@ public class FacadeProxy implements IFacadeProxy {
     }
 
     @Override
-    public void notification() {
+    public void notification(String idPartie) {
         try {
-            this.jeuFacade.notification();
-        } catch (RemoteException | partiTermineException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-    public void setNouvellePartie(String text, String ticket, int effectif){
-        try {
-            this.jeuFacade.setNouvellePartie(text, ticket, effectif);
+            this.jeuFacade.notification(idPartie);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void setNouvellePartie(String pseudo, String ticket) throws partiePleinExecption {
+        try {
+            this.jeuFacade.setNouvellePartie(pseudo, ticket);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void inscription(String pseudo, String mdp){
+        try {
+            this.jeuFacade.inscription(pseudo, mdp);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean connexion(String pseudo, String mdp)  {
+        try {
+            return this.jeuFacade.connexion(pseudo, mdp);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean reAccederAuJeu(String idPartie, String pseudo) {
+        try {
+            return this.jeuFacade.reAccederAuJeu(idPartie, pseudo);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public Collection<PartieDTO> getLesPartiesSuspendu() {
+        try {
+            return this.jeuFacade.getLesPartiesSuspendu();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean suspendreLaPartie(String idPartie, String pseudo) {
+        try {
+            return this.jeuFacade.suspendreLaPartie(idPartie,pseudo);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean quitter(String idPartie, String pseudo) {
+        try {
+            return this.jeuFacade.quitter(idPartie,pseudo);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean reprendreUnePartie(String idPartie, String pseudo) {
+        try {
+            return this.jeuFacade.reprendreUnePartie(idPartie, pseudo);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 }

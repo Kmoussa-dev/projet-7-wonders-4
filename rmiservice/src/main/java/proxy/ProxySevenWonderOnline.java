@@ -1,18 +1,15 @@
 package proxy;
 
-import exceptions.CarteDejaException;
-import exceptions.CarteInexistantException;
-import exceptions.partiTermineException;
+import exceptions.*;
 import facade.FacadeSwOnline;
 import facade.IFacadeSwOnline;
 import interfaces.ICarte;
-import interfaces.IEffet;
 import interfaces.IProxySevenWonderOnline;
-import modele.Carte;
-import packageDTOs.CarteDTO;
-import packageDTOs.Effectif;
+import modele.Partie;
+import modele.PartieJoueur;
+import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
-
+import packageDTOs.PartieDTO;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -29,80 +26,123 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
     }
 
     @Override
-    public Collection<CarteDTO> getCartes() throws RemoteException {
-        Collection<CarteDTO> carteDTOCollection = new ArrayList<CarteDTO>();
-        this.facade.getCartes().forEach(c -> carteDTOCollection.add(new CarteDTO(c.get_id(), c.getNom(), c.getEffectif(), c.getLesRessources(), c.getLesCouts())));
+    public Collection<Carte> getCartes() throws RemoteException {
+        Collection<Carte> carteDTOCollection = new ArrayList<Carte>();
+        this.facade.getCartes().forEach(c -> carteDTOCollection.add(new Carte(c.getId(), c.getNom(), c.getEffectif(), c.getLesRessources(), c.getLesCouts())));
         return carteDTOCollection;
     }
 
     @Override
-    public CarteDTO getCarte(String nom) throws RemoteException {
+    public Carte getCarte(String nom) throws RemoteException {
         Carte carte = this.facade.getCarte(nom);
-        return new CarteDTO(carte.get_id(), carte.getNom(), carte.getEffectif(), carte.getLesRessources(), carte.getLesCouts());
+        return new Carte(carte.getId(), carte.getNom(), carte.getEffectif(), carte.getLesRessources(), carte.getLesCouts());
     }
 
     @Override
-    public void accederUnePartie(String pseudo, String plateau) throws RemoteException {
-        this.facade.accederUnePartie(pseudo, plateau);
+    public void accederUnePartie(String idPartie, String pseudo) throws RemoteException, partieDejaTermineException, partieInexistantException, partiePleinExecption {
+        this.facade.accederUnePartie(idPartie,pseudo);
     }
 
 
-
-
-
     @Override
-    public void deplacementCarte(String pseudo, ICarte carte, List<ICarte> cartes, ModeDeplacement modeDeplacement) throws RemoteException, CarteInexistantException, CarteDejaException {
-        this.facade.deplacementCarte(pseudo, carte, cartes, modeDeplacement);
+    public void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws RemoteException, CarteInexistantException, CarteDejaException, PartieSuspenduOuTermine {
+        this.facade.deplacementCarte(idPartie, pseudo, carte, cartes, modeDeplacement);
     }
 
     @Override
-    public Collection<CarteDTO> getLesCartesCirculants(String pseudo) throws RemoteException {
-        Collection<CarteDTO> carteDTOCollection = new ArrayList<CarteDTO>();
-        this.facade.getLesCartesCirculants(pseudo).forEach(c -> carteDTOCollection.add(new CarteDTO(c.get_id(), c.getNom(), c.getEffectif(), c.getLesRessources(), c.getLesCouts())));
-        return carteDTOCollection;
+    public Collection<Carte> getLesCartesCirculants(String idPartie, String pseudo) throws RemoteException {
+        //Collection<Carte> carteDTOCollection = new ArrayList<Carte>();
+        return this.facade.getLesCartesCirculants(idPartie, pseudo);  //.forEach(c -> carteDTOCollection.add(new Carte(c.getId(), c.getNom(), c.getEffectif(), c.getLesRessources(), c.getLesCouts())));
+        //return carteDTOCollection;
 
     }
 
     @Override
-    public Collection<CarteDTO> getLesCartesConstructionCite(String pseudo) throws RemoteException {
-        Collection<CarteDTO> carteDTOCollection = new ArrayList<CarteDTO>();
-        this.facade.getLesCartesConstructionCite(pseudo).forEach(c -> carteDTOCollection.add(new CarteDTO(c.get_id(), c.getNom(), c.getEffectif(), c.getLesRessources(), c.getLesCouts())));
-        return carteDTOCollection;
+    public Collection<Carte> getLesCartesConstructionCite(String idPartie, String pseudo) throws RemoteException {
+        Collection<Carte> carteDTOCollection = new ArrayList<Carte>();
+         return this.facade.getLesCartesConstructionCite(idPartie, pseudo); //.forEach(c -> carteDTOCollection.add(new CarteDTO(c.get_id(), c.getNom(), c.getEffectif(), c.getLesRessources(), c.getLesCouts())));
+        //return carteDTOCollection;
 
     }
 
-    public Collection<CarteDTO> getLesCartesConstructionMerv(String pseudo) throws RemoteException{
-        Collection<CarteDTO> carteDTOCollection = new ArrayList<CarteDTO>();
-        this.facade.getLesCartesConstructionMerv(pseudo).forEach(c -> carteDTOCollection.add(new CarteDTO(c.get_id(), c.getNom(), c.getEffectif(), c.getLesRessources(), c.getLesCouts())));
-        return carteDTOCollection;
+    @Override
+    public Collection<Carte> getLesCartesConstructionMerv(String idPartie, String pseudo) throws RemoteException{
+        //Collection<Carte> carteDTOCollection = new ArrayList<Carte>();
+        return this.facade.getLesCartesConstructionMerv(idPartie,pseudo);//.forEach(c -> carteDTOCollection.add(new Carte(c.getId(), c.getNom(), c.getEffectif(), c.getLesRessources(), c.getLesCouts())));
+        //return carteDTOCollection;
     }
 
 
 
     @Override
-    public void distribution(String pseudo) throws RemoteException {
-        this.facade.distribution(pseudo);
+    public void distribution(String idPartie) throws RemoteException {
+        this.facade.distribution(idPartie);
     }
 
     @Override
-    public Boolean partieCommence() throws RemoteException {
-        return this.facade.partieCommence();
+    public Boolean partieCommence(String idPartie) throws RemoteException {
+        return this.facade.partieCommence(idPartie);
     }
 
     @Override
-    public Boolean authorisationCirculer() throws RemoteException {
-        return this.facade.authorisationCirculer();
+    public Boolean authorisationCirculer(String idPartie) throws RemoteException {
+        return this.facade.authorisationCirculer(idPartie);
     }
 
     @Override
-    public synchronized void notification() throws RemoteException, partiTermineException {
-        this.facade.notification();
+    public synchronized void notification(String idPartie) throws RemoteException {
+        this.facade.notification(idPartie);
     }
 
     @Override
-    public void setNouvellePartie(String text, String ticket, int effectif) throws RemoteException{
-        this.facade.setNouvellePartie(text, ticket, effectif);
+    public void inscription(String pseudo, String mdp) throws RemoteException{
+        this.facade.inscription(pseudo,mdp);
     }
+
+    @Override
+    public boolean connexion(String pseudo, String mdp)throws RemoteException{
+        return this.facade.connexion(pseudo,mdp);
+    }
+
+    @Override
+    public void setNouvellePartie(String pseudo, String ticket) throws RemoteException, partiePleinExecption {
+        this.facade.setNouvellePartie(pseudo, ticket);
+    }
+
+    @Override
+    public boolean reAccederAuJeu(String idPartie, String pseudo)throws RemoteException {
+        return facade.reAccederAuJeu(idPartie,pseudo);
+    }
+
+    @Override
+    public Collection<PartieDTO> getLesPartiesSuspendu() throws RemoteException{
+        Collection<PartieDTO> partieDTOCollection = new ArrayList<PartieDTO>();
+        for (Partie partie: this.facade.getLesPartiesSuspendu()){
+            PartieDTO partieDTO = new PartieDTO(partie.getId());
+            for (PartieJoueur partieJoueur : partie.getPartieJoueurs()){
+                partieDTO.ajouterNomJoueur(partieJoueur.getJoueur());
+            }
+            partieDTOCollection.add(partieDTO);
+        }
+        return partieDTOCollection;
+    }
+
+    @Override
+    public boolean suspendreLaPartie(String idPartie, String pseudo)throws RemoteException {
+        return this.facade.suspendreLaPartie(idPartie, pseudo);
+    }
+
+    @Override
+    public boolean quitter(String idPartie, String pseudo)throws RemoteException {
+        return this.facade.quitter(idPartie, pseudo);
+    }
+
+    @Override
+    public boolean reprendreUnePartie(String idPartie, String pseudo)throws RemoteException {
+        return  this.facade.reprendreUnePartie(idPartie,pseudo);
+    }
+
+
 
 
 }
