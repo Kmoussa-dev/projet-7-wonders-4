@@ -108,7 +108,8 @@ public class PartieJoueur {
 
 
 
-    public void deplacerLaCarteChoisi(List<Carte> majCarteCirculant, Carte choixCarte, ModeDeplacement modeDeplacement, Partie partie) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException {
+    public void deplacerLaCarteChoisi(List<Carte> majCarteCirculant, Carte choixCarte, ModeDeplacement modeDeplacement, Partie partie)
+            throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException {
         /*PartieJoueur partieJoueurGauche = null;
         PartieJoueur partieJoueurDroite = null;
         try {
@@ -140,7 +141,8 @@ public class PartieJoueur {
                             this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
                         }
                         else {
-
+                            //Si mode deplacement = CONSTRUCTION DEFAUSSE
+                            partie.getCartesDefausse().add(choixCarte);
                             this.cartesCirculantes = majCarteCirculant;
                             this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
                         }

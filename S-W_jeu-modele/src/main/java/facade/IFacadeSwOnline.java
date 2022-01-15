@@ -20,6 +20,8 @@ public interface IFacadeSwOnline {
 
     List<Carte> getLesCartesConstructionMerv(String idPartie, String pseudo);
 
+    List<Carte> getLesCartesDefausses(String idPartie);
+
     void distribution(String idPartie);
 
     boolean partieCommence(String idPartie);

@@ -25,12 +25,21 @@ public class Dao {
 
 
 
-    public static void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException {
+    public static void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement)
+            throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException {
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
         partie.deplacer(pseudo,carte,cartes,modeDeplacement);
-        partieMongoCollection.updateOne(Filters.eq("_id", idPartie), Updates.combine(Updates.set("partieJoueurs", partie.getPartieJoueurs()),Updates.set("etatPartie","EN_COURS")));
+        partieMongoCollection.updateOne(Filters.eq("_id", idPartie), Updates.combine(
+                Updates.set("partieJoueurs", partie.getPartieJoueurs()),
+                Updates.set("etatPartie","EN_COURS"),
+                Updates.set("cartesDefausse", partie.getCartesDefausse())
+        ));
+
+        //partieMongoCollection.upd;
+
     }
+
 
     public static List<Carte> getLesCartesCirculants(String idPartie, String pseudo){
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
@@ -48,6 +57,12 @@ public class Dao {
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
         return partie.getPartieJoueurByPseudo(pseudo).getCartesConstructionMerveille();
+    }
+
+    public static List<Carte> getLesCartesDefausses(String idPartie){
+        MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
+        Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
+        return partie.getCartesDefausse();
     }
 
     public static void distributionCarteDebut(String idPartie){

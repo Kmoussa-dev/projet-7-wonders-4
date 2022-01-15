@@ -23,6 +23,8 @@ public interface IFacadeProxy {
 
     Collection<Carte> getLesCartesConstructionMerv(String idPartie, String pseudo);
 
+    Collection<Carte> getLesCartesDefausses(String idPartie);
+
     void distribution(String idPartie);
 
     Boolean partieCommence(String idPartie);

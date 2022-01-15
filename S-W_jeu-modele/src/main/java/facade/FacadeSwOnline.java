@@ -34,6 +34,11 @@ public class FacadeSwOnline implements IFacadeSwOnline{
     }
 
     @Override
+    public List<Carte> getLesCartesDefausses(String idPartie) {
+        return Dao.getLesCartesDefausses(idPartie);
+    }
+
+    @Override
     public void distribution(String idPartie) {
         Dao.distributionCarteDebut(idPartie);
     }

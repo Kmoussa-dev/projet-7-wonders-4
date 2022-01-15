@@ -16,17 +16,15 @@ public class Partie {
     private String id;
     private EtatPartie etatPartie;
     private List <PartieJoueur> partieJoueurs ;
+    private List<Carte> cartesDefausse;
 
-    public Partie(){
-
-    }
-
+    public Partie(){}
 
     public Partie(String id){
         this.id = id;
         this.partieJoueurs = new ArrayList<>();
+        this.cartesDefausse = new ArrayList<>();
         this.etatPartie = EtatPartie.DEBUT;
-
     }
 
 
@@ -107,12 +105,22 @@ public class Partie {
         return this.partieJoueurs.size() == 4;
     }
 
+    public List<Carte> getCartesDefausse() {
+        return cartesDefausse;
+    }
+
+    public void setCartesDefausse(List<Carte> cartesDefausse) {
+        this.cartesDefausse = cartesDefausse;
+    }
+
+
     @Override
     public String toString() {
         return "Partie{" +
-                "_id='" + id + '\'' +
-                ", etatPartie='" + etatPartie + '\'' +
+                "id='" + id + '\'' +
+                ", etatPartie=" + etatPartie +
                 ", partieJoueurs=" + partieJoueurs +
+                ", cartesDefausse=" + cartesDefausse +
                 '}';
     }
 }

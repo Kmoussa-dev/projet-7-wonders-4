@@ -103,6 +103,14 @@ public class FacadeProxy implements IFacadeProxy {
         return null;
     }
 
+    @Override
+    public Collection<Carte> getLesCartesDefausses(String idPartie) {
+        try {
+            return this.jeuFacade.getLesCartesDefausses(idPartie);
+        } catch (RemoteException e) {
+            throw new RuntimeException("erreur rmi");
+        }
+    }
 
 
     @Override

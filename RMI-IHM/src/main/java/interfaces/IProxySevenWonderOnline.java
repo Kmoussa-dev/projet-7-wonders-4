@@ -26,6 +26,8 @@ public interface IProxySevenWonderOnline extends Remote {
 
     Collection<Carte> getLesCartesConstructionMerv(String idPartie, String pseudo) throws RemoteException;
 
+    Collection<Carte> getLesCartesDefausses(String idPartie) throws RemoteException;
+
     void distribution(String idPartie)throws RemoteException;
 
     Boolean partieCommence(String idPartie) throws RemoteException;

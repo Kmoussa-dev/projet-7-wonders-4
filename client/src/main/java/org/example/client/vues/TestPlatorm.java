@@ -32,8 +32,6 @@ public class TestPlatorm {
     @FXML
     TextField codePartie;
 
-
-
     @FXML
     Button deplaceCarte;
 
@@ -45,6 +43,9 @@ public class TestPlatorm {
 
     @FXML
     ListView carteContructMerv;
+
+    @FXML
+    ListView cartesDefausse;
 
     @FXML
     Label pseudo;
@@ -158,6 +159,10 @@ public class TestPlatorm {
 
     public void chargerContsructionMerv(ObservableList<Carte> cartes) {
         carteContructMerv.setItems(cartes);
+    }
+
+    public void chargerCartesDefausses(ObservableList<Carte> cartes) {
+        cartesDefausse.setItems(cartes);
     }
 
     public void refresh(ActionEvent actionEvent) {

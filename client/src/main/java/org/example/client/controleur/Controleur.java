@@ -52,8 +52,15 @@ public class Controleur {
     public void loadCarteConstructionMerv(String idPartie, String pseudo){
         ObservableList<Carte> cartes = FXCollections.observableArrayList(this.facade.getLesCartesConstructionMerv(idPartie,pseudo));
         this.testPlatorm.chargerContsructionMerv(cartes);
+    }
+
+    public void loadCartesDefausses(String idPartie){
+        ObservableList<Carte> cartes = FXCollections.observableArrayList(this.facade.getLesCartesDefausses(idPartie));
+        this.testPlatorm.chargerCartesDefausses(cartes);
 
     }
+
+
 
     public void run(){
         this.authentification.show();
@@ -82,6 +89,7 @@ public class Controleur {
         this.loadCarteTemp(idPartie, pseudo);
         this.loadCarteConstruction(idPartie, pseudo);
         this.loadCarteConstructionMerv(idPartie, pseudo);
+        this.loadCartesDefausses(idPartie);
     }
 
 
@@ -89,6 +97,7 @@ public class Controleur {
         this.loadCarteTemp(idPartie, pseudo);
         this.loadCarteConstruction(idPartie, pseudo);
         this.loadCarteConstructionMerv(idPartie, pseudo);
+        this.loadCartesDefausses(idPartie);
     }
 
     public void deplacerCarte(String idPartie, String pseudo, Carte nomCarte, List<Carte> cartes, ModeDeplacement modeDeplacement){
@@ -116,6 +125,7 @@ public class Controleur {
         this.loadCarteConstruction(idPartie, pseudo);
         this.loadCarteTemp(idPartie, pseudo);
         this.loadCarteConstructionMerv(idPartie, pseudo);
+        this.loadCartesDefausses(idPartie);
 
 
     }
@@ -157,6 +167,7 @@ public class Controleur {
                this.loadCarteTemp(idPartie, pseudo);
                this.loadCarteConstruction(idPartie, pseudo);
                this.loadCarteConstructionMerv(idPartie, pseudo);
+               this.loadCartesDefausses(idPartie);
            }
        }
        catch (Exception e){

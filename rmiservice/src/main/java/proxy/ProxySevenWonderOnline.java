@@ -63,6 +63,10 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
         return this.facade.getLesCartesConstructionMerv(idPartie,pseudo);
     }
 
+    @Override
+    public Collection<Carte> getLesCartesDefausses(String idPartie) throws RemoteException {
+        return this.facade.getLesCartesDefausses(idPartie);
+    }
 
 
     @Override
