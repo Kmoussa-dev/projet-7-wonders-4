@@ -1,9 +1,10 @@
 package packageDTOs;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PartieDTO {
+public class PartieDTO implements Serializable {
     private String id;
     private List<String> lesJoueurs;
 

@@ -3,7 +3,6 @@ package facade;
 import effet.Commerce;
 import effet.Direction;
 import effet.Effet;
-import interfaces.ICarte;
 import packageDTOs.Carte;
 import packageDTOs.Effectif;
 import packageDTOs.TypeEffet;

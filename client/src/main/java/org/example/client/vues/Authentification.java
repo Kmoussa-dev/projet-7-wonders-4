@@ -75,15 +75,22 @@ public class Authentification {
     }
 
     public void inscription(ActionEvent actionEvent) {
-        try {
-            this.controleur.inscription(identifiant.getText(),password.getText());
-            DonnesStatic.pseudo = identifiant.getText();
-            this.controleur.goToAcceuil();
-        }
-        catch (Exception e){
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Ce pseudo est déjà utilisé, vaeuillez choisir un autre", ButtonType.OK);
-            alert.setTitle("pseudo déjà existant");
+        if(identifiant.getText() == "" || password.getText() == ""){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Veuillez saisir tous les champs", ButtonType.OK);
+            alert.setTitle("champs requis");
             alert.showAndWait();
+        }
+        else {
+            try {
+                this.controleur.inscription(identifiant.getText(),password.getText());
+                DonnesStatic.pseudo = identifiant.getText();
+                this.controleur.goToAcceuil();
+            }
+            catch (Exception e){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Ce pseudo est déjà utilisé, vaeuillez choisir un autre", ButtonType.OK);
+                alert.setTitle("pseudo déjà existant");
+                alert.showAndWait();
+            }
         }
 
 

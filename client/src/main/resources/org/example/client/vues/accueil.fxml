@@ -12,9 +12,9 @@
       <Button fx:id="btnCreer" layoutX="27.0" layoutY="125.0" mnemonicParsing="false" onAction="#creerPartie" prefHeight="26.0" prefWidth="214.0" text="Créer une nouvelle partie" />
       <TextField fx:id="ticket" layoutX="35.0" layoutY="230.0" prefHeight="26.0" prefWidth="286.0" />
       <Label layoutX="35.0" layoutY="214.0" text="Code de l'invitation:" />
-      <ListView fx:id="lesPartiesSuspendus" layoutX="409.0" layoutY="47.0" prefHeight="290.0" prefWidth="228.0" />
-      <Button layoutX="480.0" layoutY="345.0" mnemonicParsing="false" onAction="#reprendreUnePartie" prefHeight="26.0" prefWidth="109.0" text="Reprendre" />
-      <Label layoutX="440.0" layoutY="31.0" prefHeight="16.0" prefWidth="167.0" text="Les parties suspendus:" />
+      <ListView fx:id="lesPartiesSuspendus" layoutX="409.0" layoutY="67.0" prefHeight="290.0" prefWidth="228.0" />
+      <Button layoutX="409.0" layoutY="357.0" mnemonicParsing="false" onAction="#reprendreUnePartie" prefHeight="26.0" prefWidth="109.0" text="Reprendre" />
+      <Label layoutX="450.0" layoutY="48.0" prefHeight="16.0" prefWidth="167.0" text="Les parties suspendus:" />
       <Label layoutX="14.0" layoutY="64.0" text="Code d'invitation à envoyer au 3 joueurs:" />
       <Label fx:id="token" layoutX="118.0" layoutY="87.0" text="code" />
    </children>

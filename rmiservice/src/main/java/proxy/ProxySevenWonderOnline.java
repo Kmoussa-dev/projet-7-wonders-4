@@ -3,7 +3,6 @@ package proxy;
 import exceptions.*;
 import facade.FacadeSwOnline;
 import facade.IFacadeSwOnline;
-import interfaces.ICarte;
 import interfaces.IProxySevenWonderOnline;
 import modele.Partie;
 import modele.PartieJoueur;
@@ -22,7 +21,7 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
 
     public ProxySevenWonderOnline() throws RemoteException {
         super(0);
-        this.facade = FacadeSwOnline.cree();
+        this.facade = new  FacadeSwOnline();
     }
 
     @Override
@@ -39,37 +38,29 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
     }
 
     @Override
-    public void accederUnePartie(String idPartie, String pseudo) throws RemoteException, partieDejaTermineException, partieInexistantException, partiePleinExecption {
+    public void accederUnePartie(String idPartie, String pseudo) throws RemoteException, partieDejaTermineException, partieInexistantException, PartiePleinExecption {
         this.facade.accederUnePartie(idPartie,pseudo);
     }
 
 
     @Override
-    public void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws RemoteException, CarteInexistantException, CarteDejaException, PartieSuspenduOuTermine {
+    public void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws RemoteException, CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException {
         this.facade.deplacementCarte(idPartie, pseudo, carte, cartes, modeDeplacement);
     }
 
     @Override
     public Collection<Carte> getLesCartesCirculants(String idPartie, String pseudo) throws RemoteException {
-        //Collection<Carte> carteDTOCollection = new ArrayList<Carte>();
-        return this.facade.getLesCartesCirculants(idPartie, pseudo);  //.forEach(c -> carteDTOCollection.add(new Carte(c.getId(), c.getNom(), c.getEffectif(), c.getLesRessources(), c.getLesCouts())));
-        //return carteDTOCollection;
-
+        return this.facade.getLesCartesCirculants(idPartie, pseudo);
     }
 
     @Override
     public Collection<Carte> getLesCartesConstructionCite(String idPartie, String pseudo) throws RemoteException {
-        Collection<Carte> carteDTOCollection = new ArrayList<Carte>();
-         return this.facade.getLesCartesConstructionCite(idPartie, pseudo); //.forEach(c -> carteDTOCollection.add(new CarteDTO(c.get_id(), c.getNom(), c.getEffectif(), c.getLesRessources(), c.getLesCouts())));
-        //return carteDTOCollection;
-
+         return this.facade.getLesCartesConstructionCite(idPartie, pseudo);
     }
 
     @Override
     public Collection<Carte> getLesCartesConstructionMerv(String idPartie, String pseudo) throws RemoteException{
-        //Collection<Carte> carteDTOCollection = new ArrayList<Carte>();
-        return this.facade.getLesCartesConstructionMerv(idPartie,pseudo);//.forEach(c -> carteDTOCollection.add(new Carte(c.getId(), c.getNom(), c.getEffectif(), c.getLesRessources(), c.getLesCouts())));
-        //return carteDTOCollection;
+        return this.facade.getLesCartesConstructionMerv(idPartie,pseudo);
     }
 
 
@@ -105,7 +96,7 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
     }
 
     @Override
-    public void setNouvellePartie(String pseudo, String ticket) throws RemoteException, partiePleinExecption {
+    public void setNouvellePartie(String pseudo, String ticket) throws RemoteException, PartiePleinExecption {
         this.facade.setNouvellePartie(pseudo, ticket);
     }
 
@@ -128,7 +119,7 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
     }
 
     @Override
-    public boolean suspendreLaPartie(String idPartie, String pseudo)throws RemoteException {
+    public boolean suspendreLaPartie(String idPartie, String pseudo) throws RemoteException, PartieNonReprendreException {
         return this.facade.suspendreLaPartie(idPartie, pseudo);
     }
 
@@ -138,11 +129,12 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
     }
 
     @Override
-    public boolean reprendreUnePartie(String idPartie, String pseudo)throws RemoteException {
+    public boolean reprendreUnePartie(String idPartie, String pseudo) throws RemoteException, PartieNonSuspenduException {
         return  this.facade.reprendreUnePartie(idPartie,pseudo);
     }
 
-
-
-
+    @Override
+    public boolean peutQuitter(String idPartie) throws RemoteException{
+        return this.facade.peutQuitter(idPartie);
+    }
 }

@@ -1,8 +1,6 @@
 package packageDTOs;
 
 import effet.Effet;
-import interfaces.ICarte;
-import interfaces.IEffet;
 
 import java.io.Serializable;
 import java.util.ArrayList;

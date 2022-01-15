@@ -10,7 +10,7 @@ public class TestingFacade {
         //Dao.CreerUnePartie("mass","choier");
         //System.out.println(Dao.connexion("bonjour","54345345436"));
 
-        System.out.println(Dao.getPartie("61e218c355d3af0d45c8407b"));
+        System.out.println(Dao.reAccederAuJeu("61e2ee2fded142420fcc2b1f","alice"));
         //System.out.println(new ObjectId("61e1cffa22202127355d58b0"));
         //System.out.println(new ObjectId(new Date()).toHexString());
     }

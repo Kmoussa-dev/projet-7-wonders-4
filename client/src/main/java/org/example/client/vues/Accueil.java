@@ -1,8 +1,7 @@
 package org.example.client.vues;
 
-import exceptions.partieDejaTermineException;
-import exceptions.partieInexistantException;
-import exceptions.partiePleinExecption;
+import exceptions.*;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -73,6 +72,10 @@ public class Accueil {
         this.stage.show();
     }
 
+    public void chargerPartieSuspendu(ObservableList<PartieDTO> partieDTOS){
+        this.lesPartiesSuspendus.setItems(partieDTOS);
+    }
+
     public void rejoindrePartie(ActionEvent actionEvent) {
         try {
 
@@ -82,7 +85,7 @@ public class Accueil {
             Alert alert = new Alert(Alert.AlertType.ERROR, "La partie est déjà terminé", ButtonType.OK);
             alert.setTitle("Remplie");
             alert.showAndWait();
-        } catch (partiePleinExecption e) {
+        } catch (PartiePleinExecption e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "La partie est pleine", ButtonType.OK);
             alert.setTitle("Remplie");
             alert.showAndWait();
@@ -98,11 +101,11 @@ public class Accueil {
         DonnesStatic.ticket = objectId.toHexString();
         try {
             this.controleur.setNouvellePartie(DonnesStatic.pseudo, DonnesStatic.ticket);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Envoyer ce code d'invitation: " + objectId.toHexString(), ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Envoyer ce code d'invitation: "+"\n" + objectId.toHexString(), ButtonType.OK);
             alert.setTitle("Invitation");
             alert.showAndWait();
             this.controleur.goToPlateForm();
-        } catch (partiePleinExecption e) {
+        } catch (PartiePleinExecption e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "La partie est plein", ButtonType.OK);
             alert.setTitle("Remplie");
             alert.showAndWait();
@@ -113,6 +116,10 @@ public class Accueil {
 
     public void reprendreUnePartie(ActionEvent actionEvent) {
         DonnesStatic.ticket = ((PartieDTO)lesPartiesSuspendus.getSelectionModel().getSelectedItem()).getId();
-        this.controleur.reAccederAuJeu(DonnesStatic.pseudo, DonnesStatic.ticket);
+        this.controleur.reAccederAuJeu(DonnesStatic.ticket, DonnesStatic.pseudo);
+    }
+
+    public void showParties(ActionEvent actionEvent) {
+        this.controleur.loadPartieSuspendus();
     }
 }

@@ -1,7 +1,7 @@
 package org.example.client.vues;
 
-import facade.IFacadeSwOnline;
-import interfaces.ICarte;
+import exceptions.PartieNonReprendreException;
+import exceptions.PartieNonSuspenduException;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -14,7 +14,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.example.client.controleur.Controleur;
 import org.example.client.modele.DonnesStatic;
@@ -31,10 +30,9 @@ public class TestPlatorm {
     private Controleur controleur;
 
     @FXML
-    TextField pseudo;
+    TextField codePartie;
 
-    @FXML
-    Button accer;
+
 
     @FXML
     Button deplaceCarte;
@@ -49,7 +47,7 @@ public class TestPlatorm {
     ListView carteContructMerv;
 
     @FXML
-    Label token;
+    Label pseudo;
 
 
     public void setScene(Scene scene){
@@ -60,8 +58,10 @@ public class TestPlatorm {
         this.stage = stage;
     }
 
-    public void setToken(String token){
-        this.token.setText(token);
+    public void setToken(String token, String pseudo){
+        this.pseudo.setText(pseudo);
+        this.codePartie.setText(token);
+        this.codePartie.setEditable(false);
     }
 
 
@@ -95,13 +95,11 @@ public class TestPlatorm {
 
 
 
-    public void accederJeu(ActionEvent actionEvent) {
-        //this.controleur.accederAuJeu(pseudo.getText(),"");
-        //accer.setDisable(true);
-    }
 
     public void loadCardAge1() {
-
+        this.carteTemp.getItems().clear();
+        this.carteContructCite.getItems().clear();
+        this.carteContructMerv.getItems().clear();
         Task<Boolean> attenteDistributionCarte = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
@@ -115,21 +113,29 @@ public class TestPlatorm {
 
     }
 
-    public void charger(ObservableList<Carte> carteDTOS) {
-        carteTemp.setItems(carteDTOS);
+    public void charger(ObservableList<Carte> cartes) {
+        carteTemp.setItems(cartes);
         carteTemp.setOrientation(Orientation.HORIZONTAL); //afficher horizontalement la liste des cartes circulantes
         visuelCartes(); //appel à la fonction qui affiche les images des cartes
     }
 
     public void choixUneCarte(ActionEvent actionEvent) {
-        //if(controleur.getEtatParti() != "TERMINE" && controleur.getEtatParti() != "SUSPENDU"){}
-        int index = carteTemp.getSelectionModel().getSelectedIndex();
-        List<Carte> cartes = new ArrayList<>();
-        Carte nomCarteChoisi =  ((Carte)carteTemp.getSelectionModel().getSelectedItem());
-        carteTemp.getItems().remove(index);
-        carteTemp.getItems().forEach(o -> cartes.add(((Carte)o)));
 
-        controleur.deplacerCarte(DonnesStatic.ticket, DonnesStatic.pseudo, nomCarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_CITE);
+        int index = carteTemp.getSelectionModel().getSelectedIndex();
+        if (index != - 1){
+            List<Carte> cartes = new ArrayList<>();
+            Carte nomCarteChoisi =  ((Carte)carteTemp.getSelectionModel().getSelectedItem());
+            carteTemp.getItems().remove(index);
+            carteTemp.getItems().forEach(o -> cartes.add(((Carte)o)));
+
+            controleur.deplacerCarte(DonnesStatic.ticket, DonnesStatic.pseudo, nomCarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_CITE);
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Aucune carte n'est choisi", ButtonType.OK);
+            alert.setTitle("Aucune carte choisi");
+            alert.showAndWait();
+        }
+
 
         Task<Boolean> deplacement = new Task<Boolean>() {
             @Override
@@ -146,12 +152,12 @@ public class TestPlatorm {
 
     }
 
-    public void chargerContsructionCite(ObservableList<Carte> carteDTOS) {
-        carteContructCite.setItems(carteDTOS);
+    public void chargerContsructionCite(ObservableList<Carte> cartes) {
+        carteContructCite.setItems(cartes);
     }
 
-    public void chargerContsructionMerv(ObservableList<Carte> carteDTOS) {
-        carteContructMerv.setItems(carteDTOS);
+    public void chargerContsructionMerv(ObservableList<Carte> cartes) {
+        carteContructMerv.setItems(cartes);
     }
 
     public void refresh(ActionEvent actionEvent) {
@@ -160,12 +166,19 @@ public class TestPlatorm {
 
     public void constructionMerveille(ActionEvent actionEvent) {
         int index = carteTemp.getSelectionModel().getSelectedIndex();
-        List<Carte> cartes = new ArrayList<>();
-        Carte CarteChoisi =  ((Carte)carteTemp.getSelectionModel().getSelectedItem());
-        carteTemp.getItems().remove(index);
-        carteTemp.getItems().forEach(o -> cartes.add(((Carte)o)));
+        if (index != - 1){
+            List<Carte> cartes = new ArrayList<>();
+            Carte nomCarteChoisi =  ((Carte)carteTemp.getSelectionModel().getSelectedItem());
+            carteTemp.getItems().remove(index);
+            carteTemp.getItems().forEach(o -> cartes.add(((Carte)o)));
 
-        controleur.deplacerCarte(DonnesStatic.ticket, DonnesStatic.pseudo,CarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_MERVAILLE);
+            controleur.deplacerCarte(DonnesStatic.ticket, DonnesStatic.pseudo, nomCarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_MERVAILLE);
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Aucune carte n'est choisi", ButtonType.OK);
+            alert.setTitle("Aucune carte choisi");
+            alert.showAndWait();
+        }
 
         Task<Boolean> deplacement = new Task<Boolean>() {
             @Override
@@ -181,13 +194,19 @@ public class TestPlatorm {
 
     public void defausserCarte(ActionEvent actionEvent) {
         int index = carteTemp.getSelectionModel().getSelectedIndex();
-        List<Carte> cartes = new ArrayList<>();
-        Carte CarteChoisi =  ((Carte)carteTemp.getSelectionModel().getSelectedItem());
-        carteTemp.getItems().remove(index);
-        carteTemp.getItems().forEach(o -> cartes.add(((Carte)o)));
+        if (index != - 1){
+            List<Carte> cartes = new ArrayList<>();
+            Carte nomCarteChoisi =  ((Carte)carteTemp.getSelectionModel().getSelectedItem());
+            carteTemp.getItems().remove(index);
+            carteTemp.getItems().forEach(o -> cartes.add(((Carte)o)));
 
-        controleur.deplacerCarte(DonnesStatic.ticket, DonnesStatic.pseudo,CarteChoisi, cartes, ModeDeplacement.DEFAUSSE_CARTE);
-
+            controleur.deplacerCarte(DonnesStatic.ticket, DonnesStatic.pseudo, nomCarteChoisi, cartes, ModeDeplacement.DEFAUSSE_CARTE);
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Aucune carte n'est choisi", ButtonType.OK);
+            alert.setTitle("Aucune carte choisi");
+            alert.showAndWait();
+        }
         Task<Boolean> deplacement = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
@@ -268,18 +287,46 @@ public class TestPlatorm {
     }
 
     public void suspendreJeu(ActionEvent actionEvent) {
-        if(!this.controleur.suspendreJeu(DonnesStatic.ticket,DonnesStatic.pseudo)){
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Vous n'avez pas droit de faire quitter cette partie", ButtonType.OK);
-            alert.setTitle("Accès refusée");
+        try {
+            if(this.controleur.suspendreJeu(DonnesStatic.ticket,DonnesStatic.pseudo)){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Vous avez suspendu la partie", ButtonType.OK);
+                alert.setTitle("Suspendre");
+                alert.showAndWait();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Vous n'avez pas droit de suspendre cette partie", ButtonType.OK);
+                alert.setTitle("Accès refusée");
+                alert.showAndWait();
+            }
+        } catch (PartieNonReprendreException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "La partie est déjà suspendu", ButtonType.OK);
+            alert.setTitle("La partie déjà suspendu");
             alert.showAndWait();
         }
     }
 
     public void reprendreJeu(ActionEvent actionEvent) {
-        if(!this.controleur.reprendreJeu(DonnesStatic.ticket,DonnesStatic.pseudo)){
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Vous n'avez pas droit de faire quitter cette partie", ButtonType.OK);
-            alert.setTitle("Accès refusée");
+        try {
+            if(this.controleur.reprendreJeu(DonnesStatic.ticket,DonnesStatic.pseudo)){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Vous avez repris la partie", ButtonType.OK);
+                alert.setTitle("Reprendre");
+                alert.showAndWait();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Vous n'avez pas droit de reprendre cette partie", ButtonType.OK);
+                alert.setTitle("Accès refusée");
+                alert.showAndWait();
+            }
+        } catch (PartieNonSuspenduException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "La partie n'est pas suspendu", ButtonType.OK);
+            alert.setTitle("La partie non suspendu");
             alert.showAndWait();
         }
+
+    }
+
+    public void retourMenu(ActionEvent actionEvent) {
+        this.controleur.peutQuitter(DonnesStatic.ticket);
+
     }
 }

@@ -1,9 +1,6 @@
 package org.example.client.modele;
 
-import com.mongodb.DuplicateKeyException;
 import exceptions.*;
-import facade.IFacadeSwOnline;
-import interfaces.ICarte;
 import interfaces.IProxySevenWonderOnline;
 import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
@@ -57,7 +54,7 @@ public class FacadeProxy implements IFacadeProxy {
     }
 
     @Override
-    public void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, partiePleinExecption {
+    public void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, PartiePleinExecption {
         try {
             this.jeuFacade.accederUnePartie(idPartie,pseudo);
         } catch (RemoteException e) {
@@ -68,7 +65,7 @@ public class FacadeProxy implements IFacadeProxy {
 
 
     @Override
-    public void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieSuspenduOuTermine {
+    public void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException {
         try {
             this.jeuFacade.deplacementCarte(idPartie, pseudo,carte, cartes, modeDeplacement);
         } catch (RemoteException e) {
@@ -147,7 +144,7 @@ public class FacadeProxy implements IFacadeProxy {
     }
 
     @Override
-    public void setNouvellePartie(String pseudo, String ticket) throws partiePleinExecption {
+    public void setNouvellePartie(String pseudo, String ticket) throws PartiePleinExecption {
         try {
             this.jeuFacade.setNouvellePartie(pseudo, ticket);
         } catch (RemoteException e) {
@@ -195,7 +192,7 @@ public class FacadeProxy implements IFacadeProxy {
     }
 
     @Override
-    public boolean suspendreLaPartie(String idPartie, String pseudo) {
+    public boolean suspendreLaPartie(String idPartie, String pseudo) throws PartieNonReprendreException {
         try {
             return this.jeuFacade.suspendreLaPartie(idPartie,pseudo);
         } catch (RemoteException e) {
@@ -215,9 +212,19 @@ public class FacadeProxy implements IFacadeProxy {
     }
 
     @Override
-    public boolean reprendreUnePartie(String idPartie, String pseudo) {
+    public boolean reprendreUnePartie(String idPartie, String pseudo) throws PartieNonSuspenduException {
         try {
             return this.jeuFacade.reprendreUnePartie(idPartie, pseudo);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean peutQuitter(String idPartie) {
+        try {
+            return this.jeuFacade.peutQuitter(idPartie);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

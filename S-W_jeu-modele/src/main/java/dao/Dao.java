@@ -2,17 +2,13 @@ package dao;
 import com.mongodb.*;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Updates;
 import exceptions.*;
 import facade.LesJeuCartes;
-import interfaces.ICarte;
 import modele.*;
-import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
-import org.bson.types.ObjectId;
 import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
 
@@ -29,11 +25,11 @@ public class Dao {
 
 
 
-    public static void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieSuspenduOuTermine {
+    public static void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException {
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
         partie.deplacer(pseudo,carte,cartes,modeDeplacement);
-        partieMongoCollection.updateOne(Filters.eq("_id", idPartie), Updates.combine(Updates.set("partieJoueurs", partie.getPartieJoueurs())));
+        partieMongoCollection.updateOne(Filters.eq("_id", idPartie), Updates.combine(Updates.set("partieJoueurs", partie.getPartieJoueurs()),Updates.set("etatPartie","EN_COURS")));
     }
 
     public static List<Carte> getLesCartesCirculants(String idPartie, String pseudo){
@@ -69,7 +65,7 @@ public class Dao {
         return partie.partieCommence();
     }
 
-    public static void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, partiePleinExecption {
+    public static void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, PartiePleinExecption {
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
         if(Objects.isNull(partie)){
@@ -108,10 +104,10 @@ public class Dao {
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
         partie.notifierALaPartiJoueur();
-        partieMongoCollection.updateOne(Filters.eq("_id", idPartie), Updates.combine(Updates.set("partieJoueurs", partie.getPartieJoueurs())));
+        partieMongoCollection.updateOne(Filters.eq("_id", idPartie), Updates.combine(Updates.set("partieJoueurs", partie.getPartieJoueurs()),Updates.set("etatPartie", partie.getEtatPartie().toString())));
     }
 
-    public static void creerUnePartie(String pseudo, String ticket) throws partiePleinExecption {
+    public static void creerUnePartie(String pseudo, String ticket) throws PartiePleinExecption {
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Partie partie = new Partie(ticket);
         partie.ajouterPartieJoueur(new PartieJoueur(pseudo,"blabla",true));
@@ -153,7 +149,7 @@ public class Dao {
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Collection<Partie> partieCollection = new ArrayList<>();
         Partie partie = partieMongoCollection.find(Filters.and(Filters.eq("_id",idPartie),Filters.eq("etatPartie","SUSPENDU"))).first();
-        return  (!Objects.isNull(partie.getPartieJoueurByPseudo(pseudo)));
+        return Objects.nonNull(partie.getPartieJoueurByPseudo(pseudo));
     }
 
     public static Collection<Partie> getLesPartiesSuspendu(){
@@ -163,24 +159,28 @@ public class Dao {
         return partieCollection;
     }
 
-    public static boolean suspendreLaPartie(String idPartie, String pseudo){
+    public static boolean suspendreLaPartie(String idPartie, String pseudo) throws PartieNonReprendreException {
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Partie partie = partieMongoCollection.find(Filters.and(Filters.eq("_id",idPartie),Filters.or(Filters.eq("etatPartie","EN_COURS"), Filters.eq("etatPartie","DEBUT")))).first();
-        if(partie.getPartieJoueurByPseudo(pseudo).isCreateur()){
-            partieMongoCollection.updateOne(Filters.eq("_id", idPartie), Updates.combine(Updates.set("etatPartie", "SUSPENDU")));
-            return true;
+        if(Objects.nonNull(partie)){
+            if(partie.getPartieJoueurByPseudo(pseudo).isCreateur()){
+                partieMongoCollection.updateOne(Filters.eq("_id", idPartie), Updates.combine(Updates.set("etatPartie", "SUSPENDU")));
+                return true;
+            }
+            else {
+                return false;
+            }
         }
-        else {
-            return false;
+        else{
+            throw new PartieNonReprendreException();
         }
-
     }
 
     public static boolean quitter(String idPartie, String pseudo){
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Partie partie = partieMongoCollection.find(Filters.eq("_id", idPartie)).first();
         if(partie.getPartieJoueurByPseudo(pseudo).isCreateur()){
-            partieMongoCollection.deleteOne(Filters.eq("_id", idPartie));
+            partieMongoCollection.updateOne(Filters.eq("_id", idPartie), Updates.combine(Updates.set("etatPartie", "TERMINE")));
             return true;
         }
         else {
@@ -190,21 +190,29 @@ public class Dao {
 
 
 
-    public static boolean reprendreUnePartie(String idPartie, String pseudo){
+    public static boolean reprendreUnePartie(String idPartie, String pseudo) throws PartieNonSuspenduException {
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Collection<Partie> partieCollection = new ArrayList<>();
         Partie partie = partieMongoCollection.find(Filters.and(Filters.eq("_id",idPartie),Filters.eq("etatPartie","SUSPENDU"))).first();
-        if(partie.getPartieJoueurByPseudo(pseudo).isCreateur()){
-            partieMongoCollection.updateOne(Filters.eq("_id", idPartie), Updates.combine(Updates.set("etatPartie", "DEBUT")));
-            return true;
+        if(Objects.nonNull(partie)){
+            if(partie.getPartieJoueurByPseudo(pseudo).isCreateur()){
+                partieMongoCollection.updateOne(Filters.eq("_id", idPartie), Updates.combine(Updates.set("etatPartie", "DEBUT")));
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         else {
-            return false;
+            throw new PartieNonSuspenduException();
         }
+
     }
 
-
-
-
+    public static boolean peutQuitter(String idPartie){
+        MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
+        Partie partie = partieMongoCollection.find(Filters.and(Filters.eq("_id",idPartie),Filters.or(Filters.eq("etatPartie","EN_COURS"), Filters.eq("etatPartie","DEBUT")))).first();
+        return Objects.isNull(partie);
+    }
 
 }

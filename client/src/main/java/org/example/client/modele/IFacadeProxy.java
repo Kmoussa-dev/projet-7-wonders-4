@@ -1,13 +1,10 @@
 package org.example.client.modele;
 
-import com.mongodb.DuplicateKeyException;
 import exceptions.*;
-import interfaces.ICarte;
 import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
 import packageDTOs.PartieDTO;
 
-import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,9 +13,9 @@ public interface IFacadeProxy {
 
     Carte getCarte(String nom);
 
-    void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, partiePleinExecption;
+    void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, PartiePleinExecption;
 
-    void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieSuspenduOuTermine;
+    void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException;
 
     Collection<Carte> getLesCartesCirculants(String idPartie, String pseudo);
 
@@ -34,7 +31,7 @@ public interface IFacadeProxy {
 
     void notification(String idPartie);
 
-    void setNouvellePartie(String pseudo, String ticket) throws partiePleinExecption;
+    void setNouvellePartie(String pseudo, String ticket) throws PartiePleinExecption;
 
     void inscription(String pseudo, String mdp);
 
@@ -44,11 +41,12 @@ public interface IFacadeProxy {
 
     Collection<PartieDTO> getLesPartiesSuspendu();
 
-    boolean suspendreLaPartie(String idPartie, String pseudo);
+    boolean suspendreLaPartie(String idPartie, String pseudo) throws PartieNonReprendreException;
 
     boolean quitter(String idPartie, String pseudo);
 
-    boolean reprendreUnePartie(String idPartie, String pseudo);
+    boolean reprendreUnePartie(String idPartie, String pseudo) throws PartieNonSuspenduException;
 
+    boolean peutQuitter(String idPartie);
 
 }

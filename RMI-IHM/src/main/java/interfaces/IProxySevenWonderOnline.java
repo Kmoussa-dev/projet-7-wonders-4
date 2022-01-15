@@ -16,9 +16,9 @@ public interface IProxySevenWonderOnline extends Remote {
     Carte getCarte(String nom) throws RemoteException;
 
 
-    void accederUnePartie(String idPartie, String pseudo) throws RemoteException, partieDejaTermineException, partieInexistantException, partiePleinExecption;
+    void accederUnePartie(String idPartie, String pseudo) throws RemoteException, partieDejaTermineException, partieInexistantException, PartiePleinExecption;
 
-    void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws RemoteException, CarteInexistantException, CarteDejaException, PartieSuspenduOuTermine;
+    void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws RemoteException, CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException;
 
     Collection<Carte> getLesCartesCirculants(String idPartie, String pseudo)throws RemoteException;
 
@@ -34,7 +34,7 @@ public interface IProxySevenWonderOnline extends Remote {
 
     void notification(String idPartie) throws RemoteException;
 
-    void setNouvellePartie(String pseudo, String ticket) throws RemoteException, partiePleinExecption;
+    void setNouvellePartie(String pseudo, String ticket) throws RemoteException, PartiePleinExecption;
 
     void inscription(String pseudo, String mdp) throws RemoteException;
 
@@ -44,9 +44,11 @@ public interface IProxySevenWonderOnline extends Remote {
 
     Collection<PartieDTO> getLesPartiesSuspendu()throws RemoteException;
 
-    boolean suspendreLaPartie(String idPartie, String pseudo)throws RemoteException;
+    boolean suspendreLaPartie(String idPartie, String pseudo) throws RemoteException, PartieNonReprendreException;
 
     boolean quitter(String idPartie, String pseudo)throws RemoteException;
 
-    boolean reprendreUnePartie(String idPartie, String pseudo)throws RemoteException;
+    boolean reprendreUnePartie(String idPartie, String pseudo) throws RemoteException, PartieNonSuspenduException;
+
+    boolean peutQuitter(String idPartie) throws RemoteException;
 }

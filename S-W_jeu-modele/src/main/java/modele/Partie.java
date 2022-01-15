@@ -1,10 +1,6 @@
 package modele;
 
-import exceptions.CarteDejaException;
-import exceptions.CarteInexistantException;
-import exceptions.PartieSuspenduOuTermine;
-import exceptions.partiePleinExecption;
-import interfaces.ICarte;
+import exceptions.*;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import packageDTOs.Carte;
@@ -12,18 +8,17 @@ import packageDTOs.ModeDeplacement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Partie {
-    //private  static  Partie partie = new Partie();
+
     @BsonProperty("_id")
     private String id;
     private EtatPartie etatPartie;
     private List <PartieJoueur> partieJoueurs ;
 
     public Partie(){
-        this.partieJoueurs = new ArrayList<>();
+
     }
 
 
@@ -33,10 +28,6 @@ public class Partie {
         this.etatPartie = EtatPartie.DEBUT;
 
     }
-
-    //public static Partie creer(){
-      //  return partie;
-    //}
 
 
     public String getId() {
@@ -70,7 +61,7 @@ public class Partie {
         return this.partieJoueurs.stream().filter(partieJoueur -> partieJoueur.getJoueur().equals(pseudo)).collect(Collectors.toList()).get(0);
     }
 
-    public void deplacer(String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieSuspenduOuTermine {
+    public void deplacer(String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException {
         for (PartieJoueur partieJoueur : this.partieJoueurs){
             if(partieJoueur.getJoueur().equals(pseudo)){
                 partieJoueur.deplacerLaCarteChoisi(cartes,carte,modeDeplacement, this);
@@ -85,14 +76,16 @@ public class Partie {
                 i ++;
             }
         }
-        System.out.println(i == this.partieJoueurs.size());
         return i != this.partieJoueurs.size();
 
     }
 
-    public void ajouterPartieJoueur(PartieJoueur partieJoueur) throws partiePleinExecption {
+    public void ajouterPartieJoueur(PartieJoueur partieJoueur) throws PartiePleinExecption {
         if(this.partieJoueurs.size() < 4){
             this.partieJoueurs.add(partieJoueur);
+        }
+        else {
+            throw new PartiePleinExecption();
         }
 
 
@@ -104,7 +97,7 @@ public class Partie {
             this.etatPartie = EtatPartie.TERMINE;
         }
         for (PartieJoueur partieJoueur : this.partieJoueurs){
-            partieJoueur.updateCarteTemp(this);
+            partieJoueur.update(this);
         }
 
 

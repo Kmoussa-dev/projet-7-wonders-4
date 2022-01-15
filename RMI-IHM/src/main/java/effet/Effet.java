@@ -1,6 +1,5 @@
 package effet;
 
-import interfaces.IEffet;
 import packageDTOs.TypeEffet;
 
 import java.io.Serializable;

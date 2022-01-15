@@ -1,7 +1,6 @@
 package facade;
 
 import exceptions.*;
-import interfaces.ICarte;
 import modele.Partie;
 import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
@@ -13,7 +12,7 @@ public interface IFacadeSwOnline {
 
 
 
-    void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieSuspenduOuTermine;
+    void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException;
 
     List<Carte> getLesCartesCirculants(String idPartie, String pseudo);
 
@@ -29,13 +28,13 @@ public interface IFacadeSwOnline {
 
     Carte getCarte(String nom);
 
-    void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, partiePleinExecption;
+    void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, PartiePleinExecption;
 
     boolean authorisationCirculer(String idPartie);
 
     void notification(String idPartie);
 
-    void setNouvellePartie(String pseudo, String ticket)throws partiePleinExecption;
+    void setNouvellePartie(String pseudo, String ticket) throws PartiePleinExecption;
 
     void inscription(String pseudo, String mdp);
 
@@ -45,9 +44,11 @@ public interface IFacadeSwOnline {
 
     Collection<Partie> getLesPartiesSuspendu();
 
-    boolean suspendreLaPartie(String idPartie,String pseudo);
+    boolean suspendreLaPartie(String idPartie,String pseudo) throws PartieNonReprendreException;
 
     boolean quitter(String idPartie, String pseudo);
 
-    boolean reprendreUnePartie(String idPartie, String pseudo);
+    boolean reprendreUnePartie(String idPartie, String pseudo) throws PartieNonSuspenduException;
+
+    boolean peutQuitter(String idPartie);
 }
