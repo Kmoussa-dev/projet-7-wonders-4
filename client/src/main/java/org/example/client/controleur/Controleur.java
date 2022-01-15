@@ -97,9 +97,9 @@ public class Controleur {
         this.loadCarteConstructionMerv(idPartie, pseudo);
     }
 
-    public void deplacerCarte(String pseudo, Carte nomCarte, List<Carte> cartes, ModeDeplacement modeDeplacement){
-        /*try {
-            this.facade.deplacementCarte(pseudo,nomCarte, cartes, modeDeplacement);
+    public void deplacerCarte(String idPartie, String pseudo, Carte nomCarte, List<Carte> cartes, ModeDeplacement modeDeplacement){
+        try {
+            this.facade.deplacementCarte(idPartie, pseudo,nomCarte, cartes, modeDeplacement);
         } catch (CarteInexistantException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Cette carte n'existe pas dans le seuveur."+"\n"+"Veuillez cliquer le bouton actualiser", ButtonType.OK);
             alert.setTitle("Carte inexistant");
@@ -108,11 +108,16 @@ public class Controleur {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Vous savez déjà choisi une carte,"+"\n"+"attendez pour le prochain tour.", ButtonType.OK);
             alert.setTitle("Carte déjà choisi");
             alert.showAndWait();
+        } catch (PartieSuspenduOuTermine e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Vous savez déjà choisi une carte,"+"\n"+"attendez pour le prochain tour.", ButtonType.OK);
+            alert.setTitle("Carte déjà choisi");
+            alert.showAndWait();
         }
-        this.loadCarteConstruction(pseudo);
-        this.loadCarteTemp(pseudo);
-        this.loadCarteConstructionMerv(pseudo);
-         */
+
+        this.loadCarteConstruction(idPartie, pseudo);
+        this.loadCarteTemp(idPartie, pseudo);
+        this.loadCarteConstructionMerv(idPartie, pseudo);
+
 
     }
 

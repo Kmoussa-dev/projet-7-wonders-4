@@ -73,8 +73,8 @@ public class Carte implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof ICarte){
-            return  this.id.equals(((ICarte)obj).get_id());
+        if(obj instanceof Carte){
+            return  this.id.equals(((Carte)obj).getId());
         }
         else {
             return false;

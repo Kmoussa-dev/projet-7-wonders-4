@@ -129,7 +129,7 @@ public class TestPlatorm {
         carteTemp.getItems().remove(index);
         carteTemp.getItems().forEach(o -> cartes.add(((Carte)o)));
 
-        controleur.deplacerCarte(DonnesStatic.pseudo,nomCarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_CITE);
+        controleur.deplacerCarte(DonnesStatic.ticket, DonnesStatic.pseudo, nomCarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_CITE);
 
         Task<Boolean> deplacement = new Task<Boolean>() {
             @Override
@@ -165,7 +165,7 @@ public class TestPlatorm {
         carteTemp.getItems().remove(index);
         carteTemp.getItems().forEach(o -> cartes.add(((Carte)o)));
 
-        controleur.deplacerCarte(pseudo.getText(),CarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_MERVAILLE);
+        controleur.deplacerCarte(DonnesStatic.ticket, DonnesStatic.pseudo,CarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_MERVAILLE);
 
         Task<Boolean> deplacement = new Task<Boolean>() {
             @Override
@@ -180,6 +180,24 @@ public class TestPlatorm {
     }
 
     public void defausserCarte(ActionEvent actionEvent) {
+        int index = carteTemp.getSelectionModel().getSelectedIndex();
+        List<Carte> cartes = new ArrayList<>();
+        Carte CarteChoisi =  ((Carte)carteTemp.getSelectionModel().getSelectedItem());
+        carteTemp.getItems().remove(index);
+        carteTemp.getItems().forEach(o -> cartes.add(((Carte)o)));
+
+        controleur.deplacerCarte(DonnesStatic.ticket, DonnesStatic.pseudo,CarteChoisi, cartes, ModeDeplacement.DEFAUSSE_CARTE);
+
+        Task<Boolean> deplacement = new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                while (controleur.authorisationCirculer(DonnesStatic.ticket));
+                return true;
+            }
+        };
+        deplacement.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.notification(DonnesStatic.ticket, DonnesStatic.pseudo));
+        Thread thread = new Thread(deplacement);
+        thread.start();
     }
 
     //DESIGN
@@ -203,8 +221,7 @@ public class TestPlatorm {
                     } else {
                         //String nomCarte =  ((ICarte)carteTemp.getSelectionModel().getSelectedItem()).getNom();
                         imageView.setFitHeight(130); //hauteur image
-                        imageView.setFitWidth(90); //largeur image
-                        System.out.println(carte.getId());
+                        imageView.setFitWidth(90);
                         imageView.setImage(new Image(getClass().getResourceAsStream("/org/example/client/vues/image/cartesID/" + carte.getId() + ".png")));
                         setGraphic(imageView);
                     }
