@@ -110,8 +110,6 @@ public class TestPlatorm {
     }
 
 
-
-
     public void loadCardAge1() {
         this.carteTemp.getItems().clear();
         this.carteContructCite.getItems().clear();
@@ -133,9 +131,8 @@ public class TestPlatorm {
         carteTemp.setItems(cartes);
         carteTemp.setOrientation(Orientation.HORIZONTAL); //afficher horizontalement la liste des cartes circulantes
         visuelCartes(); //appel à la fonction qui affiche les images des cartes
-
-       // merveille.setImage(new Image(getClass().getResourceAsStream("org/example/client/vues/image/etapes/etapeMerveille0.png")));
-
+        //afficher les étapes de la merveille
+        merveille.setImage(new Image(getClass().getResourceAsStream("/org/example/client/vues/image/etapes/etapeMerveille0.png")));
     }
 
     public void choixUneCarte(ActionEvent actionEvent) {
@@ -180,12 +177,10 @@ public class TestPlatorm {
 
         var etapesMerveille = controleur.getEtapesMerveilleConstruite(DonnesStatic.ticket,DonnesStatic.pseudo);
         labelEtape.setText(String.valueOf(etapesMerveille));
-        if (etapesMerveille == 3) {
-           btnConstrucMerv.setDisable(true);
-        }
 
-//        merveille.setImage(new Image(getClass().getResourceAsStream("org/example/client/vues/image/etapes/etapeMerveille"+etapesMerveille+".png")));
+        if (etapesMerveille == 3) {btnConstrucMerv.setDisable(true);}
 
+        merveille.setImage(new Image(getClass().getResourceAsStream("/org/example/client/vues/image/etapes/etapeMerveille"+ etapesMerveille +".png")));
     }
 
     public void chargerCartesDefausses(ObservableList<Carte> cartes) {
@@ -252,7 +247,6 @@ public class TestPlatorm {
         thread.start();
     }
 
-    //DESIGN
 
     /**
      * Méthode qui affiche l'image des cartes circulantes via imageView
@@ -281,7 +275,6 @@ public class TestPlatorm {
             };
         });
     }
-
 
     /**
      * Méthode qui affiche l'image des cartes de construction de la Cité
