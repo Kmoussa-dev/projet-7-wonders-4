@@ -40,6 +40,9 @@ public class Accueil {
     @FXML
     ListView lesPartiesSuspendus;
 
+    @FXML
+    TableView tableHistorique;
+
 
     public static Accueil creer(Stage stage){
 
