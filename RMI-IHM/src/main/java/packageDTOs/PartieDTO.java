@@ -41,9 +41,6 @@ public class PartieDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "PartieDTO{" +
-                "id='" + id + '\'' +
-                ", lesJoueurs=" + lesJoueurs +
-                '}';
+        return "Partie n° " +  id + " - Joueurs " + lesJoueurs ;
     }
 }

@@ -158,6 +158,7 @@ public class Controleur {
 
     public void goToAcceuil(){
         this.accueil.show();
+        this.accueil.setLabelPseudo(DonnesStatic.pseudo);
         this.loadPartieSuspendus();
     }
 

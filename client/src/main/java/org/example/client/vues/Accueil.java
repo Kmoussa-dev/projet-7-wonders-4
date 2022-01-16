@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderImage;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.bson.types.ObjectId;
 import org.example.client.controleur.Controleur;
@@ -30,7 +32,7 @@ public class Accueil {
     Button btnCreer;
 
     @FXML
-    Label token;
+    Label labelPseudo;
 
     @FXML
     TextField ticket;
@@ -44,7 +46,7 @@ public class Accueil {
         FXMLLoader fxmlLoader = new FXMLLoader(TestPlatorm.class.getResource("accueil.fxml"));
         try {
 
-            AnchorPane borderPane = fxmlLoader.load();
+            BorderPane borderPane = fxmlLoader.load();
             Accueil vue = fxmlLoader.getController();
             vue.setStage(stage);
             vue.setScene(new Scene(borderPane,682,417));
@@ -70,6 +72,10 @@ public class Accueil {
     public void show(){
         this.stage.setScene(this.scene);
         this.stage.show();
+    }
+
+    public void setLabelPseudo(String pseudo){
+        this.labelPseudo.setText(pseudo);
     }
 
     public void chargerPartieSuspendu(ObservableList<PartieDTO> partieDTOS){

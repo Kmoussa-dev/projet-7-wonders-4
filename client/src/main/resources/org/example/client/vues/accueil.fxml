@@ -1,22 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.client.vues.Accueil">
-   <children>
-      <Button fx:id="btnRejoindre" layoutX="190.0" layoutY="267.0" mnemonicParsing="false" onAction="#rejoindrePartie" prefHeight="26.0" prefWidth="125.0" text="rejoindre" />
-      <Button fx:id="btnCreer" layoutX="27.0" layoutY="125.0" mnemonicParsing="false" onAction="#creerPartie" prefHeight="26.0" prefWidth="214.0" text="Créer une nouvelle partie" />
-      <TextField fx:id="ticket" layoutX="35.0" layoutY="230.0" prefHeight="26.0" prefWidth="286.0" />
-      <Label layoutX="35.0" layoutY="214.0" text="Code de l'invitation:" />
-      <ListView fx:id="lesPartiesSuspendus" layoutX="409.0" layoutY="67.0" prefHeight="290.0" prefWidth="228.0" />
-      <Button layoutX="479.0" layoutY="357.0" mnemonicParsing="false" onAction="#reprendreUnePartie" prefHeight="26.0" prefWidth="109.0" text="Reprendre" />
-      <Label layoutX="450.0" layoutY="48.0" prefHeight="16.0" prefWidth="167.0" text="Les parties suspendus:" />
-      <Label layoutX="14.0" layoutY="64.0" text="Code d'invitation à envoyer au 3 joueurs:" />
-      <Label fx:id="token" layoutX="118.0" layoutY="87.0" text="code" />
-      <Button layoutX="39.0" layoutY="325.0" mnemonicParsing="false" onAction="#goToHistorique" text="Historisation"></Button>
-   </children>
-</AnchorPane>
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.client.vues.Accueil">
+   <center>
+      <AnchorPane prefHeight="400.0" prefWidth="657.0">
+         <children>
+            <TabPane prefHeight="400.0" prefWidth="657.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab style="-fx-font-weight: bold" text="    M E N U     ">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="464.0" prefWidth="719.0" style="-fx-background-color: white;">
+                           <children>
+                              <VBox layoutX="14.0" layoutY="11.0" prefHeight="352.0" prefWidth="631.0">
+                                 <children>
+                                    <Pane prefHeight="107.0" prefWidth="617.0">
+                                       <children>
+                                          <Button fx:id="btnCreer" layoutX="401.0" layoutY="10.0" mnemonicParsing="false" onAction="#creerPartie" prefHeight="60.0" prefWidth="215.0" style="-fx-background-color: #449f93;" text="CREER UNE PARTIE" textFill="WHITE">
+                                             <font>
+                                                <Font name="DejaVu Sans Bold" size="13.0" />
+                                             </font></Button>
+                                          <Text layoutX="74.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="En tant qu’hôte de la partie, un code d’invitation vous sera généré. Envoyez-le à 3 personnes pour jouer ensemble." wrappingWidth="306.890625">
+                                             <font>
+                                                <Font name="System Italic" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <ImageView fitHeight="45.0" fitWidth="41.0" layoutX="14.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@image/design/003-new.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                    <Pane prefHeight="135.0" prefWidth="617.0" style="-fx-background-color: #dfe0df;">
+                                       <children>
+                                          <Button fx:id="btnRejoindre" layoutX="399.0" layoutY="19.0" mnemonicParsing="false" onAction="#rejoindrePartie" prefHeight="60.0" prefWidth="215.0" style="-fx-background-color: #449f93;" text="REJOINDRE UNE PARTIE" textFill="WHITE">
+                                             <font>
+                                                <Font name="DejaVu Sans Bold" size="13.0" />
+                                             </font></Button>
+                                          <TextField fx:id="ticket" layoutX="77.0" layoutY="44.0" prefHeight="34.0" prefWidth="296.0" promptText="Code de l'invitation" />
+                                          <Text layoutX="77.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="En tant qu'invité, entrez le code d'invitation reçu." wrappingWidth="300.279296875">
+                                             <font>
+                                                <Font name="System Italic" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <ImageView fitHeight="45.0" fitWidth="43.0" layoutX="14.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@image/design/002-join.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                    <Pane prefHeight="172.0" prefWidth="617.0">
+                                       <children>
+                                          <Button layoutX="400.0" layoutY="18.0" mnemonicParsing="false" onAction="#reprendreUnePartie" prefHeight="60.0" prefWidth="215.0" style="-fx-background-color: #449f93;" text="CONTINUER UNE PARTIE" textFill="WHITE">
+                                             <font>
+                                                <Font name="DejaVu Sans Bold" size="13.0" />
+                                             </font></Button>
+                                          <ListView fx:id="lesPartiesSuspendus" layoutX="78.0" layoutY="66.0" prefHeight="78.0" prefWidth="299.0" />
+                                          <Text layoutX="83.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Parmi la liste de vos parties suspendues, choisissez celle quee vous souhaitez reprendre." wrappingWidth="289.7294921875">
+                                             <font>
+                                                <Font name="System Italic" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <ImageView fitHeight="46.0" fitWidth="41.0" layoutX="21.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@image/design/001-select.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab style="-fx-font-weight: bold" text=" H I S T O R I Q U E ">
+                     <content>
+                        <TableView prefHeight="200.0" prefWidth="200.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </AnchorPane>
+   </center>
+   <top>
+      <Label alignment="CENTER" contentDisplay="RIGHT" prefHeight="21.0" prefWidth="371.0" text="Mon compte " textAlignment="CENTER" BorderPane.alignment="TOP_RIGHT">
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </BorderPane.margin>
+         <graphic>
+            <Label fx:id="labelPseudo" alignment="TOP_LEFT" prefHeight="16.0" prefWidth="68.0" textFill="#ffc107">
+               <font>
+                  <Font name="System Bold Italic" size="18.0" />
+               </font></Label>
+         </graphic>
+      </Label>
+   </top>
+</BorderPane>

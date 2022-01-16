@@ -5,10 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -28,6 +25,13 @@ public class Authentification {
 
     @FXML
     PasswordField password;
+
+    @FXML
+    private Label labelMessageErreur;
+
+    private String messageErreur = "";
+
+
 
 
     public static Authentification creer(Stage stage){
@@ -68,17 +72,21 @@ public class Authentification {
             this.controleur.goToAcceuil();
         }
         else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Login incorrect", ButtonType.OK);
-            alert.setTitle("Login incorrect");
-            alert.showAndWait();
+//            Alert alert = new Alert(Alert.AlertType.ERROR, "Login incorrect", ButtonType.OK);
+//            alert.setTitle("Login incorrect");
+//            alert.showAndWait();
+
+            labelMessageErreur.setText("Login invalide");
         }
     }
 
     public void inscription(ActionEvent actionEvent) {
-        if(identifiant.getText().isEmpty() && password.getText().isEmpty()){
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Veuillez saisir tous les champs", ButtonType.OK);
-            alert.setTitle("champs requis");
-            alert.showAndWait();
+        if(identifiant.getText().isEmpty() || password.getText().isEmpty()){
+//            Alert alert = new Alert(Alert.AlertType.ERROR, "Veuillez saisir tous les champs", ButtonType.OK);
+//            alert.setTitle("champs requis");
+//            alert.showAndWait();
+
+            labelMessageErreur.setText("Veuillez saisir tous les champs");
         }
         else {
             try {
@@ -87,9 +95,11 @@ public class Authentification {
                 this.controleur.goToAcceuil();
             }
             catch (Exception e){
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Ce pseudo est déjà utilisé, vaeuillez choisir un autre", ButtonType.OK);
-                alert.setTitle("pseudo déjà existant");
-                alert.showAndWait();
+//                Alert alert = new Alert(Alert.AlertType.ERROR, "Ce pseudo est déjà utilisé, vaeuillez choisir un autre", ButtonType.OK);
+//                alert.setTitle("pseudo déjà existant");
+//                alert.showAndWait();
+
+                labelMessageErreur.setText("Ce pseudo est déjà utilisé, veuillez en saisir un autre");
             }
         }
 
