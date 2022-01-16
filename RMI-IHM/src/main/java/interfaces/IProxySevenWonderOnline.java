@@ -28,6 +28,8 @@ public interface IProxySevenWonderOnline extends Remote {
 
     Collection<Carte> getLesCartesDefausses(String idPartie) throws RemoteException;
 
+    int getEtapesMerveilleConstruite(String idPartie, String pseudo) throws RemoteException;
+
     void distribution(String idPartie)throws RemoteException;
 
     Boolean partieCommence(String idPartie) throws RemoteException;

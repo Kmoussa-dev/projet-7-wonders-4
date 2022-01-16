@@ -75,7 +75,7 @@ public class Authentification {
     }
 
     public void inscription(ActionEvent actionEvent) {
-        if(identifiant.getText() == "" || password.getText() == ""){
+        if(identifiant.getText().isEmpty() && password.getText().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Veuillez saisir tous les champs", ButtonType.OK);
             alert.setTitle("champs requis");
             alert.showAndWait();

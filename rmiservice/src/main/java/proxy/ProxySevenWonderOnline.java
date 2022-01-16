@@ -68,6 +68,10 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
         return this.facade.getLesCartesDefausses(idPartie);
     }
 
+    @Override
+    public int getEtapesMerveilleConstruite(String idPartie, String pseudo) throws RemoteException {
+        return  this.facade.getEtapesMerveilleConstruite(idPartie, pseudo);
+    }
 
     @Override
     public void distribution(String idPartie) throws RemoteException {

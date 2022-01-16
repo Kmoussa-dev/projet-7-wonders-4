@@ -13,6 +13,8 @@ public interface IFacadeProxy {
 
     Carte getCarte(String nom);
 
+    int getEtapesMerveilleConstruite(String idPartie, String pseudo);
+
     void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, PartiePleinExecption;
 
     void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException;

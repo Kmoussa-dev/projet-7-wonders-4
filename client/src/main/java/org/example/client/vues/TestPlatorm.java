@@ -23,6 +23,7 @@ import packageDTOs.ModeDeplacement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TestPlatorm {
     private Stage stage;
@@ -49,6 +50,20 @@ public class TestPlatorm {
 
     @FXML
     Label pseudo;
+
+    @FXML
+    ImageView merveille;
+
+    @FXML
+    Button btnConstrucMerv;
+
+    @FXML
+    Label labelPlateau;
+    @FXML
+    Label labelAge;
+    @FXML
+    Label labelEtape;
+
 
 
     public void setScene(Scene scene){
@@ -118,6 +133,9 @@ public class TestPlatorm {
         carteTemp.setItems(cartes);
         carteTemp.setOrientation(Orientation.HORIZONTAL); //afficher horizontalement la liste des cartes circulantes
         visuelCartes(); //appel à la fonction qui affiche les images des cartes
+
+       // merveille.setImage(new Image(getClass().getResourceAsStream("org/example/client/vues/image/etapes/etapeMerveille0.png")));
+
     }
 
     public void choixUneCarte(ActionEvent actionEvent) {
@@ -159,6 +177,14 @@ public class TestPlatorm {
 
     public void chargerContsructionMerv(ObservableList<Carte> cartes) {
         carteContructMerv.setItems(cartes);
+//        if (etapesMerveille == 3) {
+//           btnConstrucMerv.setDisable(true);
+//        }
+
+//        var etapesMerveille = controleur.getEtapesMerveilleConstruite(DonnesStatic.ticket,DonnesStatic.pseudo);
+//        labelEtape.setText(String.valueOf(etapesMerveille));
+//        merveille.setImage(new Image(getClass().getResourceAsStream("org/example/client/vues/image/etapes/etapeMerveille"+etapesMerveille+".png")));
+
     }
 
     public void chargerCartesDefausses(ObservableList<Carte> cartes) {
@@ -170,6 +196,7 @@ public class TestPlatorm {
     }
 
     public void constructionMerveille(ActionEvent actionEvent) {
+
         int index = carteTemp.getSelectionModel().getSelectedIndex();
         if (index != - 1){
             List<Carte> cartes = new ArrayList<>();

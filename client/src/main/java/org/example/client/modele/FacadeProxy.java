@@ -54,6 +54,15 @@ public class FacadeProxy implements IFacadeProxy {
     }
 
     @Override
+    public int getEtapesMerveilleConstruite(String idPartie, String pseudo) {
+        try {
+            return this.jeuFacade.getEtapesMerveilleConstruite(idPartie,pseudo);
+        } catch (RemoteException e) {
+            throw new RuntimeException("erreur rmi");
+        }
+    }
+
+    @Override
     public void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, PartiePleinExecption {
         try {
             this.jeuFacade.accederUnePartie(idPartie,pseudo);

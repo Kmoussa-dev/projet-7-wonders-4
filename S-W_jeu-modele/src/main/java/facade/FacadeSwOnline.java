@@ -39,9 +39,7 @@ public class FacadeSwOnline implements IFacadeSwOnline{
     }
 
     @Override
-    public void distribution(String idPartie) {
-        Dao.distributionCarteDebut(idPartie);
-    }
+    public void distribution(String idPartie) {Dao.distributionCarteDebut(idPartie);}
 
     @Override
     public boolean partieCommence(String idPartie) {
@@ -56,6 +54,11 @@ public class FacadeSwOnline implements IFacadeSwOnline{
     @Override
     public Carte getCarte(String nom) {
         return Dao.getCartesByName(nom);
+    }
+
+    @Override
+    public int getEtapesMerveilleConstruite(String idPartie, String pseudo) {
+        return Dao.getEtapesMerveilleConstruite(idPartie,pseudo);
     }
 
     @Override

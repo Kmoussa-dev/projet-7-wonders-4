@@ -1,18 +1,22 @@
 package modele;
 
+import effet.Effet;
 import exceptions.*;
 import facade.LesJeuCartes;
 import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
+import packageDTOs.TypeEffet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PartieJoueur {
 
 
     private String joueur;
-    private String plateau;
+    private Plateau plateau;
 
     private List<Carte> cartesCirculantes;
     private List<Carte> cartesConstructionCite;
@@ -20,6 +24,7 @@ public class PartieJoueur {
     private EtatCarteChoisi etatChoisi;
     private int age;
     private boolean createur;
+    private Map<String, Integer> lesRessources;
 
     /*-------------------------------- Constructeur - getters - setters ----------------------------- */
 
@@ -27,15 +32,17 @@ public class PartieJoueur {
 
     }
 
-    public PartieJoueur(String joueur, String plateau, boolean createur) {
+    public PartieJoueur(String joueur, boolean createur) {
         this.joueur = joueur;
-        this.plateau = plateau;
+        this.plateau = new Plateau();
         this.age = 1;
         this.createur = createur;
         this.etatChoisi = EtatCarteChoisi.PAS_ENCORE_CHOISIE;
         this.cartesCirculantes = new ArrayList<>();
         this.cartesConstructionCite = new ArrayList<>();
         this.cartesConstructionMerveille = new ArrayList<>();
+        this.lesRessources = new HashMap<String , Integer>();
+        this.lesRessources.put(String.valueOf(TypeEffet.PIECE),3); // + à ajouter Ressources du plateau
     }
 
     public String getJoueur() {
@@ -54,11 +61,11 @@ public class PartieJoueur {
         this.createur = createur;
     }
 
-    public String getPlateau() {
+    public Plateau getPlateau() {
         return plateau;
     }
 
-    public void setPlateau(String plateau) {
+    public void setPlateau(Plateau plateau) {
         this.plateau = plateau;
     }
 
@@ -106,7 +113,13 @@ public class PartieJoueur {
     }
 
 
+    public Map<String, Integer> getLesRessources() {
+        return lesRessources;
+    }
 
+    public void setLesRessources(Map<String, Integer> lesRessources) {
+        this.lesRessources = lesRessources;
+    }
 
     public void deplacerLaCarteChoisi(List<Carte> majCarteCirculant, Carte choixCarte, ModeDeplacement modeDeplacement, Partie partie)
             throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException {
@@ -130,15 +143,33 @@ public class PartieJoueur {
                 if(this.etatChoisi == EtatCarteChoisi.PAS_ENCORE_CHOISIE){
                     if(majCarteCirculant.size() == 1){majCarteCirculant.clear();}
                     if(this.cartesCirculantes.contains(choixCarte)){
+
                         if(modeDeplacement == ModeDeplacement.CONSTRUCTION_CITE){
                             this.cartesConstructionCite.add(choixCarte);
                             this.cartesCirculantes = majCarteCirculant;
                             this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+
+                            /********* LES RESSOURCES ********/
+                            var ressourcesCartesChoisie = choixCarte.getLesRessources();
+
+                            for (Effet ie : ressourcesCartesChoisie) {
+                                var typeEffet = ie.getTypeEffet();
+                                var valeur = ie.getValeur();
+
+                                int count = lesRessources.containsKey(typeEffet) ? lesRessources.get(typeEffet) : 0;
+                                lesRessources.put(String.valueOf(typeEffet), count + valeur);
+                            }
+                            /******************************/
+
                         }
                         else if(modeDeplacement == ModeDeplacement.CONSTRUCTION_MERVAILLE){
-                            this.cartesConstructionMerveille.add(choixCarte);
-                            this.cartesCirculantes = majCarteCirculant;
-                            this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+
+                            if (cartesConstructionMerveille.size() < 3) {
+                                this.cartesConstructionMerveille.add(choixCarte);
+                                this.plateau.setEtapesMerveilleConstruite((this.plateau.getEtapesMerveilleConstruite()+1));
+                                this.cartesCirculantes = majCarteCirculant;
+                                this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+                            }
                         }
                         else {
                             //Si mode deplacement = CONSTRUCTION DEFAUSSE
@@ -240,12 +271,14 @@ public class PartieJoueur {
     public String toString() {
         return "PartieJoueur{" +
                 "joueur='" + joueur + '\'' +
-                ", plateau='" + plateau + '\'' +
+                ", plateau=" + plateau +
                 ", cartesCirculantes=" + cartesCirculantes +
                 ", cartesConstructionCite=" + cartesConstructionCite +
                 ", cartesConstructionMerveille=" + cartesConstructionMerveille +
                 ", etatChoisi=" + etatChoisi +
                 ", age=" + age +
+                ", createur=" + createur +
+                ", lesRessources=" + lesRessources +
                 '}';
     }
 }

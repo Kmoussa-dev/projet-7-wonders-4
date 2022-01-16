@@ -98,6 +98,12 @@ public class Partie {
             partieJoueur.update(this);
         }
 
+        //TEST
+        System.out.println("---------------------------------------------------------------");
+        partieJoueurs.forEach(System.out::println);
+        System.out.println("---------------------------------------------------------------");
+        System.out.println(this);
+        System.out.println("---------------------------------------------------------------");
 
     }
 

@@ -5,6 +5,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import exceptions.*;
 import facade.LesJeuCartes;
+import facade.LesPlateaux;
 import modele.*;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -69,7 +70,11 @@ public class Dao {
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
         for(int i = 0; i < partie.getPartieJoueurs().size(); i++){
+            //distribution des cartes
             partie.getPartieJoueurs().get(i).setCartesCirculantes(LesJeuCartes.distributionAGE_I(i));
+            //distribution des plateaux
+            partie.getPartieJoueurs().get(i).setPlateau(LesPlateaux.distribution(i));
+
         }
         partieMongoCollection.updateOne(Filters.eq("_id", idPartie), Updates.combine(Updates.set("partieJoueurs", partie.getPartieJoueurs())));
     }
@@ -87,7 +92,7 @@ public class Dao {
             throw new partieInexistantException();
         }
         else if(partie.getEtatPartie().equals(EtatPartie.DEBUT)) {
-            partie.ajouterPartieJoueur(new PartieJoueur(pseudo,"blabla",false));
+            partie.ajouterPartieJoueur(new PartieJoueur(pseudo,false));
             partieMongoCollection.updateOne(Filters.eq("_id", idPartie), Updates.combine(Updates.set("partieJoueurs", partie.getPartieJoueurs())));
         }
         else {
@@ -125,7 +130,7 @@ public class Dao {
     public static void creerUnePartie(String pseudo, String ticket) throws PartiePleinExecption {
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Partie partie = new Partie(ticket);
-        partie.ajouterPartieJoueur(new PartieJoueur(pseudo,"blabla",true));
+        partie.ajouterPartieJoueur(new PartieJoueur(pseudo,true));
         partieMongoCollection.insertOne(partie);
     }
 
@@ -139,6 +144,12 @@ public class Dao {
     public static Carte getCartesByName(String nom){
         MongoCollection<Carte> carteMongoCollection = db.getCollection("cartes",Carte.class);
         return carteMongoCollection.find(Filters.eq("nom",nom)).first();
+    }
+
+    public static int getEtapesMerveilleConstruite(String idPartie, String pseudo) {
+        MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
+        Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
+        return partie.getPartieJoueurByPseudo(pseudo).getPlateau().getEtapesMerveilleConstruite();
     }
 
     public static Collection<Carte> getCartes(){

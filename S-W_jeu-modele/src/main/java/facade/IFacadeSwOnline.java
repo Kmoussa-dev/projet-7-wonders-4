@@ -30,6 +30,8 @@ public interface IFacadeSwOnline {
 
     Carte getCarte(String nom);
 
+    int getEtapesMerveilleConstruite(String idPartie, String pseudo);
+
     void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, PartiePleinExecption;
 
     boolean authorisationCirculer(String idPartie);

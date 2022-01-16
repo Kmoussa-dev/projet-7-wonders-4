@@ -177,6 +177,10 @@ public class Controleur {
        }
     }
 
+    public int getEtapesMerveilleConstruite(String idPartie, String pseudo) {
+        return this.facade.getEtapesMerveilleConstruite(idPartie,pseudo);
+    }
+
     public boolean quitterPartie(String idPartie, String pseudo) {
         return this.facade.quitter(idPartie,pseudo);
     }
