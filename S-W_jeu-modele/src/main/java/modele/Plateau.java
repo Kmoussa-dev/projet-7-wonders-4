@@ -184,18 +184,15 @@ public class Plateau {
 
     @Override
     public String toString() {
-        return "Plateau{" +
-                "nomPlateau='" + nomPlateau + '\'' +
-                ", effetParDefaut=" + effetParDefaut +
-                ", imagePlateau='" + imagePlateau + '\'' +
-                ", etapesMerveilleConstruite=" + etapesMerveilleConstruite +
-                ", lesCoutsEtape1=" + lesCoutsEtape1 +
-                ", lesRessourcesEtape1=" + lesRessourcesEtape1 +
-                ", lesCoutsEtape2=" + lesCoutsEtape2 +
-                ", lesRessourcesEtape2=" + lesRessourcesEtape2 +
-                ", lesCoutsEtape3=" + lesCoutsEtape3 +
-                ", lesRessourcesEtape3=" + lesRessourcesEtape3 +
-                '}';
+        return  nomPlateau  + " - effet =" + effetParDefaut ;
+//                ", etapesConstruite=" + etapesMerveilleConstruite +
+//                ", lesCoutsEtape1=" + lesCoutsEtape1 +
+//                ", lesRessourcesEtape1=" + lesRessourcesEtape1 +
+//                ", lesCoutsEtape2=" + lesCoutsEtape2 +
+//                ", lesRessourcesEtape2=" + lesRessourcesEtape2 +
+//                ", lesCoutsEtape3=" + lesCoutsEtape3 +
+//                ", lesRessourcesEtape3=" + lesRessourcesEtape3 +
+ //               '}';
     }
 
 }

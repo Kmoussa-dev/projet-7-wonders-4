@@ -8,6 +8,7 @@ import packageDTOs.Effectif;
 import packageDTOs.TypeEffet;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class LesJeuCartes {
@@ -52,7 +53,9 @@ public class LesJeuCartes {
         cartes.add(new Carte("carte26", "chantier", Effectif.TROIS_PLUS, List.of(new Effet(TypeEffet.BOIS, 1)), List.of()));
         cartes.add(new Carte("carte27", "prêteur sur gages", Effectif.QUATRE_PLUS, List.of(new Effet(TypeEffet.VICTOIRE, 3)), List.of()));
         cartes.add(new Carte("carte28", "filon", Effectif.TROIS_PLUS, List.of(new Effet(TypeEffet.MINERAI, 1)), List.of()));
-        //Collections.shuffle(cartes)
+
+        Collections.shuffle(cartes);
+
         return cartes;
     }
 
@@ -119,7 +122,7 @@ public class LesJeuCartes {
         cartes.add(new Carte("carteII_28","dispensaire",Effectif.QUATRE_PLUS,List.of(new Effet(TypeEffet.COMPAS,1)),
                 List.of(new Effet(TypeEffet.MINERAI,2),new Effet(TypeEffet.VERRE,1))));
 
-        //Collections.shuffle(cartes);
+        Collections.shuffle(cartes);
         return cartes;
     }
 
@@ -207,7 +210,7 @@ public class LesJeuCartes {
                 List.of(new Effet(TypeEffet.VICTOIRE,1)),
                 List.of( new Effet(TypeEffet.PIERRE,2), new Effet(TypeEffet.ARGILE,2),new Effet(TypeEffet.VERRE,1))));
 
-        //Collections.shuffle(cartes);
+        Collections.shuffle(cartes);
         return cartes;
     }
 

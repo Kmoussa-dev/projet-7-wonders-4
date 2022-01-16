@@ -120,6 +120,10 @@ public class Controleur {
             Alert alert = new Alert(Alert.AlertType.ERROR, "La partie est suspendu.", ButtonType.OK);
             alert.setTitle("La partie est suspendu");
             alert.showAndWait();
+        } catch (RessourcesInsuffisantesException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Vous n'avez pas assez de ressources \n pour vous procurer cette carte", ButtonType.OK);
+            alert.setTitle("Ressources Insufffisantes");
+            alert.showAndWait();
         }
 
         this.loadCarteConstruction(idPartie, pseudo);

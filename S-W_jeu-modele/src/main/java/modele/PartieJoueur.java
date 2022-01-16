@@ -122,7 +122,7 @@ public class PartieJoueur {
     }
 
     public void deplacerLaCarteChoisi(List<Carte> majCarteCirculant, Carte choixCarte, ModeDeplacement modeDeplacement, Partie partie)
-            throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException {
+            throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException {
         /*PartieJoueur partieJoueurGauche = null;
         PartieJoueur partieJoueurDroite = null;
         try {
@@ -141,39 +141,28 @@ public class PartieJoueur {
         if(!partie.getEtatPartie().equals(EtatPartie.TERMINE)){
             if (!partie.getEtatPartie().equals(EtatPartie.SUSPENDU)){
                 if(this.etatChoisi == EtatCarteChoisi.PAS_ENCORE_CHOISIE){
-                    if(majCarteCirculant.size() == 1){majCarteCirculant.clear();}
+                    if(majCarteCirculant.size() == 1){
+
+                        //deplacer la derniere carte dans la Defausse
+                        partie.ajouterUneCarteALaDefausse(majCarteCirculant.get(0));
+                        //nettoyer la liste des cartes circulantes
+                        majCarteCirculant.clear();
+                    }
                     if(this.cartesCirculantes.contains(choixCarte)){
 
                         if(modeDeplacement == ModeDeplacement.CONSTRUCTION_CITE){
-                            this.cartesConstructionCite.add(choixCarte);
-                            this.cartesCirculantes = majCarteCirculant;
-                            this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
 
-                            /********* LES RESSOURCES ********/
-                            var ressourcesCartesChoisie = choixCarte.getLesRessources();
-
-                            for (Effet ie : ressourcesCartesChoisie) {
-                                var typeEffet = ie.getTypeEffet();
-                                var valeur = ie.getValeur();
-
-                                int count = lesRessources.containsKey(typeEffet) ? lesRessources.get(typeEffet) : 0;
-                                lesRessources.put(String.valueOf(typeEffet), count + valeur);
-                            }
-                            /******************************/
+                           this.gestionConstructionCite(choixCarte,majCarteCirculant);
 
                         }
                         else if(modeDeplacement == ModeDeplacement.CONSTRUCTION_MERVAILLE){
 
-                            if (cartesConstructionMerveille.size() < 3) {
-                                this.cartesConstructionMerveille.add(choixCarte);
-                                this.plateau.setEtapesMerveilleConstruite((this.plateau.getEtapesMerveilleConstruite()+1));
-                                this.cartesCirculantes = majCarteCirculant;
-                                this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
-                            }
+                           this.gestionConstructionMerveille(choixCarte,majCarteCirculant);
                         }
                         else {
                             //Si mode deplacement = CONSTRUCTION DEFAUSSE
-                            partie.getCartesDefausse().add(choixCarte);
+                            partie.ajouterUneCarteALaDefausse(choixCarte);
+                            this.recupererPiecesCarteDefausse();
                             this.cartesCirculantes = majCarteCirculant;
                             this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
                         }
@@ -197,6 +186,7 @@ public class PartieJoueur {
 
 
     }
+
 
 
     public void update(Partie partie){
@@ -228,9 +218,6 @@ public class PartieJoueur {
         }
 
     }
-
-
-
 
     private void rotationInverse(Partie partie){
         try {
@@ -267,18 +254,106 @@ public class PartieJoueur {
         }
     }
 
+    private void ajouterDesRessources(Carte carte) {
+
+        for (Effet effet: carte.getLesRessources()) {
+            TypeEffet typeEffet = effet.getTypeEffet();
+            int valeur = effet.getValeur();
+
+            int count = lesRessources.containsKey(typeEffet) ? lesRessources.get(typeEffet) : 0;
+            lesRessources.put(String.valueOf(typeEffet), count + valeur);
+        }
+    }
+
+    private void recupererPiecesCarteDefausse() {
+
+        int count = lesRessources.containsKey("PIECE") ? lesRessources.get("PIECE") : 0;
+        lesRessources.put("PIECE", count + 3);
+    }
+
+
+    /**
+     *  Methode qui gère les conditions d'achat des ressources pour construire la cité
+     * @param choixCarte
+     * @param majCarteCirculant
+     * @throws RessourcesInsuffisantesException
+     */
+
+    public void gestionConstructionCite(Carte choixCarte, List<Carte> majCarteCirculant) throws RessourcesInsuffisantesException {
+        //les conditions
+        boolean valide = true;
+        for (Effet effet : choixCarte.getLesCouts()) {
+
+            String nomEffetCout = String.valueOf(effet.getTypeEffet());
+
+            if (this.lesRessources.containsKey(nomEffetCout)) {
+
+                if (effet.getValeur() > this.lesRessources.get(nomEffetCout)) {
+                    valide = false;
+                }
+                else if (effet.getTypeEffet() == TypeEffet.PIECE) {
+                    // on retire la somme dépensée pour acheter la carte
+                    int count = lesRessources.containsKey("PIECE") ? lesRessources.get("PIECE") : 0;
+                    lesRessources.put("PIECE", count - effet.getValeur());
+                }
+            } else {
+                valide = false;
+            }
+        }
+
+        if (valide) {
+            //contraintes conformes
+            this.cartesConstructionCite.add(choixCarte);
+            this.cartesCirculantes = majCarteCirculant;
+            this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+            this.ajouterDesRessources(choixCarte);
+        }
+        else {
+            throw new RessourcesInsuffisantesException();
+        }
+
+    }
+
+    /**
+     *  Methode gestion des conditions de construction des étapes de la merveille
+     * @param choixCarte
+     * @param majCarteCirculant
+     */
+    private void gestionConstructionMerveille(Carte choixCarte, List<Carte> majCarteCirculant) {
+
+        if (cartesConstructionMerveille.size() < 3) {
+
+            //les conditions
+
+            //contraintes conformes
+            this.cartesConstructionMerveille.add(choixCarte);
+            this.plateau.setEtapesMerveilleConstruite((this.plateau.getEtapesMerveilleConstruite()+1));
+            this.cartesCirculantes = majCarteCirculant;
+            this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+        }
+    }
+
+
+
+    public void ajouterLaRessourceDuPlateau(Plateau plateau) {
+
+        TypeEffet ressourcePlateau = plateau.getEffetParDefaut().getTypeEffet();
+
+        int count = lesRessources.containsKey(ressourcePlateau) ? lesRessources.get(ressourcePlateau) : 0;
+        lesRessources.put(String.valueOf(ressourcePlateau), count + 1);
+    }
+
+
+
     @Override
     public String toString() {
-        return "PartieJoueur{" +
-                "joueur='" + joueur + '\'' +
-                ", plateau=" + plateau +
-                ", cartesCirculantes=" + cartesCirculantes +
-                ", cartesConstructionCite=" + cartesConstructionCite +
-                ", cartesConstructionMerveille=" + cartesConstructionMerveille +
-                ", etatChoisi=" + etatChoisi +
-                ", age=" + age +
-                ", createur=" + createur +
-                ", lesRessources=" + lesRessources +
-                '}';
+        return  joueur + " - plateau : " + plateau +
+//                "- cartesCirculantes=" + cartesCirculantes +
+//                "- cartesConstructionCite=" + cartesConstructionCite +
+//                ", cartesConstructionMerveille=" + cartesConstructionMerveille +
+//                ", age=" + age +
+                ", les Ressources : " + lesRessources //+
+//                '}'
+                ;
     }
 }

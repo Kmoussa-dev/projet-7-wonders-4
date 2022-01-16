@@ -36,9 +36,6 @@ public class Effet implements Serializable {
 
     @Override
     public String toString() {
-        return "Effet{" +
-                "effect=" + effect +
-                ", valeur=" + valeur +
-                '}';
+        return effect + " : " + valeur ;
     }
 }

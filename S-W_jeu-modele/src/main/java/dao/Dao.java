@@ -27,7 +27,7 @@ public class Dao {
 
 
     public static void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement)
-            throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException {
+            throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException {
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
         partie.deplacer(pseudo,carte,cartes,modeDeplacement);
@@ -74,6 +74,8 @@ public class Dao {
             partie.getPartieJoueurs().get(i).setCartesCirculantes(LesJeuCartes.distributionAGE_I(i));
             //distribution des plateaux
             partie.getPartieJoueurs().get(i).setPlateau(LesPlateaux.distribution(i));
+            //ajouter la ressource du plateau à la liste des ressources du joueur
+            partie.getPartieJoueurs().get(i).ajouterLaRessourceDuPlateau(LesPlateaux.distribution(i));
 
         }
         partieMongoCollection.updateOne(Filters.eq("_id", idPartie), Updates.combine(Updates.set("partieJoueurs", partie.getPartieJoueurs())));

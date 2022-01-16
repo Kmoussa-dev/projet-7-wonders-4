@@ -81,12 +81,6 @@ public class Carte implements Serializable {
 
     @Override
     public String toString() {
-        return "Carte{" +
-                "_id='" + id + '\'' +
-                ", nom='" + nom + '\'' +
-                ", effectif=" + effectif +
-                ", lesCouts=" + lesCouts +
-                ", lesRessources=" + lesRessources +
-                '}';
+        return "Carte " + nom + " - Couts : " + lesCouts + " - Ressources : " + lesRessources ;
     }
 }

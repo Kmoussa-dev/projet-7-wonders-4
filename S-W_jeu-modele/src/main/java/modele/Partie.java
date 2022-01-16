@@ -59,7 +59,7 @@ public class Partie {
         return this.partieJoueurs.stream().filter(partieJoueur -> partieJoueur.getJoueur().equals(pseudo)).collect(Collectors.toList()).get(0);
     }
 
-    public void deplacer(String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException {
+    public void deplacer(String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException {
         for (PartieJoueur partieJoueur : this.partieJoueurs){
             if(partieJoueur.getJoueur().equals(pseudo)){
                 partieJoueur.deplacerLaCarteChoisi(cartes,carte,modeDeplacement, this);
@@ -117,6 +117,10 @@ public class Partie {
 
     public void setCartesDefausse(List<Carte> cartesDefausse) {
         this.cartesDefausse = cartesDefausse;
+    }
+
+    public void ajouterUneCarteALaDefausse(Carte carte){
+        this.cartesDefausse.add(carte);
     }
 
 

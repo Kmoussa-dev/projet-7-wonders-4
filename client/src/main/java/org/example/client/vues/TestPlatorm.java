@@ -177,12 +177,13 @@ public class TestPlatorm {
 
     public void chargerContsructionMerv(ObservableList<Carte> cartes) {
         carteContructMerv.setItems(cartes);
-//        if (etapesMerveille == 3) {
-//           btnConstrucMerv.setDisable(true);
-//        }
 
-//        var etapesMerveille = controleur.getEtapesMerveilleConstruite(DonnesStatic.ticket,DonnesStatic.pseudo);
-//        labelEtape.setText(String.valueOf(etapesMerveille));
+        var etapesMerveille = controleur.getEtapesMerveilleConstruite(DonnesStatic.ticket,DonnesStatic.pseudo);
+        labelEtape.setText(String.valueOf(etapesMerveille));
+        if (etapesMerveille == 3) {
+           btnConstrucMerv.setDisable(true);
+        }
+
 //        merveille.setImage(new Image(getClass().getResourceAsStream("org/example/client/vues/image/etapes/etapeMerveille"+etapesMerveille+".png")));
 
     }
