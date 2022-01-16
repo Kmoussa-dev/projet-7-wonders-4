@@ -43,7 +43,7 @@ public interface IFacadeProxy {
 
     boolean reAccederAuJeu(String idPartie, String pseudo);
 
-    Collection<PartieDTO> getLesPartiesSuspendu();
+    Collection<PartieDTO> getLesPartiesSuspendu(String pseudo);
 
     boolean suspendreLaPartie(String idPartie, String pseudo) throws PartieNonReprendreException;
 

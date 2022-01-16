@@ -18,6 +18,7 @@ import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
 import packageDTOs.PartieDTO;
 
+import java.util.Collection;
 import java.util.List;
 
 public class Controleur {
@@ -148,7 +149,7 @@ public class Controleur {
     }
 
     public void loadPartieSuspendus(){
-        ObservableList<PartieDTO> partieDTOS = FXCollections.observableArrayList(this.facade.getLesPartiesSuspendu());
+        ObservableList<PartieDTO> partieDTOS = FXCollections.observableArrayList(this.facade.getLesPartiesSuspendu(DonnesStatic.pseudo));
         this.accueil.chargerPartieSuspendu(partieDTOS);
     }
 
@@ -160,6 +161,7 @@ public class Controleur {
         this.accueil.show();
         this.accueil.setLabelPseudo(DonnesStatic.pseudo);
         this.loadPartieSuspendus();
+        this.accueil.loadData();
     }
 
     public void goToPlateForm() {
@@ -180,7 +182,7 @@ public class Controleur {
            }
        }
        catch (Exception e){
-           Alert alert = new Alert(Alert.AlertType.ERROR, "Vous n'êtes pas concerné pour cette partie", ButtonType.OK);
+           Alert alert = new Alert(Alert.AlertType.INFORMATION, "Le Créateur a repris cette partie.\nDemander de mettre en pause pour accéder.", ButtonType.OK);
            alert.setTitle("La partie non concernée");
            alert.showAndWait();
        }
@@ -215,5 +217,9 @@ public class Controleur {
 
     public void goToHistorique() {
         this.historisation.show();
+    }
+
+    public Collection<PartieDTO> getLesParties(){
+        return this.facade.getLesParties();
     }
 }

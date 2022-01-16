@@ -46,7 +46,7 @@ public interface IProxySevenWonderOnline extends Remote {
 
     boolean reAccederAuJeu(String idPartie, String pseudo)throws RemoteException;
 
-    Collection<PartieDTO> getLesPartiesSuspendu()throws RemoteException;
+    Collection<PartieDTO> getLesPartiesSuspendu(String pseudo)throws RemoteException;
 
     boolean suspendreLaPartie(String idPartie, String pseudo) throws RemoteException, PartieNonReprendreException;
 

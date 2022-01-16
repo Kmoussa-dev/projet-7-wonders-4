@@ -6,6 +6,7 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ public class Partie {
     @BsonProperty("_id")
     private String id;
     private EtatPartie etatPartie;
+    private LocalDate dateCreation;
     private List <PartieJoueur> partieJoueurs ;
     private List<Carte> cartesDefausse;
 
@@ -22,6 +24,7 @@ public class Partie {
 
     public Partie(String id){
         this.id = id;
+        this.dateCreation = LocalDate.now();
         this.partieJoueurs = new ArrayList<>();
         this.cartesDefausse = new ArrayList<>();
         this.etatPartie = EtatPartie.DEBUT;
@@ -53,7 +56,13 @@ public class Partie {
     }
 
 
+    public LocalDate getDateCreation() {
+        return dateCreation;
+    }
 
+    public void setDateCreation(LocalDate dateCreation) {
+        this.dateCreation = dateCreation;
+    }
 
     public PartieJoueur getPartieJoueurByPseudo(String pseudo){
         return this.partieJoueurs.stream().filter(partieJoueur -> partieJoueur.getJoueur().equals(pseudo)).collect(Collectors.toList()).get(0);

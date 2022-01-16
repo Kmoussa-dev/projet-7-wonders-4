@@ -1,12 +1,14 @@
 package org.example.client.vues;
 
 import exceptions.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderImage;
 import javafx.scene.layout.BorderPane;
@@ -17,7 +19,9 @@ import org.example.client.modele.DonnesStatic;
 import packageDTOs.PartieDTO;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 public class Accueil {
 
@@ -41,7 +45,13 @@ public class Accueil {
     ListView lesPartiesSuspendus;
 
     @FXML
-    TableView tableHistorique;
+    TableView<PartieDTO> tableHistorique;
+    @FXML
+    TableColumn<PartieDTO, LocalDate> dateCreation;
+    @FXML
+    TableColumn<PartieDTO, String> etatPartie;
+    @FXML
+    TableColumn<PartieDTO, List<String>> lesJoueurs;
 
 
     public static Accueil creer(Stage stage){
@@ -124,8 +134,24 @@ public class Accueil {
     }
 
     public void reprendreUnePartie(ActionEvent actionEvent) {
-        DonnesStatic.ticket = ((PartieDTO)lesPartiesSuspendus.getSelectionModel().getSelectedItem()).getId();
-        this.controleur.reAccederAuJeu(DonnesStatic.ticket, DonnesStatic.pseudo);
+        if(lesPartiesSuspendus.getSelectionModel().getSelectedIndex() != -1){
+            DonnesStatic.ticket = ((PartieDTO)lesPartiesSuspendus.getSelectionModel().getSelectedItem()).getId();
+            this.controleur.reAccederAuJeu(DonnesStatic.ticket, DonnesStatic.pseudo);
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Veuillez saisir sélectionner une partie", ButtonType.OK);
+            alert.setTitle("La partie non concernée");
+            alert.showAndWait();
+        }
+
+    }
+
+    public void loadData(){
+        this.dateCreation.setCellValueFactory(new PropertyValueFactory<PartieDTO, LocalDate>("dateCreation"));
+        this.etatPartie.setCellValueFactory(new PropertyValueFactory<PartieDTO, String>("etatPartie"));
+        this.lesJoueurs.setCellValueFactory(new PropertyValueFactory<PartieDTO, List<String>>("lesJoueurs"));
+        ObservableList<PartieDTO> partieDTOS = FXCollections.observableArrayList(this.controleur.getLesParties());
+        this.tableHistorique.setItems(partieDTOS);
     }
 
     public void showParties(ActionEvent actionEvent) {

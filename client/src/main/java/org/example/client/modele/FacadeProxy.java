@@ -199,9 +199,9 @@ public class FacadeProxy implements IFacadeProxy {
     }
 
     @Override
-    public Collection<PartieDTO> getLesPartiesSuspendu() {
+    public Collection<PartieDTO> getLesPartiesSuspendu(String pseudo) {
         try {
-            return this.jeuFacade.getLesPartiesSuspendu();
+            return this.jeuFacade.getLesPartiesSuspendu(pseudo);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

@@ -14,6 +14,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProxySevenWonderOnline {
 
@@ -114,14 +115,16 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
     }
 
     @Override
-    public Collection<PartieDTO> getLesPartiesSuspendu() throws RemoteException{
+    public Collection<PartieDTO> getLesPartiesSuspendu(String pseudo) throws RemoteException{
         Collection<PartieDTO> partieDTOCollection = new ArrayList<PartieDTO>();
         for (Partie partie: this.facade.getLesPartiesSuspendu()){
-            PartieDTO partieDTO = new PartieDTO(partie.getId());
-            for (PartieJoueur partieJoueur : partie.getPartieJoueurs()){
-                partieDTO.ajouterNomJoueur(partieJoueur.getJoueur());
+            if (Objects.nonNull(partie.getPartieJoueurByPseudo(pseudo))){
+                PartieDTO partieDTO = new PartieDTO(partie.getId(), partie.getEtatPartie().toString(), partie.getDateCreation());
+                for (PartieJoueur partieJoueur : partie.getPartieJoueurs()){
+                    partieDTO.ajouterNomJoueur(partieJoueur.getJoueur());
+                }
+                partieDTOCollection.add(partieDTO);
             }
-            partieDTOCollection.add(partieDTO);
         }
         return partieDTOCollection;
     }
@@ -150,7 +153,7 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
     public Collection<PartieDTO> getLesParties() throws  RemoteException{
         Collection<PartieDTO> partieDTOCollection = new ArrayList<PartieDTO>();
         for (Partie partie: this.facade.getLesParties()){
-            PartieDTO partieDTO = new PartieDTO(partie.getId());
+            PartieDTO partieDTO = new PartieDTO(partie.getId(), partie.getEtatPartie().toString(), partie.getDateCreation());
             for (PartieJoueur partieJoueur : partie.getPartieJoueurs()){
                 partieDTO.ajouterNomJoueur(partieJoueur.getJoueur());
             }
