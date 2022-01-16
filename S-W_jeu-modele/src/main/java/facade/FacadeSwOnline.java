@@ -122,4 +122,9 @@ public class FacadeSwOnline implements IFacadeSwOnline{
         return Dao.peutQuitter(idPartie);
     }
 
+    @Override
+    public Collection<Partie> getLesParties(){
+        return Dao.getLesParties();
+    }
+
 }

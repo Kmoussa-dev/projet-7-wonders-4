@@ -248,5 +248,12 @@ public class FacadeProxy implements IFacadeProxy {
         return false;
     }
 
-
+    public Collection<PartieDTO> getLesParties(){
+        try {
+            return this.jeuFacade.getLesParties();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

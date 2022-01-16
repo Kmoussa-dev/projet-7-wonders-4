@@ -12,6 +12,7 @@ import org.example.client.modele.FacadeProxy;
 import org.example.client.modele.IFacadeProxy;
 import org.example.client.vues.Accueil;
 import org.example.client.vues.Authentification;
+import org.example.client.vues.Historisation;
 import org.example.client.vues.TestPlatorm;
 import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
@@ -23,7 +24,8 @@ public class Controleur {
     private IFacadeProxy facade;
     private Accueil accueil;
     private TestPlatorm testPlatorm;
-    public Authentification authentification;
+    private Authentification authentification;
+    private Historisation historisation;
 
     public Controleur(Stage stage){
         this.facade = FacadeProxy.cree();
@@ -33,6 +35,8 @@ public class Controleur {
         this.testPlatorm.initialiserControleur(this);
         this.authentification = Authentification.creer(stage);
         this.authentification.initialiserControleur(this);
+        this.historisation = Historisation.creer(stage);
+        this.historisation.initialiserControleur(this);
     }
 
 
@@ -208,4 +212,7 @@ public class Controleur {
         }
     }
 
+    public void goToHistorique() {
+        this.historisation.show();
+    }
 }

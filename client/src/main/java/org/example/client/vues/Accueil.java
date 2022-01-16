@@ -122,4 +122,8 @@ public class Accueil {
     public void showParties(ActionEvent actionEvent) {
         this.controleur.loadPartieSuspendus();
     }
+
+    public void goToHistorique(ActionEvent actionEvent) {
+        this.controleur.goToHistorique();
+    }
 }

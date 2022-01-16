@@ -243,4 +243,11 @@ public class Dao {
         return Objects.isNull(partie);
     }
 
+    public static Collection<Partie> getLesParties(){
+        MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
+        Collection<Partie> partieCollection = new ArrayList<>();
+        partieMongoCollection.find().forEach(p -> partieCollection.add(p));
+        return partieCollection;
+    }
+
 }

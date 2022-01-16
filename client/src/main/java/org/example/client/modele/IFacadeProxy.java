@@ -53,4 +53,6 @@ public interface IFacadeProxy {
 
     boolean peutQuitter(String idPartie);
 
+    Collection<PartieDTO> getLesParties();
+
 }

@@ -55,4 +55,6 @@ public interface IProxySevenWonderOnline extends Remote {
     boolean reprendreUnePartie(String idPartie, String pseudo) throws RemoteException, PartieNonSuspenduException;
 
     boolean peutQuitter(String idPartie) throws RemoteException;
+
+    Collection<PartieDTO> getLesParties() throws RemoteException;
 }

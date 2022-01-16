@@ -55,4 +55,6 @@ public interface IFacadeSwOnline {
     boolean reprendreUnePartie(String idPartie, String pseudo) throws PartieNonSuspenduException;
 
     boolean peutQuitter(String idPartie);
+
+    Collection<Partie> getLesParties();
 }

@@ -145,4 +145,17 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
     public boolean peutQuitter(String idPartie) throws RemoteException{
         return this.facade.peutQuitter(idPartie);
     }
+
+    @Override
+    public Collection<PartieDTO> getLesParties() throws  RemoteException{
+        Collection<PartieDTO> partieDTOCollection = new ArrayList<PartieDTO>();
+        for (Partie partie: this.facade.getLesParties()){
+            PartieDTO partieDTO = new PartieDTO(partie.getId());
+            for (PartieJoueur partieJoueur : partie.getPartieJoueurs()){
+                partieDTO.ajouterNomJoueur(partieJoueur.getJoueur());
+            }
+            partieDTOCollection.add(partieDTO);
+        }
+        return partieDTOCollection;
+    }
 }

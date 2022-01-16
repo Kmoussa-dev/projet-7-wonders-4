@@ -4,7 +4,6 @@ module org.example.client {
     requires javafx.fxml;
     requires javafx.web;
     requires RMI.IHM;
-    requires S.W.jeu.modele;
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires validatorfx;

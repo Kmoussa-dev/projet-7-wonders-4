@@ -13,9 +13,10 @@
       <TextField fx:id="ticket" layoutX="35.0" layoutY="230.0" prefHeight="26.0" prefWidth="286.0" />
       <Label layoutX="35.0" layoutY="214.0" text="Code de l'invitation:" />
       <ListView fx:id="lesPartiesSuspendus" layoutX="409.0" layoutY="67.0" prefHeight="290.0" prefWidth="228.0" />
-      <Button layoutX="409.0" layoutY="357.0" mnemonicParsing="false" onAction="#reprendreUnePartie" prefHeight="26.0" prefWidth="109.0" text="Reprendre" />
+      <Button layoutX="479.0" layoutY="357.0" mnemonicParsing="false" onAction="#reprendreUnePartie" prefHeight="26.0" prefWidth="109.0" text="Reprendre" />
       <Label layoutX="450.0" layoutY="48.0" prefHeight="16.0" prefWidth="167.0" text="Les parties suspendus:" />
       <Label layoutX="14.0" layoutY="64.0" text="Code d'invitation à envoyer au 3 joueurs:" />
       <Label fx:id="token" layoutX="118.0" layoutY="87.0" text="code" />
+      <Button layoutX="39.0" layoutY="325.0" mnemonicParsing="false" onAction="#goToHistorique" text="Historisation"></Button>
    </children>
 </AnchorPane>
