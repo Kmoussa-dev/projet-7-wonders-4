@@ -84,6 +84,7 @@ public class Controleur {
     public void distributionCarte(String idPartie, String pseudo){
         this.facade.distribution(idPartie);
         this.loadCarteTemp(idPartie,pseudo);
+        this.plateforme.chargerLesRessources();
         this.plateforme.setLabelPlateau(this.facade.getPlateauDuJoueur(idPartie,pseudo));
     }
 
@@ -93,6 +94,9 @@ public class Controleur {
 
     public void notification(String idPartie, String pseudo){
         this.facade.notification(idPartie);
+        if(this.facade.getEtatPartie(idPartie).equals("TERMINE")){
+            this.goToFinPartie();
+        }
         this.loadCarteTemp(idPartie, pseudo);
         this.loadCarteConstruction(idPartie, pseudo);
         this.loadCarteConstructionMerv(idPartie, pseudo);
@@ -229,8 +233,9 @@ public class Controleur {
         }
     }
 
-    public void goToHistorique() {
+    public void goToFinPartie() {
         this.finPartie.show();
+        this.finPartie.setVainqueurPartie(this.facade.getVainqueur(DonnesStatic.codePartie));
     }
 
     public Collection<PartieDTO> getLesParties(){
@@ -239,10 +244,6 @@ public class Controleur {
 
     public Collection<RessourcesDTO> getLesRessourcesDuJoueur(String idPartie, String pseudo) {
         return this.facade.getLesRessourcesDuJoueur(idPartie,pseudo);
-    }
-
-    public String getEtatPartie(String idPartie) {
-        return this.facade.getEtatPartie(idPartie);
     }
 
 }

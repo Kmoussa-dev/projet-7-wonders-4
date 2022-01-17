@@ -189,4 +189,9 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
     public String getEtatPartie(String idPartie) throws RemoteException {
         return this.facade.getEtatPartie(idPartie);
     }
+
+    @Override
+    public String getVainqueur(String idPartie) throws RemoteException {
+        return this.facade.getVainqueur(idPartie);
+    }
 }

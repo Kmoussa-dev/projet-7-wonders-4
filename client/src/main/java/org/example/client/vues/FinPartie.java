@@ -1,8 +1,10 @@
 package org.example.client.vues;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -16,6 +18,8 @@ public class FinPartie {
     private Scene scene;
     private Controleur controleur;
 
+    @FXML
+    Label vainqueurPartie;
 
     public static FinPartie creer(Stage stage){
 
@@ -46,6 +50,10 @@ public class FinPartie {
     public void show(){
         this.stage.setScene(this.scene);
         this.stage.show();
+    }
+
+    public void setVainqueurPartie(String pseudo){
+        this.vainqueurPartie.setText(pseudo);
     }
 
     public void goToMenu(ActionEvent actionEvent) {

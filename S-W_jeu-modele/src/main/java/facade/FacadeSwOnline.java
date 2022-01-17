@@ -153,5 +153,10 @@ public class FacadeSwOnline implements IFacadeSwOnline{
         return Dao.getEtatPartie(idPartie);
     }
 
+    @Override
+    public String getVainqueur(String idPartie) {
+        return Dao.getVainqueur(idPartie);
+    }
+
 
 }

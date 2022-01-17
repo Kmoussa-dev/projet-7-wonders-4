@@ -137,14 +137,7 @@ public class PartieJoueur {
                     if(this.cartesCirculantes.contains(choixCarte)){
 
                         if(modeDeplacement == ModeDeplacement.CONSTRUCTION_CITE){
-
-                            //gestion contrainte sur les cartes du même nom
-                            if(!this.cartesConstructionCite.stream().anyMatch(carte -> carte.getNom().equals(choixCarte.getNom()))){
-                                this.gestionConstructionCite(choixCarte,majCarteCirculant);
-                            }
-                            else{
-                                throw new CarteDejaPossederException();
-                            }
+                            this.gestionConstructionCite(choixCarte,majCarteCirculant);
                         }
                         else if(modeDeplacement == ModeDeplacement.CONSTRUCTION_MERVAILLE){
 
@@ -248,18 +241,29 @@ public class PartieJoueur {
     private void ajouterDesRessources(Carte carte) {
 
         for (Effet effet: carte.getLesRessources()) {
-            TypeEffet typeEffet = effet.getTypeEffet();
+            String typeEffet = String.valueOf(effet.getTypeEffet());
             int valeur = effet.getValeur();
 
             int count = lesRessources.containsKey(typeEffet) ? lesRessources.get(typeEffet) : 0;
-            lesRessources.put(String.valueOf(typeEffet), count + valeur);
+            lesRessources.put(typeEffet, count + valeur);
         }
     }
+
+
 
     private void recupererPiecesCarteDefausse() {
 
         int count = lesRessources.containsKey("PIECE") ? lesRessources.get("PIECE") : 0;
-        lesRessources.put("PIECE", count + 3);
+        lesRessources.put(String.valueOf(TypeEffet.PIECE), count + 3);
+    }
+
+
+    public int sommePointTotal(){
+        int sum = 0;
+        for (int qte : this.lesRessources.values()){
+            sum += qte;
+        }
+        return sum;
     }
 
 
@@ -270,38 +274,45 @@ public class PartieJoueur {
      * @throws RessourcesInsuffisantesException
      */
 
-    public void gestionConstructionCite(Carte choixCarte, List<Carte> majCarteCirculant) throws RessourcesInsuffisantesException {
+    public void gestionConstructionCite(Carte choixCarte, List<Carte> majCarteCirculant) throws RessourcesInsuffisantesException, CarteDejaPossederException {
         //les conditions
-        boolean valide = true;
-        for (Effet effet : choixCarte.getLesCouts()) {
+        //gestion contrainte sur les cartes du même nom
+        if(!this.cartesConstructionCite.stream().anyMatch(carte -> carte.getNom().equals(choixCarte.getNom()))){
+            boolean valide = true;
+            for (Effet effet : choixCarte.getLesCouts()) {
 
-            String nomEffetCout = String.valueOf(effet.getTypeEffet());
+                String nomEffetCout = String.valueOf(effet.getTypeEffet());
 
-            if (this.lesRessources.containsKey(nomEffetCout)) {
+                if (this.lesRessources.containsKey(nomEffetCout)) {
 
-                if (effet.getValeur() > this.lesRessources.get(nomEffetCout)) {
+                    if (effet.getValeur() > this.lesRessources.get(nomEffetCout)) {
+                        valide = false;
+                    }
+                    else if (effet.getTypeEffet() == TypeEffet.PIECE) {
+                        // on retire la somme dépensée pour acheter la carte
+                        int count = lesRessources.containsKey("PIECE") ? lesRessources.get("PIECE") : 0;
+                        lesRessources.put("PIECE", count - effet.getValeur());
+                    }
+                } else {
                     valide = false;
                 }
-                else if (effet.getTypeEffet() == TypeEffet.PIECE) {
-                    // on retire la somme dépensée pour acheter la carte
-                    int count = lesRessources.containsKey("PIECE") ? lesRessources.get("PIECE") : 0;
-                    lesRessources.put("PIECE", count - effet.getValeur());
-                }
-            } else {
-                valide = false;
+            }
+
+            if (valide) {
+                //contraintes conformes
+                this.cartesConstructionCite.add(choixCarte);
+                this.cartesCirculantes = majCarteCirculant;
+                this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
+                this.ajouterDesRessources(choixCarte);
+            }
+            else {
+                throw new RessourcesInsuffisantesException();
             }
         }
-
-        if (valide) {
-            //contraintes conformes
-            this.cartesConstructionCite.add(choixCarte);
-            this.cartesCirculantes = majCarteCirculant;
-            this.etatChoisi = EtatCarteChoisi.DEJA_CHOISIE;
-            this.ajouterDesRessources(choixCarte);
-        }
         else {
-            throw new RessourcesInsuffisantesException();
+            throw new CarteDejaPossederException();
         }
+
 
     }
 

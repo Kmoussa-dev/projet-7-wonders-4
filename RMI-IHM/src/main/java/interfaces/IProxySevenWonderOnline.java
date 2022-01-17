@@ -69,4 +69,6 @@ public interface IProxySevenWonderOnline extends Remote {
     Collection<RessourcesDTO> getLesRessourcesDuJoueur(String idPartie, String pseudo) throws RemoteException;
 
     String getEtatPartie(String idPartie) throws RemoteException;
+
+    String getVainqueur(String idPartie) throws RemoteException;
 }

@@ -156,7 +156,5 @@ public class Accueil {
         this.controleur.loadPartieSuspendus();
     }
 
-    public void goToHistorique(ActionEvent actionEvent) {
-        this.controleur.goToHistorique();
-    }
+
 }

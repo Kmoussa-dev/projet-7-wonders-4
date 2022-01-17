@@ -305,4 +305,13 @@ public class FacadeProxy implements IFacadeProxy {
             throw new RuntimeException("erreur rmi!");
         }
     }
+
+    @Override
+    public String getVainqueur(String idPartie) {
+        try {
+            return this.jeuFacade.getVainqueur(idPartie);
+        } catch (RemoteException e) {
+            throw new RuntimeException("erreur rmi!");
+        }
+    }
 }

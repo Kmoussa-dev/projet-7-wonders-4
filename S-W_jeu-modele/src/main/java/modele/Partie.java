@@ -8,6 +8,7 @@ import packageDTOs.ModeDeplacement;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,7 +101,7 @@ public class Partie {
 
 
     public void notifierALaPartiJoueur() {
-        if(this.partieJoueurs.size()  == (this.partieJoueurs.stream().filter(pj-> pj.getCartesCirculantes().size() == 0 && pj.getAge() == 3).count())){
+        if(this.partieJoueurs.stream().allMatch(pj-> pj.getCartesCirculantes().size() == 0 && pj.getAge() == 3)){
             this.etatPartie = EtatPartie.TERMINE;
         }
         for (PartieJoueur partieJoueur : this.partieJoueurs){
@@ -114,6 +115,10 @@ public class Partie {
         System.out.println(this);
         System.out.println("---------------------------------------------------------------");
 
+    }
+
+    public String getVainqueurs(){
+        return this.partieJoueurs.stream().max(Comparator.comparing(PartieJoueur::sommePointTotal)).get().getJoueur();
     }
 
     public boolean partieCommence(){

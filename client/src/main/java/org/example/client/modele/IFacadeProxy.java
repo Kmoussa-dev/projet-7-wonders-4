@@ -67,4 +67,6 @@ public interface IFacadeProxy {
 
     Collection<RessourcesDTO> getLesRessourcesDuJoueur(String idPartie, String pseudo);
 
+    String getVainqueur(String idPartie);
+
 }

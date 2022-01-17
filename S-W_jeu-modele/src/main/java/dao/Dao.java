@@ -33,9 +33,6 @@ public class Dao {
                 Updates.set("etatPartie","EN_COURS"),
                 Updates.set("cartesDefausse", partie.getCartesDefausse())
         ));
-
-        //partieMongoCollection.upd;
-
     }
 
 
@@ -268,6 +265,14 @@ public class Dao {
         Collection<Partie> partieCollection = new ArrayList<>();
         Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
         return partie.getPartieJoueurByPseudo(pseudo).getLesRessources();
+    }
+
+
+    public static String getVainqueur(String idPartie){
+        MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
+        Collection<Partie> partieCollection = new ArrayList<>();
+        Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
+        return partie.getVainqueurs();
     }
 
 }
