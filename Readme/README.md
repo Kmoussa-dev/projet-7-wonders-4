@@ -75,14 +75,12 @@ L'idée est de construire une plate-forme à laquelle on peut s'inscrire.
   
 - Étapes
 
-- 1 - Décompresser l’archive 7Wonders.json.zip dans le dossier /tmp/<votreRepo>/data
-- 2 - Lancer une nouvelle instance d'un serveur mongoDB avec Docker, exécuter dans un terminal :
-   ######docker run --name mongoserver -d mongo
-- 3 - Lancer un nouveau conteneur docker qui importe ce fichier json (pensez au -v !) dans mongo
-   ######docker run -it --link mongoserver:mongo --rm -v /tmp/<votreRepo>/data:/data mongo bash
-- 4 - Puis dans ce container, lancer l'importation des données :
-   ######mongoimport --db dblp --collection publis --host mongo --port 27017 --file
-   /data/7Wonders.json --jsonArray
+- 1 - Lancer une nouvelle instance d'un serveur mongoDB avec Docker, exécuter dans un terminal :
+   ######docker start mongoserver
+- 2 - Lancer un nouveau conteneur docker qui importe ce fichier dans mongo
+   ######docker run -it --link mongoserver:mongoserv --rm mongo mongo --host mongoserv test
+- 3 - Puis dans ce container, lancer l'importation des données :
+   ######use sevenwonders
 
 
 #### Liens vers les sites pour l'installation de l'environnement
@@ -96,13 +94,6 @@ L'idée est de construire une plate-forme à laquelle on peut s'inscrire.
 
 ##Implémentation de la solution 
 
-### Structure du projet
-
-![img](structureProjet.png)
-
-### Modèle
-
-![img](Modelisations/Modelisation_v1.png)
 
 ###Fonctionnalités du cahier des charges implementées
 - 1 - Création d'une plateforme d'inscription des différents joueurs
@@ -122,8 +113,8 @@ L'idée est de construire une plate-forme à laquelle on peut s'inscrire.
 
 ###Design pattern utilisés 
 - 1 - Observateur
-- 2 - 
-- 3 -
+- 2 - Facade 
+- 3 - dao
 ###Liens vers la bibliographie complète
 
 ####------------>https://fr.wikipedia.org/wiki/7_Wonders
