@@ -2,6 +2,7 @@ package org.example.client.vues;
 
 import exceptions.PartieNonReprendreException;
 import exceptions.PartieNonSuspenduException;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -11,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -19,12 +21,14 @@ import org.example.client.controleur.Controleur;
 import org.example.client.modele.DonnesStatic;
 import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
+import packageDTOs.PartieDTO;
+import packageDTOs.RessourcesDTO;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestPlatorm {
+public class Plateforme {
     private Stage stage;
     private Scene scene;
     private Controleur controleur;
@@ -72,6 +76,14 @@ public class TestPlatorm {
     @FXML
     private Button btnReprendre;
 
+    @FXML
+    private TableView<RessourcesDTO> tableRessources;
+    @FXML
+    private TableColumn<RessourcesDTO,String> colonneRessource;
+    @FXML
+    private TableColumn<RessourcesDTO,Integer> colonneQuantite;
+
+
     public void setScene(Scene scene){
         this.scene = scene;
     }
@@ -101,13 +113,13 @@ public class TestPlatorm {
     }
 
 
-    public static TestPlatorm creer(Stage stage){
+    public static Plateforme creer(Stage stage){
 
-        FXMLLoader fxmlLoader = new FXMLLoader(TestPlatorm.class.getResource("testPlatorm.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Plateforme.class.getResource("plateforme.fxml"));
         try {
 
             AnchorPane borderPane = fxmlLoader.load();
-            TestPlatorm vue = fxmlLoader.getController();
+            Plateforme vue = fxmlLoader.getController();
             vue.setStage(stage);
             vue.setScene(new Scene(borderPane,750,530));
             return vue;
@@ -136,11 +148,11 @@ public class TestPlatorm {
         Task<Boolean> attenteDistributionCarte = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
-                while (!controleur.partieCommence(DonnesStatic.ticket));
+                while (!controleur.partieCommence(DonnesStatic.codePartie));
                 return true;
             }
         };
-        attenteDistributionCarte.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.distributionCarte(DonnesStatic.ticket, DonnesStatic.pseudo));
+        attenteDistributionCarte.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.distributionCarte(DonnesStatic.codePartie, DonnesStatic.pseudo));
         Thread thread = new Thread(attenteDistributionCarte);
         thread.start();
 
@@ -163,7 +175,9 @@ public class TestPlatorm {
             carteTemp.getItems().remove(index);
             carteTemp.getItems().forEach(o -> cartes.add(((Carte)o)));
 
-            controleur.deplacerCarte(DonnesStatic.ticket, DonnesStatic.pseudo, nomCarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_CITE);
+            controleur.deplacerCarte(DonnesStatic.codePartie, DonnesStatic.pseudo, nomCarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_CITE);
+
+            this.chargerLesRessources();
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Aucune carte n'est choisi", ButtonType.OK);
@@ -175,11 +189,11 @@ public class TestPlatorm {
         Task<Boolean> deplacement = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
-                while (controleur.authorisationCirculer(DonnesStatic.ticket));
+                while (controleur.authorisationCirculer(DonnesStatic.codePartie));
                 return true;
             }
         };
-        deplacement.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.notification(DonnesStatic.ticket, DonnesStatic.pseudo));
+        deplacement.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.notification(DonnesStatic.codePartie, DonnesStatic.pseudo));
         Thread thread = new Thread(deplacement);
         thread.start();
 
@@ -194,12 +208,13 @@ public class TestPlatorm {
     public void chargerContsructionMerv(ObservableList<Carte> cartes) {
         carteContructMerv.setItems(cartes);
 
-        var etapesMerveille = controleur.getEtapesMerveilleConstruite(DonnesStatic.ticket,DonnesStatic.pseudo);
+        var etapesMerveille = controleur.getEtapesMerveilleConstruite(DonnesStatic.codePartie,DonnesStatic.pseudo);
         labelEtape.setText(String.valueOf(etapesMerveille));
 
         if (etapesMerveille == 3) {btnConstrucMerv.setDisable(true);}
 
         merveille.setImage(new Image(getClass().getResourceAsStream("/org/example/client/vues/image/etapes/etapeMerveille"+ etapesMerveille +".png")));
+
     }
 
     public void chargerCartesDefausses(ObservableList<Carte> cartes) {
@@ -207,7 +222,7 @@ public class TestPlatorm {
     }
 
     public void refresh(ActionEvent actionEvent) {
-        this.controleur.refrexh(DonnesStatic.ticket,DonnesStatic.pseudo);
+        this.controleur.refrexh(DonnesStatic.codePartie,DonnesStatic.pseudo);
     }
 
     public void constructionMerveille(ActionEvent actionEvent) {
@@ -219,7 +234,8 @@ public class TestPlatorm {
             carteTemp.getItems().remove(index);
             carteTemp.getItems().forEach(o -> cartes.add(((Carte)o)));
 
-            controleur.deplacerCarte(DonnesStatic.ticket, DonnesStatic.pseudo, nomCarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_MERVAILLE);
+            controleur.deplacerCarte(DonnesStatic.codePartie, DonnesStatic.pseudo, nomCarteChoisi, cartes, ModeDeplacement.CONSTRUCTION_MERVAILLE);
+            this.chargerLesRessources();
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Aucune carte n'est choisi", ButtonType.OK);
@@ -230,11 +246,11 @@ public class TestPlatorm {
         Task<Boolean> deplacement = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
-                while (controleur.authorisationCirculer(DonnesStatic.ticket));
+                while (controleur.authorisationCirculer(DonnesStatic.codePartie));
                 return true;
             }
         };
-        deplacement.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.notification(DonnesStatic.ticket, DonnesStatic.pseudo));
+        deplacement.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.notification(DonnesStatic.codePartie, DonnesStatic.pseudo));
         Thread thread = new Thread(deplacement);
         thread.start();
     }
@@ -247,7 +263,8 @@ public class TestPlatorm {
             carteTemp.getItems().remove(index);
             carteTemp.getItems().forEach(o -> cartes.add(((Carte)o)));
 
-            controleur.deplacerCarte(DonnesStatic.ticket, DonnesStatic.pseudo, nomCarteChoisi, cartes, ModeDeplacement.DEFAUSSE_CARTE);
+            controleur.deplacerCarte(DonnesStatic.codePartie, DonnesStatic.pseudo, nomCarteChoisi, cartes, ModeDeplacement.DEFAUSSE_CARTE);
+            this.chargerLesRessources();
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Aucune carte n'est choisi", ButtonType.OK);
@@ -257,11 +274,11 @@ public class TestPlatorm {
         Task<Boolean> deplacement = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
-                while (controleur.authorisationCirculer(DonnesStatic.ticket));
+                while (controleur.authorisationCirculer(DonnesStatic.codePartie));
                 return true;
             }
         };
-        deplacement.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.notification(DonnesStatic.ticket, DonnesStatic.pseudo));
+        deplacement.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> this.controleur.notification(DonnesStatic.codePartie, DonnesStatic.pseudo));
         Thread thread = new Thread(deplacement);
         thread.start();
     }
@@ -323,7 +340,7 @@ public class TestPlatorm {
     }
 
     public void quitterPartie(ActionEvent actionEvent) {
-        if(!this.controleur.quitterPartie(DonnesStatic.ticket,DonnesStatic.pseudo)){
+        if(!this.controleur.quitterPartie(DonnesStatic.codePartie,DonnesStatic.pseudo)){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Vous n'avez pas droit de faire quitter cette partie", ButtonType.OK);
             alert.setTitle("Accès refusée");
             alert.showAndWait();
@@ -332,7 +349,7 @@ public class TestPlatorm {
 
     public void suspendreJeu(ActionEvent actionEvent) {
         try {
-            if(this.controleur.suspendreJeu(DonnesStatic.ticket,DonnesStatic.pseudo)){
+            if(this.controleur.suspendreJeu(DonnesStatic.codePartie,DonnesStatic.pseudo)){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Vous avez suspendu la partie", ButtonType.OK);
                 alert.setTitle("Suspendre");
                 alert.showAndWait();
@@ -351,7 +368,7 @@ public class TestPlatorm {
 
     public void reprendreJeu(ActionEvent actionEvent) {
         try {
-            if(this.controleur.reprendreJeu(DonnesStatic.ticket,DonnesStatic.pseudo)){
+            if(this.controleur.reprendreJeu(DonnesStatic.codePartie,DonnesStatic.pseudo)){
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Vous avez repris la partie", ButtonType.OK);
                 alert.setTitle("Reprendre");
                 alert.showAndWait();
@@ -370,7 +387,14 @@ public class TestPlatorm {
     }
 
     public void retourMenu(ActionEvent actionEvent) {
-        this.controleur.peutQuitter(DonnesStatic.ticket);
+        this.controleur.peutQuitter(DonnesStatic.codePartie);
 
+    }
+
+    public void chargerLesRessources(){
+        this.colonneQuantite.setCellValueFactory(new PropertyValueFactory<RessourcesDTO,Integer>("quantite"));
+        this.colonneRessource.setCellValueFactory(new PropertyValueFactory<RessourcesDTO,String>("ressource"));
+        ObservableList<RessourcesDTO> ressourcesDTOS = FXCollections.observableArrayList(this.controleur.getLesRessourcesDuJoueur(DonnesStatic.codePartie,DonnesStatic.pseudo));
+        this.tableRessources.setItems(ressourcesDTOS);
     }
 }

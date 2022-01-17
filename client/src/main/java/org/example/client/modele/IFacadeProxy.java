@@ -4,9 +4,11 @@ import exceptions.*;
 import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
 import packageDTOs.PartieDTO;
+import packageDTOs.RessourcesDTO;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public interface IFacadeProxy {
     Collection<Carte> getCartes();
@@ -17,7 +19,7 @@ public interface IFacadeProxy {
 
     void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, PartiePleinExecption;
 
-    void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException;
+    void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException, CarteDejaPossederException;
 
     Collection<Carte> getLesCartesCirculants(String idPartie, String pseudo);
 
@@ -60,5 +62,7 @@ public interface IFacadeProxy {
     String getPlateauDuJoueur(String idPartie, String pseudo);
 
     int getAgeCourantPartie(String idPartie, String pseudo);
+
+    Collection<RessourcesDTO> getLesRessourcesDuJoueur(String idPartie, String pseudo);
 
 }

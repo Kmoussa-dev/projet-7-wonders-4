@@ -18,7 +18,7 @@ public class Historisation {
 
     public static Historisation creer(Stage stage){
 
-        FXMLLoader fxmlLoader = new FXMLLoader(TestPlatorm.class.getResource("historisation.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Plateforme.class.getResource("historisation.fxml"));
         try {
             BorderPane borderPane = fxmlLoader.load();
             Historisation vue = fxmlLoader.getController();

@@ -9,12 +9,13 @@ import packageDTOs.ModeDeplacement;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public class FacadeSwOnline implements IFacadeSwOnline{
 
 
     @Override
-    public void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException {
+    public void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException, CarteDejaPossederException {
         Dao.deplacementCarte(idPartie, pseudo, carte, cartes, modeDeplacement);
     }
 
@@ -141,5 +142,11 @@ public class FacadeSwOnline implements IFacadeSwOnline{
     public int getAgeCourantPartie(String idPartie, String pseudo) {
         return Dao.getAgeCourantPartie(idPartie,pseudo);
     }
+
+    @Override
+    public Map<String, Integer> getLesRessourcesDuJoueur(String idPartie, String pseudo) {
+        return Dao.getLesRessourcesDuJoueur(idPartie,pseudo);
+    }
+
 
 }

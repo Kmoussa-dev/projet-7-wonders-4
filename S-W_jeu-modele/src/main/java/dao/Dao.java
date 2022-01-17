@@ -13,10 +13,7 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Dao {
 
@@ -27,7 +24,7 @@ public class Dao {
 
 
     public static void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement)
-            throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException {
+            throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException, CarteDejaPossederException {
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
         partie.deplacer(pseudo,carte,cartes,modeDeplacement);
@@ -106,12 +103,6 @@ public class Dao {
     public static Partie getPartie(String idPartie){
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         return partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
-    }
-
-    public static boolean createurDuJeu(String idPartie, String pseudo){
-        MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
-        Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
-        return partie.getPartieJoueurByPseudo(pseudo).isCreateur();
     }
 
 
@@ -270,6 +261,13 @@ public class Dao {
         Collection<Partie> partieCollection = new ArrayList<>();
         Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
         return String.valueOf(partie.getPartieJoueurByPseudo(pseudo).getPlateau().getNomPlateau());
+    }
+
+    public static Map<String, Integer> getLesRessourcesDuJoueur(String idPartie, String pseudo){
+        MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
+        Collection<Partie> partieCollection = new ArrayList<>();
+        Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
+        return partie.getPartieJoueurByPseudo(pseudo).getLesRessources();
     }
 
 }

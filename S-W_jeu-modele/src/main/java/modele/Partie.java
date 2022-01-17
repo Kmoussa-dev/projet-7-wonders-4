@@ -68,7 +68,7 @@ public class Partie {
         return this.partieJoueurs.stream().filter(partieJoueur -> partieJoueur.getJoueur().equals(pseudo)).collect(Collectors.toList()).get(0);
     }
 
-    public void deplacer(String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException {
+    public void deplacer(String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException, CarteDejaPossederException {
         for (PartieJoueur partieJoueur : this.partieJoueurs){
             if(partieJoueur.getJoueur().equals(pseudo)){
                 partieJoueur.deplacerLaCarteChoisi(cartes,carte,modeDeplacement, this);

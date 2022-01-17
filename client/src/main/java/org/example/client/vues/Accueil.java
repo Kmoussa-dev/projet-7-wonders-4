@@ -9,8 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderImage;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.bson.types.ObjectId;
@@ -56,7 +54,7 @@ public class Accueil {
 
     public static Accueil creer(Stage stage){
 
-        FXMLLoader fxmlLoader = new FXMLLoader(TestPlatorm.class.getResource("accueil.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Plateforme.class.getResource("accueil.fxml"));
         try {
 
             BorderPane borderPane = fxmlLoader.load();
@@ -117,9 +115,9 @@ public class Accueil {
 
     public void creerPartie(ActionEvent actionEvent) {
         ObjectId objectId = new ObjectId(new Date());
-        DonnesStatic.ticket = objectId.toHexString();
+        DonnesStatic.codePartie = objectId.toHexString();
         try {
-            this.controleur.setNouvellePartie(DonnesStatic.pseudo, DonnesStatic.ticket);
+            this.controleur.setNouvellePartie(DonnesStatic.pseudo, DonnesStatic.codePartie);
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Envoyer ce code d'invitation: "+"\n" + objectId.toHexString(), ButtonType.OK);
             alert.setTitle("Invitation");
             alert.showAndWait();
@@ -135,8 +133,8 @@ public class Accueil {
 
     public void reprendreUnePartie(ActionEvent actionEvent) {
         if(lesPartiesSuspendus.getSelectionModel().getSelectedIndex() != -1){
-            DonnesStatic.ticket = ((PartieDTO)lesPartiesSuspendus.getSelectionModel().getSelectedItem()).getId();
-            this.controleur.reAccederAuJeu(DonnesStatic.ticket, DonnesStatic.pseudo);
+            DonnesStatic.codePartie = ((PartieDTO)lesPartiesSuspendus.getSelectionModel().getSelectedItem()).getId();
+            this.controleur.reAccederAuJeu(DonnesStatic.codePartie, DonnesStatic.pseudo);
         }
         else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Veuillez saisir sélectionner une partie", ButtonType.OK);

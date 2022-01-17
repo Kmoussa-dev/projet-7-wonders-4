@@ -1,12 +1,10 @@
 package org.example.client.vues;
 
-import com.mongodb.DuplicateKeyException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.example.client.controleur.Controleur;
@@ -36,7 +34,7 @@ public class Authentification {
 
     public static Authentification creer(Stage stage){
 
-        FXMLLoader fxmlLoader = new FXMLLoader(TestPlatorm.class.getResource("authentification.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Plateforme.class.getResource("authentification.fxml"));
         try {
             BorderPane borderPane = fxmlLoader.load();
             Authentification vue = fxmlLoader.getController();

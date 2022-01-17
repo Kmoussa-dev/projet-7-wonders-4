@@ -122,22 +122,8 @@ public class PartieJoueur {
     }
 
     public void deplacerLaCarteChoisi(List<Carte> majCarteCirculant, Carte choixCarte, ModeDeplacement modeDeplacement, Partie partie)
-            throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException {
-        /*PartieJoueur partieJoueurGauche = null;
-        PartieJoueur partieJoueurDroite = null;
-        try {
-            partieJoueurGauche = partie.getPartieJoueurs().get((partie.getPartieJoueurs().indexOf(this) - 1));
-        }
-        catch (Exception e){
-            partieJoueurGauche = partie.getPartieJoueurs().get(0);
-        }
+            throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException, CarteDejaPossederException {
 
-        try {
-            partieJoueurGauche = partie.getPartieJoueurs().get((partie.getPartieJoueurs().indexOf(this) + 1));
-        }
-        catch (Exception e){
-            partieJoueurGauche = partie.getPartieJoueurs().get(partie.getPartieJoueurs().size() -1 );
-        }*/
         if(!partie.getEtatPartie().equals(EtatPartie.TERMINE)){
             if (!partie.getEtatPartie().equals(EtatPartie.SUSPENDU)){
                 if(this.etatChoisi == EtatCarteChoisi.PAS_ENCORE_CHOISIE){
@@ -152,8 +138,13 @@ public class PartieJoueur {
 
                         if(modeDeplacement == ModeDeplacement.CONSTRUCTION_CITE){
 
-                           this.gestionConstructionCite(choixCarte,majCarteCirculant);
-
+                            //gestion contrainte sur les cartes du même nom
+                            if(!this.cartesConstructionCite.stream().anyMatch(carte -> carte.getNom().equals(choixCarte.getNom()))){
+                                this.gestionConstructionCite(choixCarte,majCarteCirculant);
+                            }
+                            else{
+                                throw new CarteDejaPossederException();
+                            }
                         }
                         else if(modeDeplacement == ModeDeplacement.CONSTRUCTION_MERVAILLE){
 

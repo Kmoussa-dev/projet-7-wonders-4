@@ -7,12 +7,13 @@ import packageDTOs.ModeDeplacement;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public interface IFacadeSwOnline {
 
 
 
-    void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException;
+    void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException, CarteDejaPossederException;
 
     List<Carte> getLesCartesCirculants(String idPartie, String pseudo);
 
@@ -63,4 +64,8 @@ public interface IFacadeSwOnline {
     String getPlateauDuJoueur(String idPartie, String pseudo);
 
     int getAgeCourantPartie(String idPartie, String pseudo);
+
+    Map<String, Integer> getLesRessourcesDuJoueur(String idPartie, String pseudo);
+
+
 }

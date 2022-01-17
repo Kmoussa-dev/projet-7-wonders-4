@@ -5,11 +5,13 @@ import exceptions.*;
 import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
 import packageDTOs.PartieDTO;
+import packageDTOs.RessourcesDTO;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public interface IProxySevenWonderOnline extends Remote {
     Collection<Carte> getCartes() throws RemoteException;
@@ -18,7 +20,7 @@ public interface IProxySevenWonderOnline extends Remote {
 
     void accederUnePartie(String idPartie, String pseudo) throws RemoteException, partieDejaTermineException, partieInexistantException, PartiePleinExecption;
 
-    void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws RemoteException, CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException;
+    void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws RemoteException, CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException, CarteDejaPossederException;
 
     Collection<Carte> getLesCartesCirculants(String idPartie, String pseudo)throws RemoteException;
 
@@ -63,4 +65,6 @@ public interface IProxySevenWonderOnline extends Remote {
     String getPlateauDuJoueur(String idPartie, String pseudo) throws RemoteException;
 
     int getAgeCourantPartie(String idPartie, String pseudo) throws RemoteException;
+
+    Collection<RessourcesDTO> getLesRessourcesDuJoueur(String idPartie, String pseudo) throws RemoteException;
 }

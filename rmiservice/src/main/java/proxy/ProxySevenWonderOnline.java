@@ -9,12 +9,11 @@ import modele.PartieJoueur;
 import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
 import packageDTOs.PartieDTO;
+import packageDTOs.RessourcesDTO;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProxySevenWonderOnline {
 
@@ -45,7 +44,7 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
 
 
     @Override
-    public void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws RemoteException, CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException {
+    public void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws RemoteException, CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException, CarteDejaPossederException {
         this.facade.deplacementCarte(idPartie, pseudo, carte, cartes, modeDeplacement);
     }
 
@@ -175,5 +174,14 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
     @Override
     public int getAgeCourantPartie(String idPartie, String pseudo) throws RemoteException {
         return this.facade.getAgeCourantPartie(idPartie,pseudo);
+    }
+
+    @Override
+    public Collection<RessourcesDTO> getLesRessourcesDuJoueur(String idPartie, String pseudo) throws RemoteException {
+
+        Collection<RessourcesDTO> lesRessourcesDTO = new ArrayList<>();
+        this.facade.getLesRessourcesDuJoueur(idPartie,pseudo).forEach((k,v)->lesRessourcesDTO.add(new RessourcesDTO(k,v)));
+        return lesRessourcesDTO;
+
     }
 }

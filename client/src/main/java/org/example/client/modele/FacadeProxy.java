@@ -5,6 +5,7 @@ import interfaces.IProxySevenWonderOnline;
 import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
 import packageDTOs.PartieDTO;
+import packageDTOs.RessourcesDTO;
 import service.access.RMIServeurConnexion;
 
 import java.rmi.NotBoundException;
@@ -13,6 +14,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public class FacadeProxy implements IFacadeProxy {
 
@@ -74,7 +76,7 @@ public class FacadeProxy implements IFacadeProxy {
 
 
     @Override
-    public void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException {
+    public void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException, CarteDejaPossederException {
         try {
             this.jeuFacade.deplacementCarte(idPartie, pseudo,carte, cartes, modeDeplacement);
         } catch (RemoteException e) {
@@ -281,6 +283,15 @@ public class FacadeProxy implements IFacadeProxy {
     public int getAgeCourantPartie(String idPartie, String pseudo) {
         try {
             return this.jeuFacade.getAgeCourantPartie(idPartie,pseudo);
+        } catch (RemoteException e) {
+            throw new RuntimeException("erreur rmi!");
+        }
+    }
+
+    @Override
+    public Collection<RessourcesDTO> getLesRessourcesDuJoueur(String idPartie, String pseudo) {
+        try {
+            return this.jeuFacade.getLesRessourcesDuJoueur(idPartie, pseudo);
         } catch (RemoteException e) {
             throw new RuntimeException("erreur rmi!");
         }

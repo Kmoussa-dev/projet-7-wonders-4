@@ -13,18 +13,20 @@ import org.example.client.modele.IFacadeProxy;
 import org.example.client.vues.Accueil;
 import org.example.client.vues.Authentification;
 import org.example.client.vues.Historisation;
-import org.example.client.vues.TestPlatorm;
+import org.example.client.vues.Plateforme;
 import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
 import packageDTOs.PartieDTO;
+import packageDTOs.RessourcesDTO;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public class Controleur {
     private IFacadeProxy facade;
     private Accueil accueil;
-    private TestPlatorm testPlatorm;
+    private Plateforme plateforme;
     private Authentification authentification;
     private Historisation historisation;
 
@@ -32,8 +34,8 @@ public class Controleur {
         this.facade = FacadeProxy.cree();
         this.accueil = Accueil.creer(stage);
         this.accueil.initialiserControleur(this);
-        this.testPlatorm = TestPlatorm.creer(stage);
-        this.testPlatorm.initialiserControleur(this);
+        this.plateforme = Plateforme.creer(stage);
+        this.plateforme.initialiserControleur(this);
         this.authentification = Authentification.creer(stage);
         this.authentification.initialiserControleur(this);
         this.historisation = Historisation.creer(stage);
@@ -44,24 +46,24 @@ public class Controleur {
 
     public void loadCarteTemp(String idPartie, String pseudo){
         ObservableList<Carte> cartes = FXCollections.observableArrayList(this.facade.getLesCartesCirculants(idPartie,pseudo));
-        this.testPlatorm.charger(cartes);
+        this.plateforme.charger(cartes);
 
     }
 
     public void loadCarteConstruction(String idPartie, String pseudo){
         ObservableList<Carte> cartes = FXCollections.observableArrayList(this.facade.getLesCartesConstructionCite(idPartie,pseudo));
-        this.testPlatorm.chargerContsructionCite(cartes);
+        this.plateforme.chargerContsructionCite(cartes);
 
     }
 
     public void loadCarteConstructionMerv(String idPartie, String pseudo){
         ObservableList<Carte> cartes = FXCollections.observableArrayList(this.facade.getLesCartesConstructionMerv(idPartie,pseudo));
-        this.testPlatorm.chargerContsructionMerv(cartes);
+        this.plateforme.chargerContsructionMerv(cartes);
     }
 
     public void loadCartesDefausses(String idPartie){
         ObservableList<Carte> cartes = FXCollections.observableArrayList(this.facade.getLesCartesDefausses(idPartie));
-        this.testPlatorm.chargerCartesDefausses(cartes);
+        this.plateforme.chargerCartesDefausses(cartes);
 
     }
 
@@ -73,7 +75,7 @@ public class Controleur {
 
     public void accederAuJeu(String idPartie, String pseudo) throws partieDejaTermineException, PartiePleinExecption, partieInexistantException {
         this.facade.accederUnePartie(idPartie,pseudo);
-        DonnesStatic.ticket = idPartie;
+        DonnesStatic.codePartie = idPartie;
     }
 
     public Boolean partieCommence(String idPartie){
@@ -83,7 +85,7 @@ public class Controleur {
     public void distributionCarte(String idPartie, String pseudo){
         this.facade.distribution(idPartie);
         this.loadCarteTemp(idPartie,pseudo);
-        this.testPlatorm.setLabelPlateau(this.facade.getPlateauDuJoueur(idPartie,pseudo));
+        this.plateforme.setLabelPlateau(this.facade.getPlateauDuJoueur(idPartie,pseudo));
     }
 
     public Boolean authorisationCirculer(String idPartie){
@@ -96,7 +98,7 @@ public class Controleur {
         this.loadCarteConstruction(idPartie, pseudo);
         this.loadCarteConstructionMerv(idPartie, pseudo);
         this.loadCartesDefausses(idPartie);
-        this.testPlatorm.setAgeCurant(this.facade.getAgeCourantPartie(idPartie,pseudo));
+        this.plateforme.setAgeCurant(this.facade.getAgeCourantPartie(idPartie,pseudo));
     }
 
 
@@ -105,6 +107,7 @@ public class Controleur {
         this.loadCarteConstruction(idPartie, pseudo);
         this.loadCarteConstructionMerv(idPartie, pseudo);
         this.loadCartesDefausses(idPartie);
+        this.plateforme.setAgeCurant(this.facade.getAgeCourantPartie(DonnesStatic.codePartie,DonnesStatic.pseudo));
     }
 
     public void deplacerCarte(String idPartie, String pseudo, Carte nomCarte, List<Carte> cartes, ModeDeplacement modeDeplacement){
@@ -130,6 +133,10 @@ public class Controleur {
         } catch (RessourcesInsuffisantesException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Vous n'avez pas assez de ressources \n pour vous procurer cette carte", ButtonType.OK);
             alert.setTitle("Ressources Insufffisantes");
+            alert.showAndWait();
+        } catch (CarteDejaPossederException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Vous avez déjà en votre \n possesion cette carte", ButtonType.OK);
+            alert.setTitle("Ressources déjà acquise");
             alert.showAndWait();
         }
 
@@ -168,12 +175,12 @@ public class Controleur {
 
 
     public void goToPlateForm() {
-        this.testPlatorm.show();
-        this.testPlatorm.setPseudoCodePartie(DonnesStatic.ticket,DonnesStatic.pseudo);
-        this.testPlatorm.loadCardAge1();
-        this.testPlatorm.setAgeCurant(this.facade.getAgeCourantPartie(DonnesStatic.ticket,DonnesStatic.pseudo));
-        if(!this.facade.joueurCreateurDeLaPartie(DonnesStatic.ticket,DonnesStatic.pseudo)){
-            this.testPlatorm.desactivationButton();
+        this.plateforme.show();
+        this.plateforme.setPseudoCodePartie(DonnesStatic.codePartie,DonnesStatic.pseudo);
+        this.plateforme.loadCardAge1();
+        this.plateforme.setAgeCurant(this.facade.getAgeCourantPartie(DonnesStatic.codePartie,DonnesStatic.pseudo));
+        if(!this.facade.joueurCreateurDeLaPartie(DonnesStatic.codePartie,DonnesStatic.pseudo)){
+            this.plateforme.desactivationButton();
         }
 
     }
@@ -182,7 +189,7 @@ public class Controleur {
     public void reAccederAuJeu(String idPartie, String pseudo){
        try {
            if(this.facade.reAccederAuJeu(idPartie, pseudo)){
-               this.testPlatorm.show();
+               this.plateforme.show();
                this.loadCarteTemp(idPartie, pseudo);
                this.loadCarteConstruction(idPartie, pseudo);
                this.loadCarteConstructionMerv(idPartie, pseudo);
@@ -231,6 +238,9 @@ public class Controleur {
         return this.facade.getLesParties();
     }
 
+    public Collection<RessourcesDTO> getLesRessourcesDuJoueur(String idPartie, String pseudo) {
+        return this.facade.getLesRessourcesDuJoueur(idPartie,pseudo);
+    }
 
 
 }
