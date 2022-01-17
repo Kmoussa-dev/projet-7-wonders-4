@@ -27,9 +27,6 @@ public interface IFacadeSwOnline {
 
     boolean partieCommence(String idPartie);
 
-    Collection<Carte> getCartes();
-
-    Carte getCarte(String nom);
 
     int getEtapesMerveilleConstruite(String idPartie, String pseudo);
 

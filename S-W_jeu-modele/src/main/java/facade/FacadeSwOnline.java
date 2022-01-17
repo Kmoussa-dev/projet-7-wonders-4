@@ -48,16 +48,6 @@ public class FacadeSwOnline implements IFacadeSwOnline{
     }
 
     @Override
-    public Collection<Carte> getCartes() {
-        return Dao.getCartes();
-    }
-
-    @Override
-    public Carte getCarte(String nom) {
-        return Dao.getCartesByName(nom);
-    }
-
-    @Override
     public int getEtapesMerveilleConstruite(String idPartie, String pseudo) {
         return Dao.getEtapesMerveilleConstruite(idPartie,pseudo);
     }

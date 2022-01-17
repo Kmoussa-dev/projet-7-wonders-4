@@ -35,25 +35,9 @@ public class FacadeProxy implements IFacadeProxy {
         }
     }
 
-    @Override
-    public Collection<Carte> getCartes() {
-        try {
-            return this.jeuFacade.getCartes();
-        } catch (RemoteException e) {
-           e.printStackTrace();
-        }
-        return null;
-    }
 
-    @Override
-    public Carte getCarte(String nom) {
-        try {
-            return this.jeuFacade.getCarte(nom);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+
+
 
     @Override
     public int getEtapesMerveilleConstruite(String idPartie, String pseudo) {

@@ -19,24 +19,14 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
 
     private IFacadeSwOnline facade;
 
+    /**
+     * constructeur
+     * @throws RemoteException
+     */
     public ProxySevenWonderOnline() throws RemoteException {
         super(0);
         this.facade = new  FacadeSwOnline();
     }
-
-    @Override
-    public Collection<Carte> getCartes() throws RemoteException {
-        Collection<Carte> carteDTOCollection = new ArrayList<Carte>();
-        this.facade.getCartes().forEach(c -> carteDTOCollection.add(new Carte(c.getId(), c.getNom(), c.getEffectif(), c.getLesRessources(), c.getLesCouts())));
-        return carteDTOCollection;
-    }
-
-    @Override
-    public Carte getCarte(String nom) throws RemoteException {
-        Carte carte = this.facade.getCarte(nom);
-        return new Carte(carte.getId(), carte.getNom(), carte.getEffectif(), carte.getLesRessources(), carte.getLesCouts());
-    }
-
     @Override
     public void accederUnePartie(String idPartie, String pseudo) throws RemoteException, partieDejaTermineException, partieInexistantException, PartiePleinExecption {
         this.facade.accederUnePartie(idPartie,pseudo);

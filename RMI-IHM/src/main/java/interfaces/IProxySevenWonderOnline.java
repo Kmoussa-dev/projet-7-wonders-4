@@ -14,9 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface IProxySevenWonderOnline extends Remote {
-    Collection<Carte> getCartes() throws RemoteException;
-    Carte getCarte(String nom) throws RemoteException;
-
 
     void accederUnePartie(String idPartie, String pseudo) throws RemoteException, partieDejaTermineException, partieInexistantException, PartiePleinExecption;
 

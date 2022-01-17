@@ -97,10 +97,7 @@ public class Dao {
 
     }
 
-    public static Partie getPartie(String idPartie){
-        MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
-        return partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
-    }
+
 
 
     public static boolean authorisationCirculer(String idPartie){
@@ -131,10 +128,7 @@ public class Dao {
         return String.valueOf(partie.getEtatPartie());
     }
 
-    public static Carte getCartesByName(String nom){
-        MongoCollection<Carte> carteMongoCollection = db.getCollection("cartes",Carte.class);
-        return carteMongoCollection.find(Filters.eq("nom",nom)).first();
-    }
+
 
     public static int getEtapesMerveilleConstruite(String idPartie, String pseudo) {
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
@@ -142,13 +136,7 @@ public class Dao {
         return partie.getPartieJoueurByPseudo(pseudo).getPlateau().getEtapesMerveilleConstruite();
     }
 
-    public static Collection<Carte> getCartes(){
-        MongoCollection<Carte> carteMongoCollection = db.getCollection("cartes", Carte.class);
-        Collection<Carte> carteCollection = new ArrayList<>();
-        carteMongoCollection.find().forEach(c->carteCollection.add(c));
-        return carteCollection;
 
-    }
 
     public static void inscription(String pseudo, String mdp) {
         MongoCollection<Joueur> joueurMongoCollection = db.getCollection("joueurs",Joueur.class);

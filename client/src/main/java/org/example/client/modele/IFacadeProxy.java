@@ -11,9 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface IFacadeProxy {
-    Collection<Carte> getCartes();
-
-    Carte getCarte(String nom);
 
     int getEtapesMerveilleConstruite(String idPartie, String pseudo);
 
