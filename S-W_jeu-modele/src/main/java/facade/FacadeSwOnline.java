@@ -148,5 +148,10 @@ public class FacadeSwOnline implements IFacadeSwOnline{
         return Dao.getLesRessourcesDuJoueur(idPartie,pseudo);
     }
 
+    @Override
+    public String getEtatPartie(String idPartie) {
+        return Dao.getEtatPartie(idPartie);
+    }
+
 
 }

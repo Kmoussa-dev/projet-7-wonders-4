@@ -63,6 +63,8 @@ public interface IFacadeProxy {
 
     int getAgeCourantPartie(String idPartie, String pseudo);
 
+    String getEtatPartie(String idPartie);
+
     Collection<RessourcesDTO> getLesRessourcesDuJoueur(String idPartie, String pseudo);
 
 }

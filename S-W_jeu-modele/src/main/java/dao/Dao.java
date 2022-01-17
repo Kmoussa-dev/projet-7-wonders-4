@@ -131,7 +131,7 @@ public class Dao {
     public static String getEtatPartie(String idPartie){
         MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
         Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
-        return partie.getEtatPartie().toString();
+        return String.valueOf(partie.getEtatPartie());
     }
 
     public static Carte getCartesByName(String nom){

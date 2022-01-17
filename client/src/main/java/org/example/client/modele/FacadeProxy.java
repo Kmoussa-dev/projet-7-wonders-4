@@ -289,6 +289,15 @@ public class FacadeProxy implements IFacadeProxy {
     }
 
     @Override
+    public String getEtatPartie(String idPartie) {
+        try {
+            return this.jeuFacade.getEtatPartie(idPartie);
+        } catch (RemoteException e) {
+            throw new RuntimeException("erreur rmi!");
+        }
+    }
+
+    @Override
     public Collection<RessourcesDTO> getLesRessourcesDuJoueur(String idPartie, String pseudo) {
         try {
             return this.jeuFacade.getLesRessourcesDuJoueur(idPartie, pseudo);

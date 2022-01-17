@@ -12,7 +12,7 @@ import org.example.client.modele.FacadeProxy;
 import org.example.client.modele.IFacadeProxy;
 import org.example.client.vues.Accueil;
 import org.example.client.vues.Authentification;
-import org.example.client.vues.Historisation;
+import org.example.client.vues.FinPartie;
 import org.example.client.vues.Plateforme;
 import packageDTOs.Carte;
 import packageDTOs.ModeDeplacement;
@@ -21,14 +21,13 @@ import packageDTOs.RessourcesDTO;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public class Controleur {
     private IFacadeProxy facade;
     private Accueil accueil;
     private Plateforme plateforme;
     private Authentification authentification;
-    private Historisation historisation;
+    private FinPartie finPartie;
 
     public Controleur(Stage stage){
         this.facade = FacadeProxy.cree();
@@ -38,8 +37,8 @@ public class Controleur {
         this.plateforme.initialiserControleur(this);
         this.authentification = Authentification.creer(stage);
         this.authentification.initialiserControleur(this);
-        this.historisation = Historisation.creer(stage);
-        this.historisation.initialiserControleur(this);
+        this.finPartie = FinPartie.creer(stage);
+        this.finPartie.initialiserControleur(this);
     }
 
 
@@ -231,7 +230,7 @@ public class Controleur {
     }
 
     public void goToHistorique() {
-        this.historisation.show();
+        this.finPartie.show();
     }
 
     public Collection<PartieDTO> getLesParties(){
@@ -242,5 +241,8 @@ public class Controleur {
         return this.facade.getLesRessourcesDuJoueur(idPartie,pseudo);
     }
 
+    public String getEtatPartie(String idPartie) {
+        return this.facade.getEtatPartie(idPartie);
+    }
 
 }

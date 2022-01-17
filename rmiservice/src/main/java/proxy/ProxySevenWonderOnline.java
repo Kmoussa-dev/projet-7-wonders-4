@@ -184,4 +184,9 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
         return lesRessourcesDTO;
 
     }
+
+    @Override
+    public String getEtatPartie(String idPartie) throws RemoteException {
+        return this.facade.getEtatPartie(idPartie);
+    }
 }

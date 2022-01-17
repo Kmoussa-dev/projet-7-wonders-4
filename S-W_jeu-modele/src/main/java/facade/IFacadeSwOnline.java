@@ -67,5 +67,5 @@ public interface IFacadeSwOnline {
 
     Map<String, Integer> getLesRessourcesDuJoueur(String idPartie, String pseudo);
 
-
+    String getEtatPartie(String idPartie);
 }
