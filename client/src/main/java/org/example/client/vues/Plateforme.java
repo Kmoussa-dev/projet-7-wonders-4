@@ -45,8 +45,8 @@ public class Plateforme {
     @FXML
     ListView carteContructCite;
 
-    @FXML
-    ListView carteContructMerv;
+   /* @FXML
+    ListView carteContructMerv;**/
 
     @FXML
     ListView cartesDefausse;
@@ -121,7 +121,8 @@ public class Plateforme {
             AnchorPane borderPane = fxmlLoader.load();
             Plateforme vue = fxmlLoader.getController();
             vue.setStage(stage);
-            vue.setScene(new Scene(borderPane,750,530));
+            //vue.setScene(new Scene(borderPane,750,530));
+            vue.setScene(new Scene(borderPane,790,600));
             return vue;
         } catch (IOException e) {
             throw new RuntimeException("error");
@@ -144,7 +145,7 @@ public class Plateforme {
     public void loadCardAge1() {
         this.carteTemp.getItems().clear();
         this.carteContructCite.getItems().clear();
-        this.carteContructMerv.getItems().clear();
+       // this.carteContructMerv.getItems().clear();
         Task<Boolean> attenteDistributionCarte = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
@@ -206,7 +207,7 @@ public class Plateforme {
     }
 
     public void chargerContsructionMerv(ObservableList<Carte> cartes) {
-        carteContructMerv.setItems(cartes);
+     //  carteContructMerv.setItems(cartes);
 
         var etapesMerveille = controleur.getEtapesMerveilleConstruite(DonnesStatic.codePartie,DonnesStatic.pseudo);
         labelEtape.setText(String.valueOf(etapesMerveille));

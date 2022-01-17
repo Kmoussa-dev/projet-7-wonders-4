@@ -39,7 +39,8 @@ public class Authentification {
             BorderPane borderPane = fxmlLoader.load();
             Authentification vue = fxmlLoader.getController();
             vue.setStage(stage);
-            vue.setScene(new Scene(borderPane,682,417));
+          //  vue.setScene(new Scene(borderPane,682,417));
+            vue.setScene(new Scene(borderPane,682,500));
             return vue;
         } catch (IOException e) {
             throw new RuntimeException("error");

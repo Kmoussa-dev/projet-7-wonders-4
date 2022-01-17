@@ -60,7 +60,8 @@ public class Accueil {
             BorderPane borderPane = fxmlLoader.load();
             Accueil vue = fxmlLoader.getController();
             vue.setStage(stage);
-            vue.setScene(new Scene(borderPane,682,417));
+            //vue.setScene(new Scene(borderPane,682,417));
+            vue.setScene(new Scene(borderPane,680,480));
             return vue;
         } catch (IOException e) {
             throw new RuntimeException("error");
