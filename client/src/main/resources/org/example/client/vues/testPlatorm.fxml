@@ -60,9 +60,9 @@
       </Label>
       <Label layoutX="20.0" layoutY="63.0" text="Code de la partie:" />
       <Label fx:id="pseudo" layoutX="307.0" layoutY="95.0" text="code" />
-      <Button layoutX="747.0" layoutY="77.0" mnemonicParsing="false" onAction="#quitterPartie" text="Quitter" AnchorPane.rightAnchor="85.0" />
-      <Button layoutX="583.0" layoutY="77.0" mnemonicParsing="false" onAction="#suspendreJeu" text="Pause" AnchorPane.rightAnchor="256.0" />
-      <Button layoutX="655.0" layoutY="78.0" mnemonicParsing="false" onAction="#reprendreJeu" text="Reprendre" AnchorPane.rightAnchor="154.0" />
+      <Button fx:id="btnQuitter" layoutX="747.0" layoutY="77.0" mnemonicParsing="false" onAction="#quitterPartie" text="Quitter" AnchorPane.rightAnchor="85.0" />
+      <Button fx:id="btnPause" layoutX="583.0" layoutY="77.0" mnemonicParsing="false" onAction="#suspendreJeu" text="Pause" AnchorPane.rightAnchor="256.0" />
+      <Button fx:id="btnReprendre" layoutX="655.0" layoutY="78.0" mnemonicParsing="false" onAction="#reprendreJeu" text="Reprendre" AnchorPane.rightAnchor="154.0" />
       <Button layoutX="779.0" layoutY="15.0" mnemonicParsing="false" onAction="#retourMenu" text="Retour menu" AnchorPane.rightAnchor="14.0" />
       <ImageView fx:id="merveille" fitHeight="115.0" fitWidth="111.0" layoutX="599.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true" />
       <Label fx:id="labelEtape" layoutX="204.0" layoutY="431.0" text="etape" />

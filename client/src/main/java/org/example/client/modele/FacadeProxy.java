@@ -256,4 +256,33 @@ public class FacadeProxy implements IFacadeProxy {
         }
         return null;
     }
+
+    @Override
+    public boolean joueurCreateurDeLaPartie(String idPartie, String pseudo) {
+        try {
+            return this.jeuFacade.joueurCreateurDeLaPartie(idPartie, pseudo);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public String getPlateauDuJoueur(String idPartie, String pseudo) {
+        try {
+            return this.jeuFacade.getPlateauDuJoueur(idPartie, pseudo);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public int getAgeCourantPartie(String idPartie, String pseudo) {
+        try {
+            return this.jeuFacade.getAgeCourantPartie(idPartie,pseudo);
+        } catch (RemoteException e) {
+            throw new RuntimeException("erreur rmi!");
+        }
+    }
 }

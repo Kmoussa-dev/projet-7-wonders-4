@@ -57,4 +57,10 @@ public interface IFacadeSwOnline {
     boolean peutQuitter(String idPartie);
 
     Collection<Partie> getLesParties();
+
+    boolean joueurCreateurDeLaPartie(String idPartie, String pseudo);
+
+    String getPlateauDuJoueur(String idPartie, String pseudo);
+
+    int getAgeCourantPartie(String idPartie, String pseudo);
 }

@@ -161,4 +161,19 @@ public class ProxySevenWonderOnline extends UnicastRemoteObject implements IProx
         }
         return partieDTOCollection;
     }
+
+    @Override
+    public boolean joueurCreateurDeLaPartie(String idPartie, String pseudo) throws RemoteException {
+        return this.facade.joueurCreateurDeLaPartie(idPartie,pseudo);
+    }
+
+    @Override
+    public String getPlateauDuJoueur(String idPartie, String pseudo) throws RemoteException {
+        return this.facade.getPlateauDuJoueur(idPartie,pseudo);
+    }
+
+    @Override
+    public int getAgeCourantPartie(String idPartie, String pseudo) throws RemoteException {
+        return this.facade.getAgeCourantPartie(idPartie,pseudo);
+    }
 }

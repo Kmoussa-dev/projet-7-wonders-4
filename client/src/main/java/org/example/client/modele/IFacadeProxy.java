@@ -55,4 +55,10 @@ public interface IFacadeProxy {
 
     Collection<PartieDTO> getLesParties();
 
+    boolean joueurCreateurDeLaPartie(String idPartie, String pseudo);
+
+    String getPlateauDuJoueur(String idPartie, String pseudo);
+
+    int getAgeCourantPartie(String idPartie, String pseudo);
+
 }

@@ -127,4 +127,19 @@ public class FacadeSwOnline implements IFacadeSwOnline{
         return Dao.getLesParties();
     }
 
+    @Override
+    public boolean joueurCreateurDeLaPartie(String idPartie, String pseudo) {
+        return Dao.joueurCreateurDeLaPartie(idPartie,pseudo);
+    }
+
+    @Override
+    public String getPlateauDuJoueur(String idPartie, String pseudo) {
+        return Dao.getPlateauDuJoueur(idPartie,pseudo);
+    }
+
+    @Override
+    public int getAgeCourantPartie(String idPartie, String pseudo) {
+        return Dao.getAgeCourantPartie(idPartie,pseudo);
+    }
+
 }

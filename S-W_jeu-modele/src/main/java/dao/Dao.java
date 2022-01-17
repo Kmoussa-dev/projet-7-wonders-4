@@ -250,4 +250,26 @@ public class Dao {
         return partieCollection;
     }
 
+
+    public static boolean joueurCreateurDeLaPartie(String idPartie, String pseudo){
+        MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
+        Collection<Partie> partieCollection = new ArrayList<>();
+        Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
+        return partie.getPartieJoueurByPseudo(pseudo).isCreateur();
+    }
+
+    public static int getAgeCourantPartie(String idPartie, String pseudo) {
+        MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
+        Collection<Partie> partieCollection = new ArrayList<>();
+        Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
+        return partie.getPartieJoueurByPseudo(pseudo).getAge();
+    }
+
+    public static String getPlateauDuJoueur(String idPartie, String pseudo) {
+        MongoCollection<Partie> partieMongoCollection = db.getCollection("parties", Partie.class);
+        Collection<Partie> partieCollection = new ArrayList<>();
+        Partie partie = partieMongoCollection.find(Filters.eq("_id",idPartie)).first();
+        return String.valueOf(partie.getPartieJoueurByPseudo(pseudo).getPlateau().getNomPlateau());
+    }
+
 }

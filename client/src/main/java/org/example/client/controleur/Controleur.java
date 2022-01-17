@@ -83,6 +83,7 @@ public class Controleur {
     public void distributionCarte(String idPartie, String pseudo){
         this.facade.distribution(idPartie);
         this.loadCarteTemp(idPartie,pseudo);
+        this.testPlatorm.setLabelPlateau(this.facade.getPlateauDuJoueur(idPartie,pseudo));
     }
 
     public Boolean authorisationCirculer(String idPartie){
@@ -95,6 +96,7 @@ public class Controleur {
         this.loadCarteConstruction(idPartie, pseudo);
         this.loadCarteConstructionMerv(idPartie, pseudo);
         this.loadCartesDefausses(idPartie);
+        this.testPlatorm.setAgeCurant(this.facade.getAgeCourantPartie(idPartie,pseudo));
     }
 
 
@@ -164,17 +166,23 @@ public class Controleur {
         this.accueil.loadData();
     }
 
+
     public void goToPlateForm() {
         this.testPlatorm.show();
-        this.testPlatorm.setToken(DonnesStatic.ticket,DonnesStatic.pseudo);
+        this.testPlatorm.setPseudoCodePartie(DonnesStatic.ticket,DonnesStatic.pseudo);
         this.testPlatorm.loadCardAge1();
+        this.testPlatorm.setAgeCurant(this.facade.getAgeCourantPartie(DonnesStatic.ticket,DonnesStatic.pseudo));
+        if(!this.facade.joueurCreateurDeLaPartie(DonnesStatic.ticket,DonnesStatic.pseudo)){
+            this.testPlatorm.desactivationButton();
+        }
+
     }
+
 
     public void reAccederAuJeu(String idPartie, String pseudo){
        try {
            if(this.facade.reAccederAuJeu(idPartie, pseudo)){
                this.testPlatorm.show();
-               this.testPlatorm.setToken(idPartie,pseudo);
                this.loadCarteTemp(idPartie, pseudo);
                this.loadCarteConstruction(idPartie, pseudo);
                this.loadCarteConstructionMerv(idPartie, pseudo);
@@ -222,4 +230,7 @@ public class Controleur {
     public Collection<PartieDTO> getLesParties(){
         return this.facade.getLesParties();
     }
+
+
+
 }

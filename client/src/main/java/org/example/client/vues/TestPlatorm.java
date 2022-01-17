@@ -23,7 +23,6 @@ import packageDTOs.ModeDeplacement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class TestPlatorm {
     private Stage stage;
@@ -64,7 +63,14 @@ public class TestPlatorm {
     @FXML
     Label labelEtape;
 
+    @FXML
+    private Button btnPause;
 
+    @FXML
+    private Button btnQuitter;
+
+    @FXML
+    private Button btnReprendre;
 
     public void setScene(Scene scene){
         this.scene = scene;
@@ -74,10 +80,24 @@ public class TestPlatorm {
         this.stage = stage;
     }
 
-    public void setToken(String token, String pseudo){
+    public void setPseudoCodePartie(String token, String pseudo){
         this.pseudo.setText(pseudo);
         this.codePartie.setText(token);
         this.codePartie.setEditable(false);
+    }
+
+    public void desactivationButton(){
+        this.btnReprendre.setDisable(true);
+        this.btnPause.setDisable(true);
+        this.btnQuitter.setDisable(true);
+    }
+
+    public void setLabelPlateau(String nomPlateau){
+        this.labelPlateau.setText(nomPlateau);
+    }
+
+    public void setAgeCurant(int age){
+        this.labelAge.setText(String.valueOf(age));
     }
 
 
@@ -108,7 +128,6 @@ public class TestPlatorm {
     public void initialiserControleur(Controleur controleur){
         this.controleur = controleur;
     }
-
 
     public void loadCardAge1() {
         this.carteTemp.getItems().clear();
@@ -246,7 +265,6 @@ public class TestPlatorm {
         Thread thread = new Thread(deplacement);
         thread.start();
     }
-
 
     /**
      * Méthode qui affiche l'image des cartes circulantes via imageView

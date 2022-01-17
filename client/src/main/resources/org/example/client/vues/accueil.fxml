@@ -112,7 +112,7 @@
       </AnchorPane>
    </center>
    <top>
-      <Label alignment="CENTER" contentDisplay="RIGHT" prefHeight="21.0" prefWidth="371.0" text="Mon compte " textAlignment="CENTER" BorderPane.alignment="TOP_RIGHT">
+      <Label alignment="CENTER" contentDisplay="RIGHT" prefHeight="21.0" prefWidth="371.0" text="Mon compte " textAlignment="CENTER" BorderPane.alignment="CENTER">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font>

@@ -57,4 +57,10 @@ public interface IProxySevenWonderOnline extends Remote {
     boolean peutQuitter(String idPartie) throws RemoteException;
 
     Collection<PartieDTO> getLesParties() throws RemoteException;
+
+    boolean joueurCreateurDeLaPartie(String idPartie, String pseudo) throws RemoteException;
+
+    String getPlateauDuJoueur(String idPartie, String pseudo) throws RemoteException;
+
+    int getAgeCourantPartie(String idPartie, String pseudo) throws RemoteException;
 }
