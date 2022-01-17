@@ -40,7 +40,7 @@
       <font>
          <Font name="DejaVu Sans Bold" size="16.0" />
       </font></Label>
-   <Label fx:id="vainqueurPartie" layoutX="293.0" layoutY="270.0" prefHeight="16.0" prefWidth="0.0" textFill="#ffc107">
+   <Label fx:id="vainqueurPartie" alignment="CENTER" contentDisplay="CENTER" layoutX="195.0" layoutY="273.0" prefHeight="20.0" prefWidth="223.0" textFill="#ffc107">
        <font><Font name="DejaVu Sans Bold" size="16.0" />
        </font></Label>
     <Label />
