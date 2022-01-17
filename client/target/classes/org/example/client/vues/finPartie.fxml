@@ -19,7 +19,7 @@
 
 
 
-    <Button layoutX="224.0" layoutY="328.0" mnemonicParsing="false" onAction="#goToMenu" prefHeight="46.0" prefWidth="176.0" style="-fx-background-color: black;" text="Retour au menu" textAlignment="CENTER" textFill="WHITE" wrapText="true" BorderPane.alignment="CENTER">
+    <Button layoutX="212.0" layoutY="306.0" mnemonicParsing="false" onAction="#goToMenu" prefHeight="46.0" prefWidth="176.0" style="-fx-background-color: black;" text="Retour au menu" textAlignment="CENTER" textFill="WHITE" wrapText="true" BorderPane.alignment="CENTER">
         <font>
             <Font name="DejaVu Sans Bold" size="13.0" />
         </font>

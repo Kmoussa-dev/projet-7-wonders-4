@@ -204,6 +204,8 @@ public class Plateforme {
 
     public void chargerContsructionCite(ObservableList<Carte> cartes) {
         carteContructCite.setItems(cartes);
+        carteContructCite.setOrientation(Orientation.HORIZONTAL);
+        visuelCarteConstructionCiteV1();
     }
 
     public void chargerContsructionMerv(ObservableList<Carte> cartes) {
@@ -302,8 +304,8 @@ public class Plateforme {
                         setGraphic(null);
                     } else {
                         //String nomCarte =  ((ICarte)carteTemp.getSelectionModel().getSelectedItem()).getNom();
-                        imageView.setFitHeight(130); //hauteur image
-                        imageView.setFitWidth(90);
+                        imageView.setFitHeight(150); //hauteur image
+                        imageView.setFitWidth(100);
                         imageView.setImage(new Image(getClass().getResourceAsStream("/org/example/client/vues/image/cartesID/" + carte.getId() + ".png")));
                         setGraphic(imageView);
                     }
@@ -330,8 +332,8 @@ public class Plateforme {
                         setGraphic(null);
                     } else {
                         //String nomCarte =  ((ICarte)carteTemp.getSelectionModel().getSelectedItem()).getNom();
-                        imageViewCite.setFitHeight(100);
-                        imageViewCite.setFitWidth(50);
+                        imageViewCite.setFitHeight(150);
+                        imageViewCite.setFitWidth(100);
                         imageViewCite.setImage(new Image(getClass().getResourceAsStream("/org/example/client/vues/image/cartesID/"+ carte.getId() + ".png")));
                         setGraphic(imageViewCite);
                     }
