@@ -26,6 +26,9 @@ public class FacadeProxy implements IFacadeProxy {
         return facadeProxy;
     }
 
+    /**
+     * Constructeur
+     */
     private FacadeProxy(){
         try {
             Registry registry = LocateRegistry.getRegistry(RMIServeurConnexion.PORT);
@@ -35,10 +38,12 @@ public class FacadeProxy implements IFacadeProxy {
         }
     }
 
-
-
-
-
+    /**
+     * récupére les états du merveille
+     * @param idPartie
+     * @param pseudo
+     * @return le numéro de piramide
+     */
     @Override
     public int getEtapesMerveilleConstruite(String idPartie, String pseudo) {
         try {
@@ -48,6 +53,14 @@ public class FacadeProxy implements IFacadeProxy {
         }
     }
 
+    /**
+     * acceder à une partie
+     * @param idPartie
+     * @param pseudo
+     * @throws partieDejaTermineException
+     * @throws partieInexistantException
+     * @throws PartiePleinExecption
+     */
     @Override
     public void accederUnePartie(String idPartie, String pseudo) throws partieDejaTermineException, partieInexistantException, PartiePleinExecption {
         try {
@@ -57,8 +70,20 @@ public class FacadeProxy implements IFacadeProxy {
         }
     }
 
-
-
+    /**
+     * déplacement des cartes selon le choix du joueur
+     * @param idPartie
+     * @param pseudo
+     * @param carte
+     * @param cartes
+     * @param modeDeplacement
+     * @throws CarteInexistantException
+     * @throws CarteDejaException
+     * @throws PartieTermineException
+     * @throws PartieSuspenduException
+     * @throws RessourcesInsuffisantesException
+     * @throws CarteDejaPossederException
+     */
     @Override
     public void deplacementCarte(String idPartie, String pseudo, Carte carte, List<Carte> cartes, ModeDeplacement modeDeplacement) throws CarteInexistantException, CarteDejaException, PartieTermineException, PartieSuspenduException, RessourcesInsuffisantesException, CarteDejaPossederException {
         try {
@@ -68,6 +93,12 @@ public class FacadeProxy implements IFacadeProxy {
         }
     }
 
+    /**
+     * récuperer les cartes circulantes
+     * @param idPartie
+     * @param pseudo
+     * @return liste les cartes circulantes
+     */
     @Override
     public Collection<Carte> getLesCartesCirculants(String idPartie, String pseudo) {
         try {
@@ -78,6 +109,12 @@ public class FacadeProxy implements IFacadeProxy {
         return null;
     }
 
+    /**
+     * recuperer les cartes de construction de la cite
+     * @param idPartie
+     * @param pseudo
+     * @return liste des cartes
+     */
     @Override
     public Collection<Carte> getLesCartesConstructionCite(String idPartie, String pseudo) {
         try {
@@ -88,6 +125,12 @@ public class FacadeProxy implements IFacadeProxy {
         return null;
     }
 
+    /**
+     * récuperer les cartes de construction du merveille
+     * @param idPartie
+     * @param pseudo
+     * @return liste des cartes de la merveille
+     */
     @Override
     public Collection<Carte> getLesCartesConstructionMerv(String idPartie, String pseudo) {
         try {
@@ -98,6 +141,11 @@ public class FacadeProxy implements IFacadeProxy {
         return null;
     }
 
+    /**
+     * récuperer les cartes déffeussé
+     * @param idPartie
+     * @return liste des cartes déffaussé
+     */
     @Override
     public Collection<Carte> getLesCartesDefausses(String idPartie) {
         try {
@@ -107,7 +155,10 @@ public class FacadeProxy implements IFacadeProxy {
         }
     }
 
-
+    /**
+     * la distribution initial des carte et des plateaux (age1) et
+     * @param idPartie
+     */
     @Override
     public void distribution(String idPartie) {
         try {
@@ -117,6 +168,11 @@ public class FacadeProxy implements IFacadeProxy {
         }
     }
 
+    /**
+     * commencer la partie quand tout le monde est dedans
+     * @param idPartie
+     * @return true si on commence false sinon
+     */
     @Override
     public Boolean partieCommence(String idPartie) {
         try {
@@ -127,6 +183,11 @@ public class FacadeProxy implements IFacadeProxy {
         return false;
     }
 
+    /**
+     * autoriser la circulation des cartes lorsque tout les joueurs ont choisis une carte
+     * @param idPartie
+     * @return true/false
+     */
     @Override
     public Boolean authorisationCirculer(String idPartie) {
         try {
@@ -137,6 +198,10 @@ public class FacadeProxy implements IFacadeProxy {
         return false;
     }
 
+    /**
+     * lorsqu'on termine un tour on notifit les joueur et on mis à jour les ressource et échangé les cartes
+     * @param idPartie
+     */
     @Override
     public void notification(String idPartie) {
         try {
@@ -146,6 +211,12 @@ public class FacadeProxy implements IFacadeProxy {
         }
     }
 
+    /**
+     * créer une nouvelle partie
+     * @param pseudo
+     * @param ticket
+     * @throws PartiePleinExecption
+     */
     @Override
     public void setNouvellePartie(String pseudo, String ticket) throws PartiePleinExecption {
         try {
@@ -155,6 +226,11 @@ public class FacadeProxy implements IFacadeProxy {
         }
     }
 
+    /**
+     * inscription de nouveau joueur
+     * @param pseudo
+     * @param mdp
+     */
     @Override
     public void inscription(String pseudo, String mdp){
         try {
@@ -164,6 +240,12 @@ public class FacadeProxy implements IFacadeProxy {
         }
     }
 
+    /**
+     *
+     * @param pseudo
+     * @param mdp
+     * @return
+     */
     @Override
     public boolean connexion(String pseudo, String mdp)  {
         try {

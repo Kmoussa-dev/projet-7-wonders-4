@@ -6,6 +6,9 @@ import org.example.client.controleur.Controleur;
 
 import java.io.IOException;
 
+/**
+ * Programme
+ */
 public class Programme extends Application {
     @Override
     public void start(Stage stage) throws IOException {

@@ -283,7 +283,7 @@ public class Controleur {
 
 
     /**
-     * reprendre une partie mis en pause (suspendu)
+     * réacceder au jeux
      * @param idPartie
      * @param pseudo
      */
@@ -325,20 +325,31 @@ public class Controleur {
     }
 
     /**
-     *
+     * mettre la partie en pause
      * @param idPartie
      * @param pseudo
-     * @return
+     * @return true si la partie est en pause et false sinon
      * @throws PartieNonReprendreException
      */
     public boolean suspendreJeu(String idPartie, String pseudo) throws PartieNonReprendreException {
         return this.facade.suspendreLaPartie(idPartie,pseudo);
     }
 
+    /**
+     * reprendre une partie suspendu
+     * @param idPartie
+     * @param pseudo
+     * @return true/false
+     * @throws PartieNonSuspenduException
+     */
     public boolean reprendreJeu(String idPartie, String pseudo) throws PartieNonSuspenduException {
         return this.facade.reprendreUnePartie(idPartie,pseudo);
     }
 
+    /**
+     * quitté une partie
+     * @param idPartie
+     */
     public void peutQuitter(String idPartie){
         if(this.facade.peutQuitter(idPartie)){
             this.goToAcceuil();
@@ -350,15 +361,28 @@ public class Controleur {
         }
     }
 
+    /**
+     * à la fin du jeux on affiche la fin du partie et le gagnant
+     */
     public void goToFinPartie() {
         this.finPartie.show();
         this.finPartie.setVainqueurPartie(this.facade.getVainqueur(DonnesStatic.codePartie));
     }
 
+    /**
+     * récuperer les parties
+     * @return liste des parties
+     */
     public Collection<PartieDTO> getLesParties(){
         return this.facade.getLesParties();
     }
 
+    /**
+     * récupérer les ressources des joueurs
+     * @param idPartie
+     * @param pseudo
+     * @return liste des ressources
+     */
     public Collection<RessourcesDTO> getLesRessourcesDuJoueur(String idPartie, String pseudo) {
         return this.facade.getLesRessourcesDuJoueur(idPartie,pseudo);
     }
